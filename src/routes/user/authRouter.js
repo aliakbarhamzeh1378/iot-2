@@ -19,13 +19,13 @@ router.post(
 
 router.post(
   "/register" , 
-
-  registerController.verifyEmail
+[MiddleWare.emptyCheck,MiddleWare.mailCheck,MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
+  authController.verifyEmail
 );
 
 router.post(
   "/reset-password",
-  resetController.updatePass
+  authController.updatePass
 ); 
 
 router.post(

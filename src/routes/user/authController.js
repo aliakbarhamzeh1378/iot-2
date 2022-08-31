@@ -1,4 +1,4 @@
-const { AuthService } = require("../../services/authService");
+const { authService } = require("../../services/authService");
 const { Token } = require("../../lib/token");
 const token = new Token();
 const { accounts } = require("../../model/account");
@@ -11,30 +11,35 @@ module.exports = {
 
   verifyEmail : async function(req , res ){
     let pass = req.body.password
-      let hashed = await authService.hashPassword(pass).toString()
-      authService.addNewPerson(req.body , hashed);
-      let token = authService.generateToken(pass);
-      send_email(
-          "sendLink.html",
-          (replacement = {
-            name: req.body.fullname,
-            link: `https://test.com/accounts/verify?token=${token}`,
-          }),
-          req.body.email,
-          "Verify your account"
-        );
-        res.status(201).send({
-          status: "Ok",
-          message:
-            "please verify your account by follow the link that sent to your email address",
-          data: {}
-        });
+    let email=req.body.email
+    let hashed = await authService.hashPassword(pass).toString();
+    let exist=
+    authService.addNewPerson(req.body , hashed);
+    let usrToken = token.generateToken({email:email});
+    usrToken.then((token)=>{
+    send_email(
+        "sendLink.html",
+        (replacement = {
+          name: req.body.fullname,
+          link: `https://test.com/accounts/verify?token=${token}`,
+        }),
+        req.body.email,
+        "Verify your account"
+      );
+      res.status(201).send({
+        status: "Ok",
+        message:
+          "please verify your account by follow the link that sent to your email address",
+        data: {}
+      });
+    })
+
   },
 
   loginUser: async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    let p = AuthService.loginCheck(email, password);
+    let p = authService.loginCheck(email, password);
     p.then((message) => {
       if (message == 200) {
         let userToken = token.generateToken({ email: email });
@@ -66,7 +71,7 @@ module.exports = {
     const user_token = req.query.token;
     let p = token.verifyToken(user_token);
     p.then(async (message) => {
-      AuthService.find_Update(message.email, { status: "active" });
+      authService.find_Update(message.email, { status: "active" });
       res.status(200).send({
         //load verify.ejs
         status: "Ok",
@@ -106,9 +111,9 @@ module.exports = {
     let user = await Validation.existToDB(email);
     // console.log(user);
     if (user) {
-      let randomHash = await AuthService.hashPassword("\\w+");
-      AuthService.deleteHash(email);
-      AuthService.addHash(email, randomHash);
+      let randomHash = await authService.hashPassword("\\w+");
+      authService.deleteHash(email);
+      authService.addHash(email, randomHash);
       send_email(
         "sendLink.html",
         (replacement = {
@@ -140,9 +145,9 @@ module.exports = {
         let hashPass =
           req.body.password.length < 8
             ? message.password
-            : await AuthService.hashPassword(req.body.password);
+            : await authService.hashPassword(req.body.password);
         let fullname = null ? message.fullname :req.body.fullname ;
-        AuthService.find_Update(message.email, {
+        authService.find_Update(message.email, {
           fullname: fullname,
           password: hashPass,
         });
