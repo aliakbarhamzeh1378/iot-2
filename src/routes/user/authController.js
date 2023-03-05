@@ -90,56 +90,6 @@ module.exports = {
     }
   },
 
-  //   reset_password_get: async(req, res, next) => {
-  //     const hash = req.query.hash;
-  //     let user=await hashs.findOne({ hash: hash })
-  //     if (user) {
-  //       let notExpire = AuthService.checkExpiration(user.time_created);
-  //       if (notExpire) {
-  //         let userToken = token.generateToken({ email: user.email });
-  //         await hashs.deleteOne({ hash: hash });
-  //         res.status(200).send({
-  //           status: "200",
-  //           message: userToken,
-  //           data: {},
-  //         });
-  //       } else {
-  //         res.status(404).send({
-  //           status: "404",
-  //           message: "hash is expired.try again",
-  //           data: {},
-  //         });
-  //       }
-  //     } else {
-  //       res.status(404).send({
-  //         status: "error",
-  //         message: "not found",
-  //         data: {},
-  //       });
-
-  //   };
-  // },
-
-  // reset_password_post:async (req, res, next) => {
-  //   let hash = await AuthService.hashPassword(req.body.password);
-  //   let p = token.verifyToken(req.body.token);
-  //   p.then(async (message) => {
-  //     AuthService.find_Update(message.email,{ password: hash })
-
-  //     res.status(200).send({
-  //       status: "Ok",
-  //       message: "your password was reset successfully",
-  //       data: {},
-  //     });
-  //   }).catch((message) => {
-  //     res.status(406).send({
-  //       status: "error",
-  //       message: "the token was not correct or expired",
-  //       data: {},
-  //     });
-  //   });
-  // }
-
   editProfile: async (req, res, next) => {
     let user_token = req.headers["authorization"];
     let decodedToken = token.verifyToken(user_token);

@@ -17,14 +17,6 @@ router.post(
   authController.forgetPassword
 );
 
-// router.get("/reset-password", authController.reset_password_get);
-
-// router.post(
-//   "/reset-password",
-//   [MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
-//   authController.reset_password_post
-// );
-
 router.post(
   "/edit-profile",
   [MiddleWare.existToken, MiddleWare.confirmPassCheck],
