@@ -16,4 +16,4 @@ module.exports = (app)=>{
         "/update/:id",
         plantController.update
     );
-}
+};

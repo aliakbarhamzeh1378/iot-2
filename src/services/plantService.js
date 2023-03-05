@@ -19,6 +19,7 @@ class PlantService{
         })
 
     };
+    
 
     static deletePlant(plantId) {
         return new Promise((resolve, reject) => {

@@ -1,5 +1,6 @@
 const glob = require('glob');
 
+
 module.exports = (app) => {
 	glob(`${__dirname}/routes/**/*Router.js`, {}, (er, files) => {
 		console.log(files)

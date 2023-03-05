@@ -5,6 +5,7 @@ const hashSchema=new mongoose.Schema({
     hash:String ,
     time_created:Date
 });
+
 const hashs=mongoose.model("hashs",hashSchema);
 
 module.exports={hashs};

@@ -1,8 +1,13 @@
 let jwt = require("jsonwebtoken");
 let bcrypt  =require("bcrypt");
-const { accounts } = require("../../src/model/account");
+const { accounts } = require("../model/account");
+let {Validation} = require("../lib/validation");
+let {Token} = require("../lib/token");
+let {accounts}=require("../model/account");
+const mongoose = require("mongoose");
+const { hashs } = require("../model/hash");
 
-class RegService{
+class authService{
     static addNewPerson(body,password){
         return new Promise((resolve , reject)=>{
             let newCreate = new accounts({
@@ -43,6 +48,37 @@ class RegService{
             }
 
         });
-      }
+    };
+
+    async findAccount(password,token){
+        let hash = await Validation.hashPassword(password);
+        return new Promise(async(resolve , reject)=>{
+            let p = new Token().verifyToken(token);   
+            let reset = await accounts.findOneAndUpdate(
+                { email: token },
+                { password: hash }
+            );
+            if(reset){
+                resolve(true)
+            }else{
+                reject(false)
+            }
+        })
+    };
+
+    async exipreToken(hash){
+        // let hash = req.query.hash;
+        return new Promise((resolve , reject)=>{
+            let result = hashs.findOne({ hash: hash });
+            if(result){
+                let expTime = result.hash;
+                console.log(expTime)
+                resolve(expTime)
+            }else{
+                reject("false")
+            }
+
+        })
+    };
 };
-module.exports ={RegService}
+module.exports ={authService}

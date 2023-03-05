@@ -1,11 +1,11 @@
-const {RegService} = require("../../services/registerService");
+const {authService} = require("../../services/authService");
 const {send_email} = require("../../lib/sendEmail");
 
 async function verifyEmail(req , res ){
   let pass = req.body.password
-    let hashed = await RegService.hashPassword(pass).toString()
-    RegService.addNewPerson(req.body , hashed);
-    let token = RegService.generateToken(pass);
+    let hashed = await authService.hashPassword(pass).toString()
+    authService.addNewPerson(req.body , hashed);
+    let token = authService.generateToken(pass);
     send_email(
         "sendLink.html",
         (replacement = {

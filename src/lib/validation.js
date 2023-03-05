@@ -12,7 +12,7 @@ class Validation {
         message: "the email address is wrong",
       });
     } 
-  }
+  };
 
   static emptyCheck(req, res) {
     let found = false;
@@ -26,7 +26,7 @@ class Validation {
       }
       break;
     }
-  }
+  };
 
   static passwordCheck(req, res) {
     if (req.length < 8) {
@@ -35,7 +35,7 @@ class Validation {
         message: "the password is very short.it must be at least 8 characters",
       });
     } 
-  }
+  };
 
   static confirmPassCheck(pass1 , pass2 , res) {
     if ( pass1!= pass2) {
@@ -44,7 +44,7 @@ class Validation {
         message: "passwords that you entered do not matched",
       });
     }
-  }
+  };
 
   static async existToDB(req, res) {
     if ((await accounts.findOne({ email: req.body.email })) != null) {
@@ -53,7 +53,7 @@ class Validation {
         message: "there is an account with this email address",
       });
     }
-  }
+  };
 
   static async notExistToDB(req, res) {
     if ((await accounts.findOne({ email: req.body.email })) == null) {

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const accountSchema = new mongoose.Schema({
   fullname: {
     type: String,

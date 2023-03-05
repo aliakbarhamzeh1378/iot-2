@@ -12,5 +12,4 @@ const plantSchema = new mongoose.Schema({
 });
 
 plantsInformation = mongoose.model("plantsInformation" , plantSchema);
-
 module.exports = {plantsInformation} ;

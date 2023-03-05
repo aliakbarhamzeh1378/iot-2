@@ -1,5 +1,6 @@
 let jwt = require("jsonwebtoken");
 let { accounts } = require("../model/account");
+
 class Token {
   generateToken(email) {
     let token = jwt.sign({ email: email }, process.env.SECRET_KEY, {

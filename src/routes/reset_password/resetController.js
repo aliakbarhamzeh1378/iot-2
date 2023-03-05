@@ -1,4 +1,4 @@
-let resetService = require("../../services/resetService");
+let resetService = require("../../services/authService");
 
 module.exports = {
     updatePass : ((req,res)=>{

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const plantSchema = new mongoose.Schema({
   // user_id: mongoose.Types.ObjectId,
   name: String,

@@ -9,7 +9,6 @@ module.exports = (app)=> {
     registerController.verifyEmail
   )
 
-
   app.use("/accounts", router)
 
 }
