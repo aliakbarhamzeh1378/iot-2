@@ -1,5 +1,6 @@
-const {plants} = require("../model/plant");
+const {plants}=require("../model/plant");
 
+<<<<<<< HEAD
 class PlantService{
     static addNewPlant(req) {
         return new Promise(async(resolve , reject)=>{
@@ -20,44 +21,39 @@ class PlantService{
 
     };
     
-
-    static deletePlant(plantId) {
-        return new Promise((resolve, reject) => {
-            let deletedPlant = plants.findByIdAndDelete(plantId,function (err, result) {
-                if (result) {
-                  console.log("hello")
-
-                  resolve(true);
-                } else {
-                  console.log("fg")
-
-                  reject(false);
-                }
-            });
-        });
-    };
-
-    static updatePlant(body,plantId) {
-      return new Promise((resolve, reject) => {
-        plants.findByIdAndUpdate(
-          plantId,
-          {
-            name: body.name,
-            image: body.image,
-            temperature: body.temperature,
-            light: body.light,
-            moisture: body.moisture,
-            explanation: body.explanation,
-          },
-          function (err, result) {
-            if (result) {
-              resolve(result);
-            } else {
-              reject("Failed");
-            }
-          }
-        );
+=======
+class PlantService {
+  static async listOfPlants(search) {
+    let allPlants=await plants.find({});
+    const foundPlants = [];
+    allPlants.forEach((plant) => {
+        if (plant.name.match(search)) {
+          foundPlants.push({
+            name: plant.name,
+            image: plant.image,
+            objId: plant._id,
+          });
+        }
       });
-      }
-};
-module.exports = {PlantService}
+      return foundPlants
+  }
+>>>>>>> a057260b7cde44d0abb9db6efd8922b50b9da492
+
+  static async addNewPlant(req, user) {
+      await plants.create({
+        // user_id: user._id,
+        name: req.body.name,
+        image: req.file.path,    
+        temperature: req.body.temperature,
+        light: req.body.light,
+        moisture: req.body.moisture,
+        explanation: req.body.explanation,
+      });
+   }
+  
+}
+  
+
+
+
+module.exports={PlantService};
