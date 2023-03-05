@@ -17,13 +17,16 @@ router.post(
   authController.forgetPassword
 );
 
-// router.get("/reset-password", authController.reset_password_get);
+router.post(
+  "/register" , 
 
-// router.post(
-//   "/reset-password",
-//   [MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
-//   authController.reset_password_post
-// );
+  registerController.verifyEmail
+);
+
+router.post(
+  "/reset-password",
+  resetController.updatePass
+); 
 
 router.post(
   "/edit-profile",

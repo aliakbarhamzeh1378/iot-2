@@ -1,6 +1,5 @@
 const {plants}=require("../model/plant");
 
-<<<<<<< HEAD
 class PlantService{
     static addNewPlant(req) {
         return new Promise(async(resolve , reject)=>{
@@ -21,8 +20,6 @@ class PlantService{
 
     };
     
-=======
-class PlantService {
   static async listOfPlants(search) {
     let allPlants=await plants.find({});
     const foundPlants = [];
@@ -37,7 +34,6 @@ class PlantService {
       });
       return foundPlants
   }
->>>>>>> a057260b7cde44d0abb9db6efd8922b50b9da492
 
   static async addNewPlant(req, user) {
       await plants.create({

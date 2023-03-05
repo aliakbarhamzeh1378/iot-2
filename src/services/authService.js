@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 let jwt = require("jsonwebtoken");
 let bcrypt  =require("bcrypt");
 const { accounts } = require("../model/account");
@@ -7,6 +6,8 @@ let {Token} = require("../lib/token");
 let {accounts}=require("../model/account");
 const mongoose = require("mongoose");
 const { hashs } = require("../model/hash");
+mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
+const token = new Token();
 
 class authService{
     static addNewPerson(body,password){
@@ -25,31 +26,7 @@ class authService{
         })
 
     };
-    static hashPassword(password) {
-        return new Promise((resolve , reject)=>{
-            let newPass = password.toString();
-            let salt = parseInt(bcrypt.genSalt(10));
-            let hash = bcrypt.hash(newPass, salt);
-            if(hash){
-                resolve(hash)
-            }else{
-                reject("failed")
-            }
-        })
-    };
-    
-    static generateToken(email) {
-        return new Promise((resolve , reject)=>{
-            let token = jwt.sign({ email: email }, "GrHouse", {
-                    expiresIn: 100000})
-            if(token){
-                resolve(token)
-            }else{
-                reject("failed")
-            }
 
-        });
-    };
 
     async findAccount(password,token){
         let hash = await Validation.hashPassword(password);
@@ -67,32 +44,6 @@ class authService{
         })
     };
 
-    async exipreToken(hash){
-        // let hash = req.query.hash;
-        return new Promise((resolve , reject)=>{
-            let result = hashs.findOne({ hash: hash });
-            if(result){
-                let expTime = result.hash;
-                console.log(expTime)
-                resolve(expTime)
-            }else{
-                reject("false")
-            }
-
-        })
-    };
-};
-module.exports ={authService}
-=======
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
-const { accounts } = require("../model/account");
-const bcrypt = require("bcrypt");
-const { Token } = require("../lib/token");
-const token = new Token();
-const { hashs } = require("../model/hash");
-
-class AuthService {
 
   static async find_Update(email, jsonUpdate) {
     await accounts.findOneAndUpdate({ email: email }, jsonUpdate);
@@ -144,7 +95,20 @@ class AuthService {
       console.log(e);
       // throw error;
     }
-  }
+  };
+
+  //   static hashPassword(password) {
+  //     return new Promise((resolve , reject)=>{
+  //         let newPass = password.toString();
+  //         let salt = parseInt(bcrypt.genSalt(10));
+  //         let hash = bcrypt.hash(newPass, salt);
+  //         if(hash){
+  //             resolve(hash)
+  //         }else{
+  //             reject("failed")
+  //         }
+  //     })
+  // };
 
   static checkExpiration(expTime) {
     return Date.now() - expTime < 86400000;
@@ -152,4 +116,3 @@ class AuthService {
 }
 
 module.exports = { AuthService };
->>>>>>> a057260b7cde44d0abb9db6efd8922b50b9da492

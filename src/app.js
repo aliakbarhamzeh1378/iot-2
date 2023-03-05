@@ -24,11 +24,6 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 
-// app.use("/accounts", accountRouter);
-// app.use("/accounts", reset);
-// require('./routes/reset_password/resetRouter')(app);
-
-// app.use("/plants", plantRouter);
 require("./routes")(app);
 const start = () => {
   mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");

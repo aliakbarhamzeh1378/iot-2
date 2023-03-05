@@ -8,6 +8,29 @@ const { send_email } = require("../../lib/sendEmail");
 const { hashs } = require("../../model/hash");
 
 module.exports = {
+
+  verifyEmail : async function(req , res ){
+    let pass = req.body.password
+      let hashed = await authService.hashPassword(pass).toString()
+      authService.addNewPerson(req.body , hashed);
+      let token = authService.generateToken(pass);
+      send_email(
+          "sendLink.html",
+          (replacement = {
+            name: req.body.fullname,
+            link: `https://test.com/accounts/verify?token=${token}`,
+          }),
+          req.body.email,
+          "Verify your account"
+        );
+        res.status(201).send({
+          status: "Ok",
+          message:
+            "please verify your account by follow the link that sent to your email address",
+          data: {}
+        });
+  },
+
   loginUser: async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -59,6 +82,25 @@ module.exports = {
     });
   },
 
+    updatePass : ((req,res)=>{
+      console.log("hello")
+      resetService.findAccount(req.body.password , req.body.token)
+      .then((message)=>{
+          res.status(200).send({
+              status: "Ok",
+              message: "your password was reset successfully",
+              data: {},
+            });
+          })
+      .catch((message) => {
+          res.status(406).send({
+              status: "error",
+              message: "the token was not correct or expired",
+              data: {},
+          });
+      });
+  }),
+
   forgetPassword: async (req, res, next) => {
     const email = req.body.email;
     let user = await Validation.existToDB(email);
@@ -89,56 +131,6 @@ module.exports = {
       });
     }
   },
-
-  //   reset_password_get: async(req, res, next) => {
-  //     const hash = req.query.hash;
-  //     let user=await hashs.findOne({ hash: hash })
-  //     if (user) {
-  //       let notExpire = AuthService.checkExpiration(user.time_created);
-  //       if (notExpire) {
-  //         let userToken = token.generateToken({ email: user.email });
-  //         await hashs.deleteOne({ hash: hash });
-  //         res.status(200).send({
-  //           status: "200",
-  //           message: userToken,
-  //           data: {},
-  //         });
-  //       } else {
-  //         res.status(404).send({
-  //           status: "404",
-  //           message: "hash is expired.try again",
-  //           data: {},
-  //         });
-  //       }
-  //     } else {
-  //       res.status(404).send({
-  //         status: "error",
-  //         message: "not found",
-  //         data: {},
-  //       });
-
-  //   };
-  // },
-
-  // reset_password_post:async (req, res, next) => {
-  //   let hash = await AuthService.hashPassword(req.body.password);
-  //   let p = token.verifyToken(req.body.token);
-  //   p.then(async (message) => {
-  //     AuthService.find_Update(message.email,{ password: hash })
-
-  //     res.status(200).send({
-  //       status: "Ok",
-  //       message: "your password was reset successfully",
-  //       data: {},
-  //     });
-  //   }).catch((message) => {
-  //     res.status(406).send({
-  //       status: "error",
-  //       message: "the token was not correct or expired",
-  //       data: {},
-  //     });
-  //   });
-  // }
 
   editProfile: async (req, res, next) => {
     let user_token = req.headers["authorization"];
