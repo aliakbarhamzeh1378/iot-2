@@ -1,6 +1,25 @@
 const {plants}=require("../model/plant");
 
-class PlantService {
+class PlantService{
+    static addNewPlant(req) {
+        return new Promise(async(resolve , reject)=>{
+            let newP = await plants.create({
+                name: req.body.name,
+                image: req.file.path,    
+                temperature: req.body.temperature,
+                light: req.body.light,
+                moisture: req.body.moisture,
+                explanation: req.body.explanation,
+            });
+            if(newP){
+                resolve(true)
+            }else{
+                reject(false)
+            }
+        })
+
+    };
+    
   static async listOfPlants(search) {
     let allPlants=await plants.find({});
     const foundPlants = [];

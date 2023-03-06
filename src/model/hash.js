@@ -13,6 +13,7 @@ const hashSchema = new mongoose.Schema({
 
   time_created: Date,
 });
-const hashs = mongoose.model("hashs", hashSchema);
+
+const hashs=mongoose.model("hashs",hashSchema);
 
 module.exports = { hashs };

@@ -8,6 +8,29 @@ const { send_email } = require("../../lib/sendEmail");
 const { hashs } = require("../../model/hash");
 
 module.exports = {
+
+  verifyEmail : async function(req , res ){
+    let pass = req.body.password
+      let hashed = await authService.hashPassword(pass).toString()
+      authService.addNewPerson(req.body , hashed);
+      let token = authService.generateToken(pass);
+      send_email(
+          "sendLink.html",
+          (replacement = {
+            name: req.body.fullname,
+            link: `https://test.com/accounts/verify?token=${token}`,
+          }),
+          req.body.email,
+          "Verify your account"
+        );
+        res.status(201).send({
+          status: "Ok",
+          message:
+            "please verify your account by follow the link that sent to your email address",
+          data: {}
+        });
+  },
+
   loginUser: async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -58,6 +81,25 @@ module.exports = {
       });
     });
   },
+
+    updatePass : ((req,res)=>{
+      console.log("hello")
+      resetService.findAccount(req.body.password , req.body.token)
+      .then((message)=>{
+          res.status(200).send({
+              status: "Ok",
+              message: "your password was reset successfully",
+              data: {},
+            });
+          })
+      .catch((message) => {
+          res.status(406).send({
+              status: "error",
+              message: "the token was not correct or expired",
+              data: {},
+          });
+      });
+  }),
 
   forgetPassword: async (req, res, next) => {
     const email = req.body.email;

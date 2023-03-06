@@ -4,6 +4,7 @@ const mongoose=require("mongoose");
 const bodyParser = require("body-parser");
 const authRouter=require("./routes/user/authRouter");
 const plantRouter=require("./routes/plant/plantRouter");
+const path = require("path");
 const cors=require("cors");
 
 require('dotenv').config();
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/re_accounts",authRouter);
 app.use("/re_plants",plantRouter);
+
 
 const start=()=>{
     mongoose.connect(process.env.DB_URL);

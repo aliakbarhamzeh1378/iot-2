@@ -12,8 +12,20 @@ class MiddleWare {
         message: "the email address is wrong",
       });
     } else next();
-  }
+  };
 
+  static hashPassword(password) {
+    return new Promise((resolve , reject)=>{
+        let newPass = password.toString();
+        let salt = parseInt(bcrypt.genSalt(10));
+        let hash = bcrypt.hash(newPass, salt);
+        if(hash){
+            resolve(hash)
+        }else{
+            reject("failed")
+        }
+    })
+  };
   static emptyCheck(req, res, next) {
     let found = false;
     for (let key in req.body) {

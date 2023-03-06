@@ -18,6 +18,17 @@ router.post(
 );
 
 router.post(
+  "/register" , 
+
+  registerController.verifyEmail
+);
+
+router.post(
+  "/reset-password",
+  resetController.updatePass
+); 
+
+router.post(
   "/edit-profile",
   [MiddleWare.existToken, MiddleWare.confirmPassCheck],
   authController.editProfile
