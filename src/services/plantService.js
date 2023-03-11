@@ -1,23 +1,26 @@
-const {plants}=require("../model/plant");
+const { plants } = require("../model/plant");
+const { PlantSensorData, SensorValue } = require("../model/sensorData");
 
-class PlantService{
-    
+class PlantService {
+
   static async listOfPlants(search) {
-    let allPlants=await plants.find({});
+    let allPlants = await plants.find({});
     const foundPlants = [];
     allPlants.forEach((plant) => {
-        if (plant.name.match(search)) {
-          foundPlants.push({
-            name: plant.name,
-            image: plant.image,
-            objId: plant._id,
-          });
-        }
-      });
-      return foundPlants
+      console.log(plant)
+      if (plant.name.match(search)) {
+        foundPlants.push({
+          name: plant.name,
+          image: plant.image,
+          objId: plant._id,
+        });
+      }
+    });
+    return foundPlants
   }
 
-  static async addNewPlant(req,user_id) {
+
+ static async addNewPlant(req,user_id) {
       await plants.create({
         user_id:user_id,
         name: req.body.name,
@@ -29,21 +32,21 @@ class PlantService{
       });
    }
 
-   static deletePlant(plantId) {
+  static deletePlant(plantId) {
     let p = new Promise((resolve, reject) => {
-        let deletedPlant = plants.findByIdAndDelete(plantId,function (err, result) {
-            if (result) {
-              resolve(result);
-            } else {
-              reject("Failed");
-            }
-        });
-      
+      let deletedPlant = plants.findByIdAndDelete(plantId, function (err, result) {
+        if (result) {
+          resolve(result);
+        } else {
+          reject("Failed");
+        }
+      });
+
     });
     return p;
   }
 
-  static updatePlant(body,plantId) {
+  static updatePlant(body, plantId) {
     let plant = new Promise((resolve, reject) => {
       plants.findByIdAndUpdate(
         plantId,
@@ -66,10 +69,44 @@ class PlantService{
     });
     return plant
   }
+
+  static async AddSensorData(req) {
+    console.log(req.body)
+
+    let plant = await plants.findById(req.body.plantId)
+    console.log(plant)
+    let sensorData = new Promise((resolve, reject) => {
+      if (plant == null || plant==undefined){
+        reject ("couldn't find plant")
+      }
+      PlantSensorData.findOneAndUpdate(
+        { plant: plant },
+        {
+          $push: {
+            value: {
+              time: new Date(),
+              data: req.body.value
+            }
+          }
+        },{upsert:true},
+        function (error, result) {
+          if (error) {
+            console.log(error);
+            reject(error)
+          } else {
+            resolve(result) 
+          }
+        });
+    });
+    return sensorData
+    
+    
+
+  }
   
 }
-  
 
 
 
-module.exports={PlantService};
+
+module.exports = { PlantService };

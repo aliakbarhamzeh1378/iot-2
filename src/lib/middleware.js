@@ -1,5 +1,6 @@
 const { accounts } = require("../model/account");
 const bcrypt = require("bcrypt");
+let jwt = require("jsonwebtoken");
 
 class MiddleWare {
   static mailCheck(req, res, next) {
@@ -58,6 +59,41 @@ class MiddleWare {
         message: "login to your account",
       });
     } else next();
+  }
+
+
+  static checkFullPermission(req, res, next) {
+    let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
+    console.log(req.path)
+    
+    var decoded = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(decoded)
+    if(decoded.permisson !=null || decoded.permisson !=undefined){
+      if (decoded.permisson == "Admin"){
+        next()
+      }
+    }
+    return res.status(403).send({
+      status: "access denid",
+      message: "You dont have permission to this url",
+    });
+
+  }
+  static checkReadPermission(req, res, next) {
+    let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
+    console.log(req.path)
+    var decoded = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(decoded)
+    if(decoded.permisson !=null || decoded.permisson !=undefined){
+      if (decoded.permisson == "User" || decoded.permisson == "Admin"){
+        next()
+      }
+    }
+    return res.status(403).send({
+      status: "access denid",
+      message: "You dont have permission to this url",
+    });
+
   }
 }
 

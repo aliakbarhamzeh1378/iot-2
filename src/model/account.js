@@ -21,6 +21,10 @@ const accountSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  permission:{
+    type:String,
+    default:"Admin"
+  }
 });
 
 const accounts = mongoose.model("accounts", accountSchema);
