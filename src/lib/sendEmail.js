@@ -14,7 +14,7 @@ function send_email(path,replacement,email,subject) {
     },
   });
 
-    fs.readFile( "src\\views\\"+path, { encoding: "utf-8" }, (err, html) => {
+    fs.readFile( "./src/views/"+path, { encoding: "utf-8" }, (err, html) => {
       if (err) {
         throw err;
       } else {

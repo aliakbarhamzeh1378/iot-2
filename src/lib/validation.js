@@ -3,7 +3,7 @@ class Validation{
     static async existToDB(email) {
         let user=await accounts.findOne({ email:email })
         if(user){
-            return user
+            return true
         }
         else{
             return false
