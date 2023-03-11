@@ -1,5 +1,9 @@
 const { PlantService } = require("../../services/plantService");
 const { plants } = require("../../model/plant");
+const {Token}=require("../../lib/token");
+const { accounts } = require("../../model/account");
+let token=new Token();
+
 module.exports = {
 
   delete : async function(req,res){
@@ -71,38 +75,43 @@ module.exports = {
       }
     });
   },
-
-  createNewPlant: async (req, res, next) => {
-    if(req.file == undefined){
+ createNewPlant : async function(req,res){
+    if(req.file==undefined){
       return res.status(406).send({
         status: "error",
         message: "image is empty",
         data: {},
       });
     }
-    const plantName = req.body.name;
-    if ((await plants.findOne({ name: plantName })) == null) {
-      try {
-        PlantService.addNewPlant(req);
-        res.status(200).send({
-          status: "ok",
-          message: "your plant is created",
-          data: {},
-        });
-      } catch {
-        res.status(500).send({
+    if ((await plants.findOne({ name: req.body.name })) == null) {
+      let user_email=token.verifyToken(req.headers["authorization"]).then(async (usrToken)=>{
+        let user=await accounts.findOne({email:usrToken.email});
+        try {
+          PlantService.addNewPlant(req,user._id);
+          return res.status(200).send({
+            status: "ok",
+            message: "your new plant created",
+            data: {},
+          });
+        } catch {
+          res.status(408).send({
+            status: "error",
+            message: "saving new plant failed",
+            data: {},
+          });
+        }
+        return user._id
+      }).catch((err)=>{
+        throw err
+      })
+      
+    }else {
+        res.status(406).send({
           status: "error",
-          message: "having problem to save new plant",
+          message: "this plant exists",
           data: {},
-        });
+        })
       }
-    } else {
-      res.status(201).send({
-        status: "error",
-        message: "this plant exists",
-        data: {},
-      });
-    }
   },
   AddSensorData : async function(req,res){
     PlantService.AddSensorData(req)

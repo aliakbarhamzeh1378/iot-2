@@ -19,16 +19,18 @@ class PlantService {
     return foundPlants
   }
 
-  static async addNewPlant(req) {
-    await plants.create({
-      name: req.body.name,
-      image: req.file.path,
-      temperature: req.body.temperature,
-      light: req.body.light,
-      moisture: req.body.moisture,
-      explanation: req.body.explanation,
-    });
-  }
+
+ static async addNewPlant(req,user_id) {
+      await plants.create({
+        user_id:user_id,
+        name: req.body.name,
+        image: req.file.path,    
+        temperature: req.body.temperature,
+        light: req.body.light,
+        moisture: req.body.moisture,
+        explanation: req.body.explanation,
+      });
+   }
 
   static deletePlant(plantId) {
     let p = new Promise((resolve, reject) => {

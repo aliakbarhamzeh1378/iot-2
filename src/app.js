@@ -18,7 +18,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use("/accounts",authRouter);
-app.use("/re_plants",plantRouter);
+app.use("/plants",plantRouter);
+
 
 
 const start=()=>{
