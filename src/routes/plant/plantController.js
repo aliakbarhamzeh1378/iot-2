@@ -104,4 +104,20 @@ module.exports = {
       });
     }
   },
+  AddSensorData : async function(req,res){
+    PlantService.AddSensorData(req)
+    .then((message) => {
+        res.status(201).send({
+        status: "ok",
+        message: "add data successful",
+        data: {},
+        });
+    }).catch((message) => {
+        res.status(401).send({
+        status: "error",
+        message: "there isn't any plant with this id",
+        data: {},
+        });
+    });
+},
 };
