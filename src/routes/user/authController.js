@@ -1,4 +1,4 @@
-const { authService } = require("../../services/authService");
+const { AuthService } = require("../../services/authService");
 const { Token } = require("../../lib/token");
 const token = new Token();
 const { accounts } = require("../../model/account");
@@ -9,48 +9,49 @@ const { hashs } = require("../../model/hash");
 
 module.exports = {
 
-  verifyEmail : async function(req , res ){
+  registerUser : async function(req , res ){
     let pass = req.body.password
     let email=req.body.email
-    let hashed = await authService.hashPassword(pass).toString();
-    let exist=Validation.existToDB(email);
-    if(exist){
+    let existing = await Validation.existToDB(email);
+    if(existing==true){
       res.status(406).send({
-        status: "error",
-        message:
-          "there is an account with this email ,try again",
-        data: {}
-      });
+        status : "error",
+        message : "There is an account with this email",
+        data : {}
+      })
+    }else{
+      let hashed = await AuthService.hashPassword(pass)
+      AuthService.addNewPerson(req.body , hashed);
+      let userToken = token.generateToken({email:email});
+      userToken.then((token)=>{
+      send_email(
+          "sendLink.html",
+          (replacement = {
+            name: req.body.fullname,
+            link: `https://test.com/accounts/verify?token=${token}`,
+          }),
+          req.body.email,
+          "Verify your account"
+        );
+        res.status(201).send({
+          status: "Ok",
+          message:
+            "please verify your account by follow the link that sent to your email address",
+          data: {}
+        });
+      })
     }
-    authService.addNewPerson(req.body , hashed);
-    let usrToken = token.generateToken({email:email});
-    usrToken.then((token)=>{
-    send_email(
-        "sendLink.html",
-        (replacement = {
-          name: req.body.fullname,
-          link: `https://test.com/accounts/verify?token=${token}`,
-        }),
-        req.body.email,
-        "Verify your account"
-      );
-      res.status(201).send({
-        status: "Ok",
-        message:
-          "please verify your account by follow the link that sent to your email address",
-        data: {}
-      });
-    })
-
   },
 
   loginUser: async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    let p = authService.loginCheck(email, password);
-    p.then((message) => {
+    let p = AuthService.loginCheck(email, password);
+    p.then(async(message) => {
       if (message == 200) {
-        let userToken = token.generateToken({ email: email });
+        let userToken = await token.generateToken({ email: email }).then((data)=>{
+          return data;
+        }).catch((error)=>{throw error});
         res.status(200).send({
           status: "Ok",
           message: "welcome to your page",
@@ -79,7 +80,7 @@ module.exports = {
     const user_token = req.query.token;
     let p = token.verifyToken(user_token);
     p.then(async (message) => {
-      authService.find_Update(message.email, { status: "active" });
+      AuthService.find_Update(message.email, { status: "active" });
       res.status(200).send({
         //load verify.ejs
         status: "Ok",
@@ -95,33 +96,37 @@ module.exports = {
     });
   },
 
-    updatePass : ((req,res)=>{
-      console.log("hello")
-      resetService.findAccount(req.body.password , req.body.token)
-      .then((message)=>{
-          res.status(200).send({
-              status: "Ok",
-              message: "your password was reset successfully",
-              data: {},
-            });
-          })
+    resetPass : async (req,res)=>{
+      let hash=await AuthService.hashPassword(req.body.password);
+      let p=token.verifyToken(req.body.token);
+      p.then(async(message)=>{
+        AuthService.find_Update(message.email,{password:hash})
+      res.status(200).send({
+          status: "Ok",
+          message: "your password was reset successfully",
+          data: {},
+        })
+      })
       .catch((message) => {
           res.status(406).send({
               status: "error",
               message: "the token was not correct or expired",
               data: {},
           });
-      });
-  }),
+          console.log(message)
 
-  forgetPassword: async (req, res, next) => {
+      });
+  },
+
+
+
+    forgetPassword: async (req, res, next) => {
     const email = req.body.email;
     let user = await Validation.existToDB(email);
-    // console.log(user);
-    if (user) {
-      let randomHash = await authService.hashPassword("\\w+");
-      authService.deleteHash(email);
-      authService.addHash(email, randomHash);
+    if (user==true) {
+      let randomHash = await AuthService.hashPassword("\\w+")
+      AuthService.deleteHash(email);
+      AuthService.addHash(email, randomHash);
       send_email(
         "sendLink.html",
         (replacement = {
@@ -147,15 +152,15 @@ module.exports = {
 
   editProfile: async (req, res, next) => {
     let user_token = req.headers["authorization"];
-    let decodedToken = token.verifyToken(user_token);
-    decodedToken
+    let decodedToken = token.verifyToken(user_token)
       .then(async (message) => {
+        console.log(message)
         let hashPass =
           req.body.password.length < 8
             ? message.password
-            : await authService.hashPassword(req.body.password);
+            : await AuthService.hashPassword(req.body.password);
         let fullname = null ? message.fullname :req.body.fullname ;
-        authService.find_Update(message.email, {
+        AuthService.find_Update(message.email, {
           fullname: fullname,
           password: hashPass,
         });

@@ -1,14 +1,14 @@
 let jwt = require("jsonwebtoken");
-let bcrypt = require("bcrypt");
-let { Validation } = require("../lib/validation");
-let { Token } = require("../lib/token");
-let { accounts } = require("../model/account");
+let bcrypt  =require("bcrypt");
+const { accounts } = require("../model/account");
+let {Validation} = require("../lib/validation");
+let {Token} = require("../lib/token");
 const mongoose = require("mongoose");
 const { hashs } = require("../model/hash");
 mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
 const token = new Token();
 
-class authService {
+class AuthService {
   static addNewPerson(body, password) {
     return new Promise((resolve, reject) => {
       let newCreate = new accounts({
@@ -22,25 +22,19 @@ class authService {
       } else {
         reject(false)
       }
-    })
-
+    });
   };
 
-
-  async findAccount(password, token) {
-    let hash = await Validation.hashPassword(password);
-    return new Promise(async (resolve, reject) => {
-      let p = new Token().verifyToken(token);
-      let reset = await accounts.findOneAndUpdate(
-        { email: token },
-        { password: hash }
-      );
-      if (reset) {
-        resolve(true)
-      } else {
-        reject(false)
-      }
-    })
+  static hashPassword(password) {
+    try{
+      let newPass = password.toString();
+      let salt = parseInt(bcrypt.genSalt(10));
+      let hash = bcrypt.hash(newPass, salt);
+      return hash
+    }
+   catch(e){
+    throw e
+   }
   };
 
 
@@ -48,21 +42,21 @@ class authService {
     await accounts.findOneAndUpdate({ email: email }, jsonUpdate);
   }
 
-  static async loginCheck(email, password) {        //login check
+  static async loginCheck(email, password) {       
     return new Promise(async (resolve, reject) => {
       let user = await accounts.findOne({ email: email });
       if (user) {
         const passCheck = await bcrypt.compare(password, user.password);
-        if (passCheck) {
+        if (passCheck){
           if (user.status == "active") {
             resolve(200); //account is active
           } else {
             resolve(403); //account is deactivated
           }
-        } else {
+        }else{
           resolve("password is wrong");
         }
-      } else {
+      }else{
         resolve("your email is wrong");
       }
     });
@@ -76,32 +70,19 @@ class authService {
     });
   }
 
-  static deleteHash(email) {
-    hashs.findOne({ email: email }, async (user, err) => {
-      if (user) {
+  static async deleteHash(email) {
+    let findEmail = hashs.findOne({ email: email });
+      if (findEmail==true) {
         await hashs.deleteOne({ email: email });
       }
-    });
-  }
+    };
 
 
 
-  static hashPassword(password) {
-    return new Promise((resolve, reject) => {
-      let newPass = password.toString();
-      let salt = parseInt(bcrypt.genSalt(10));
-      let hash = bcrypt.hash(newPass, salt);
-      if (hash) {
-        resolve(hash)
-      } else {
-        reject("failed")
-      }
-    })
-  };
 
   static checkExpiration(expTime) {
     return Date.now() - expTime < 86400000;
   }
 }
 
-module.exports = { authService };
+module.exports = { AuthService };
