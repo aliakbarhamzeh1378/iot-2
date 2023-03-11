@@ -13,7 +13,15 @@ module.exports = {
     let pass = req.body.password
     let email=req.body.email
     let hashed = await authService.hashPassword(pass).toString();
-    let exist=
+    let exist=Validation.existToDB(email);
+    if(exist){
+      res.status(406).send({
+        status: "error",
+        message:
+          "there is an account with this email ,try again",
+        data: {}
+      });
+    }
     authService.addNewPerson(req.body , hashed);
     let usrToken = token.generateToken({email:email});
     usrToken.then((token)=>{

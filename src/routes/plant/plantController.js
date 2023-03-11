@@ -11,14 +11,14 @@ module.exports = {
             data: {},
           });
         } catch {
-          res.status(500).send({
+          res.status(408).send({
             status: "error",
             message: "saving new plant failed",
             data: {},
           });
         }
     }else {
-        res.status(201).send({
+        res.status(406).send({
           status: "error",
           message: "this plant exists",
           data: {},
@@ -84,7 +84,7 @@ module.exports = {
         res.status(200).send({
           status: "ok",
           message: "plant found",
-          data: {},
+          data: result,
         });
       } else {
         res.status(404).send({

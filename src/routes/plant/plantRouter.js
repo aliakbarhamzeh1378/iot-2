@@ -11,17 +11,13 @@ router.get("/lists/:plantId", plantController.findPlantById);
 
 router.post("/new", upload.single("image"), plantController.createNewPlant);
 
-router.post(
-    "/new",
-    plantController.createNewPlant
-);
 
 router.post(
     "/remove/:id",
     plantController.delete
 );
 
-router.post(
+router.put(
     "/update/:id",
     plantController.update
 );
