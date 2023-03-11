@@ -22,25 +22,19 @@ class AuthService {
       } else {
         reject(false)
       }
-    })
-
+    });
   };
 
-
-  async findAccount(password, token) {
-    let hash = await Validation.hashPassword(password);
-    return new Promise(async (resolve, reject) => {
-      let p = new Token().verifyToken(token);
-      let reset = await accounts.findOneAndUpdate(
-        { email: token },
-        { password: hash }
-      );
-      if (reset) {
-        resolve(true)
-      } else {
-        reject(false)
-      }
-    })
+  static hashPassword(password) {
+    try{
+      let newPass = password.toString();
+      let salt = parseInt(bcrypt.genSalt(10));
+      let hash = bcrypt.hash(newPass, salt);
+      return hash
+    }
+   catch(e){
+    throw e
+   }
   };
 
 
@@ -85,18 +79,6 @@ class AuthService {
 
 
 
-  static hashPassword(password) {
-    return new Promise((resolve, reject) => {
-      let newPass = password.toString();
-      let salt = parseInt(bcrypt.genSalt(10));
-      let hash = bcrypt.hash(newPass, salt);
-      if (hash) {
-        resolve(hash)
-      } else {
-        reject("failed")
-      }
-    })
-  };
 
   static checkExpiration(expTime) {
     return Date.now() - expTime < 86400000;

@@ -28,7 +28,7 @@ router.post(
 
 router.post(
   "/reset-password",
-  authController.updatePass
+  authController.resetPass
 ); 
 
 router.post(

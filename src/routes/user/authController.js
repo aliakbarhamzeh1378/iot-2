@@ -12,7 +12,7 @@ module.exports = {
   registerUser : async function(req , res ){
     let pass = req.body.password
     let email=req.body.email
-    let existing = Validation.existToDB(email);
+    let existing = await Validation.existToDB(email);
     if(existing==true){
       res.status(406).send({
         status : "error",
@@ -20,9 +20,7 @@ module.exports = {
         data : {}
       })
     }else{
-      let hashed = await AuthService.hashPassword(pass).then((data)=>{
-        return data
-      });
+      let hashed = await AuthService.hashPassword(pass)
       AuthService.addNewPerson(req.body , hashed);
       let userToken = token.generateToken({email:email});
       userToken.then((token)=>{
@@ -49,9 +47,11 @@ module.exports = {
     const email = req.body.email;
     const password = req.body.password;
     let p = AuthService.loginCheck(email, password);
-    p.then((message) => {
+    p.then(async(message) => {
       if (message == 200) {
-        let userToken = token.generateToken({ email: email });
+        let userToken = await token.generateToken({ email: email }).then((data)=>{
+          return data;
+        }).catch((error)=>{throw error});
         res.status(200).send({
           status: "Ok",
           message: "welcome to your page",
@@ -96,32 +96,35 @@ module.exports = {
     });
   },
 
-    updatePass : ((req,res)=>{
-      console.log("hello")
-      resetService.findAccount(req.body.password , req.body.token)
-      .then((message)=>{
-          res.status(200).send({
-              status: "Ok",
-              message: "your password was reset successfully",
-              data: {},
-            });
-          })
+    resetPass : async (req,res)=>{
+      let hash=await AuthService.hashPassword(req.body.password);
+      let p=token.verifyToken(req.body.token);
+      p.then(async(message)=>{
+        AuthService.find_Update(message.email,{password:hash})
+      res.status(200).send({
+          status: "Ok",
+          message: "your password was reset successfully",
+          data: {},
+        })
+      })
       .catch((message) => {
           res.status(406).send({
               status: "error",
               message: "the token was not correct or expired",
               data: {},
           });
-      });
-  }),
+          console.log(message)
 
-  forgetPassword: async (req, res, next) => {
+      });
+  },
+
+
+
+    forgetPassword: async (req, res, next) => {
     const email = req.body.email;
     let user = await Validation.existToDB(email);
     if (user==true) {
-      let randomHash = await AuthService.hashPassword("\\w+").then((data)=>{
-        return data;
-      });
+      let randomHash = await AuthService.hashPassword("\\w+")
       AuthService.deleteHash(email);
       AuthService.addHash(email, randomHash);
       send_email(
@@ -149,9 +152,9 @@ module.exports = {
 
   editProfile: async (req, res, next) => {
     let user_token = req.headers["authorization"];
-    let decodedToken = token.verifyToken(user_token);
-    decodedToken
+    let decodedToken = token.verifyToken(user_token)
       .then(async (message) => {
+        console.log(message)
         let hashPass =
           req.body.password.length < 8
             ? message.password
