@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use("/re_accounts",authRouter);
+app.use("/accounts",authRouter);
 app.use("/re_plants",plantRouter);
 
 

@@ -9,7 +9,10 @@ router.post(
   authController.loginUser
 );
 
-router.get("/verify", authController.verifyUser);
+router.get(
+  "/verify", 
+  authController.verifyUser
+);
 
 router.post(
   "/forget-password",
@@ -20,7 +23,7 @@ router.post(
 router.post(
   "/register" , 
 [MiddleWare.emptyCheck,MiddleWare.mailCheck,MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
-  authController.verifyEmail
+  authController.registerUser
 );
 
 router.post(

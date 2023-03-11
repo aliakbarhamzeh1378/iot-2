@@ -8,7 +8,7 @@ const { hashs } = require("../model/hash");
 mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
 const token = new Token();
 
-class authService {
+class AuthService {
   static addNewPerson(body, password) {
     return new Promise((resolve, reject) => {
       let newCreate = new accounts({
@@ -48,21 +48,21 @@ class authService {
     await accounts.findOneAndUpdate({ email: email }, jsonUpdate);
   }
 
-  static async loginCheck(email, password) {        //login check
+  static async loginCheck(email, password) {       
     return new Promise(async (resolve, reject) => {
       let user = await accounts.findOne({ email: email });
       if (user) {
         const passCheck = await bcrypt.compare(password, user.password);
-        if (passCheck) {
+        if (passCheck){
           if (user.status == "active") {
             resolve(200); //account is active
           } else {
             resolve(403); //account is deactivated
           }
-        } else {
+        }else{
           resolve("password is wrong");
         }
-      } else {
+      }else{
         resolve("your email is wrong");
       }
     });
@@ -76,13 +76,12 @@ class authService {
     });
   }
 
-  static deleteHash(email) {
-    hashs.findOne({ email: email }, async (user, err) => {
-      if (user) {
+  static async deleteHash(email) {
+    let findEmail = hashs.findOne({ email: email });
+      if (findEmail==true) {
         await hashs.deleteOne({ email: email });
       }
-    });
-  }
+    };
 
 
 
@@ -104,4 +103,4 @@ class authService {
   }
 }
 
-module.exports = { authService };
+module.exports = { AuthService };
