@@ -65,6 +65,7 @@ class MiddleWare {
   static checkFullPermission(req, res, next) {
     let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
     console.log(req.path)
+    
     var decoded = jwt.verify(token, process.env.SECRET_KEY);
     console.log(decoded)
     if(decoded.permisson !=null || decoded.permisson !=undefined){

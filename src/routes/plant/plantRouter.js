@@ -18,7 +18,6 @@ router.post("/new", upload.single("image"),
     [MiddleWare.checkFullPermission],
     plantController.createNewPlant);
 
-
 router.post(
     "/remove/:id",
     [MiddleWare.checkFullPermission],
@@ -30,4 +29,5 @@ router.put(
     [MiddleWare.checkFullPermission],
     plantController.update
 );
+router.post("/addSensorData/", plantController.AddSensorData)
 module.exports = router;
