@@ -17,8 +17,9 @@ class PlantService{
       return foundPlants
   }
 
-  static async addNewPlant(req) {
+  static async addNewPlant(req,user_id) {
       await plants.create({
+        user_id:user_id,
         name: req.body.name,
         image: req.file.path,    
         temperature: req.body.temperature,
