@@ -1,30 +1,6 @@
 const { PlantService } = require("../../services/plantService");
 const { plants } = require("../../model/plant");
 module.exports = {
-  createNewPlant : async function(req,res){
-    if ((await plants.findOne({ name: req.body.name })) == null) {
-        try {
-          PlantService.addNewPlant(req);
-          res.status(200).send({
-            status: "ok",
-            message: "your new plant created",
-            data: {},
-          });
-        } catch {
-          res.status(408).send({
-            status: "error",
-            message: "saving new plant failed",
-            data: {},
-          });
-        }
-    }else {
-        res.status(406).send({
-          status: "error",
-          message: "this plant exists",
-          data: {},
-        })
-      }
-  },
 
   delete : async function(req,res){
       PlantService.deletePlant(req.params.id)
@@ -97,6 +73,13 @@ module.exports = {
   },
 
   createNewPlant: async (req, res, next) => {
+    if(req.file == undefined){
+      return res.status(406).send({
+        status: "error",
+        message: "image is empty",
+        data: {},
+      });
+    }
     const plantName = req.body.name;
     if ((await plants.findOne({ name: plantName })) == null) {
       try {

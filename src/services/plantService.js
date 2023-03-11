@@ -6,6 +6,7 @@ class PlantService{
     let allPlants=await plants.find({});
     const foundPlants = [];
     allPlants.forEach((plant) => {
+      console.log(plant)
         if (plant.name.match(search)) {
           foundPlants.push({
             name: plant.name,
