@@ -19,7 +19,7 @@ router.post(
 
 router.post(
   "/register" , 
-
+[MiddleWare.emptyCheck,MiddleWare.mailCheck,MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
   authController.verifyEmail
 );
 

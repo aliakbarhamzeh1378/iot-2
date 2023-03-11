@@ -8,40 +8,40 @@ const { hashs } = require("../model/hash");
 mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
 const token = new Token();
 
-class AuthService{
-    static addNewPerson(body,password){
-        return new Promise((resolve , reject)=>{
-            let newCreate = new accounts({
-                fullname: body.fullname,
-                email: body.email,
-                password: password,
-                status: "active",
-            });
-            if(newCreate.save()){
-                resolve(true)
-            }else{
-                reject(false)
-            }
-        })
+class authService {
+  static addNewPerson(body, password) {
+    return new Promise((resolve, reject) => {
+      let newCreate = new accounts({
+        fullname: body.fullname,
+        email: body.email,
+        password: password,
+        status: "active",
+      });
+      if (newCreate.save()) {
+        resolve(true)
+      } else {
+        reject(false)
+      }
+    })
 
-    };
+  };
 
 
-    async findAccount(password,token){
-        let hash = await Validation.hashPassword(password);
-        return new Promise(async(resolve , reject)=>{
-            let p = new Token().verifyToken(token);   
-            let reset = await accounts.findOneAndUpdate(
-                { email: token },
-                { password: hash }
-            );
-            if(reset){
-                resolve(true)
-            }else{
-                reject(false)
-            }
-        })
-    };
+  async findAccount(password, token) {
+    let hash = await Validation.hashPassword(password);
+    return new Promise(async (resolve, reject) => {
+      let p = new Token().verifyToken(token);
+      let reset = await accounts.findOneAndUpdate(
+        { email: token },
+        { password: hash }
+      );
+      if (reset) {
+        resolve(true)
+      } else {
+        reject(false)
+      }
+    })
+  };
 
 
   static async find_Update(email, jsonUpdate) {
@@ -84,34 +84,24 @@ class AuthService{
     });
   }
 
+
+
   static hashPassword(password) {
-    try {
+    return new Promise((resolve, reject) => {
       let newPass = password.toString();
       let salt = parseInt(bcrypt.genSalt(10));
       let hash = bcrypt.hash(newPass, salt);
-      return hash;
-    } catch (e) {
-      console.log(e);
-      // throw error;
-    }
+      if (hash) {
+        resolve(hash)
+      } else {
+        reject("failed")
+      }
+    })
   };
-
-  //   static hashPassword(password) {
-  //     return new Promise((resolve , reject)=>{
-  //         let newPass = password.toString();
-  //         let salt = parseInt(bcrypt.genSalt(10));
-  //         let hash = bcrypt.hash(newPass, salt);
-  //         if(hash){
-  //             resolve(hash)
-  //         }else{
-  //             reject("failed")
-  //         }
-  //     })
-  // };
 
   static checkExpiration(expTime) {
     return Date.now() - expTime < 86400000;
   }
 }
 
-module.exports = { AuthService };
+module.exports = { authService };
