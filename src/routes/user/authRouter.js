@@ -20,12 +20,12 @@ router.post(
 router.post(
   "/register" , 
 
-  registerController.verifyEmail
+  authController.verifyEmail
 );
 
 router.post(
   "/reset-password",
-  resetController.updatePass
+  authController.updatePass
 ); 
 
 router.post(
