@@ -2,8 +2,12 @@ const mongoose=require("mongoose");
 
 const masterSchema = new mongoose.Schema({
   user_id: mongoose.Types.ObjectId,
-  name: {
-    type:Number,
+  master_id: {
+    type:String ,
+    required:true,
+  },
+  name:{
+    type:String,
     required:true
   }
 });

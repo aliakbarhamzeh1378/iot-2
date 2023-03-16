@@ -15,7 +15,7 @@ class AuthService {
         fullname: body.fullname,
         email: body.email,
         password: password,
-        status: "active",
+        status: "deactive",
       });
       if (newCreate.save()) {
         resolve(true)

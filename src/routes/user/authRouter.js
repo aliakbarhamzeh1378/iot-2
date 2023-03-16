@@ -5,7 +5,7 @@ const { MiddleWare } = require("../../lib/middleware");
 
 router.post(
   "/auth",
-  [MiddleWare.emptyCheck, MiddleWare.mailCheck, MiddleWare.passwordCheck],
+  [MiddleWare.emptyCheck, MiddleWare.mailCheck],
   authController.loginUser
 );
 
