@@ -27,6 +27,18 @@ class Token {
     });
     return p;
   }
+
+
+  async userBasedOnToken(token){
+    return new Promise(async (resolve,reject)=>{
+      await this.verifyToken(token).then(async(decoded)=>{
+        resolve(await accounts.findOne({email:decoded.email}));
+  }).catch((err)=>{
+    reject(err)
+  })
+  })}
+    
+  
 }
 
 module.exports = { Token };

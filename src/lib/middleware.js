@@ -26,7 +26,7 @@ class MiddleWare {
           message: "fill all fields",
         });
       }
-      break;
+      continue;
     }
     if (!found) {
       next();

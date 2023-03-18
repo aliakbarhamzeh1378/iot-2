@@ -8,85 +8,120 @@ module.exports={
     addMaster:async(req,res)=>{
         let masterId=req.body.id;
         let user_token=req.headers["authorization"];
-        await token.verifyToken(user_token).then(async(decoded)=>{
-            let user=await accounts.findOne({email:decoded.email})
-            if(await master.findOne({master_id:masterId})==null){
-                await MasterService.createMaster(masterId,user.id,req.body.name)
-                return res.status(200).send({
-                    status:200,
+        if(await master.findOne({master_id:masterId})==null){
+            await token.userBasedOnToken(user_token).then(async(usr)=>{
+                // return usr
+            await MasterService.createMaster(masterId,usr.id,req.body.name).then((message)=>{
+                return res.status(201).send({
+                    status:"ok",
                     message:"your new master added",
                     data:{}
                 })
-            }
-            else{
+            }).catch((e)=>{
                 return res.status(409).send({
-                    status:409,
-                    message:"there is a master with this name",
+                    status:"error",
+                    message:"having problem to saving new master,try again later",
                     data:{}
                 })
-            }
-        }).catch((err)=>{
+            });
+        }).catch((e)=>{
             return res.status(401).send({
                 status:401,
                 message:"token has been expired.login to your page again ",
                 data:{}
-            })        }
-        )
+            })  
+        })
+    }
+        else{
+            return res.status(409).send({
+                status:"error",
+                message:"there is a master with this name",
+                data:{}
+            })
+        }
   
-    },
+    }
+,
 
     deleteMaster:async(req,res)=>{
         let masterId=req.params.id;
-            await MasterService.deleteMaster(masterId).then((message)=>{
+        let user_token=req.headers["authorization"];
+        await token.userBasedOnToken(user_token).then(async(usr)=>{
+            await MasterService.deleteMaster(masterId,usr.id).then((message)=>{
             return res.status(200).send({
-                status:200,
+                status:"ok",
                 message:"master is deleted",
                 data:{}
             })
         }).catch((message)=>{
             return res.status(404).send({
-                status:404,
-                message:"master not found",
+                status:"error",
+                message:"master with this user not found",
                 data:{}
             })
         })
+    }).catch((e)=>{
+        return res.status(401).send({
+            status:401,
+            message:"token has been expired.login to your page again ",
+            data:{}
+        })  
+    });
    
     },
 
 
-    updateMaster:(req,res)=>{
+    updateMaster:async (req,res)=>{
         let masterId=req.params.id;
         let name=req.body.name;
-        MasterService.updateMaster(masterId,name).then((message)=>{
+        let user_token=req.headers["authorization"];
+        let user=await token.userBasedOnToken(user_token).then((usr)=>{
+        MasterService.updateMaster(masterId,usr.id,name).then((message)=>{
             return res.status(200).send({
-                status:200,
+                status:"ok",
                 message:"your master is updated",
                 data:{}
             })
         }).catch((e)=>{
             return res.status(404).send({
-                status:200,
-                message:"your master is not found",
+                status:"error",
+                message:"master with this user not found",
                 data:{}
             })
         })
+    }).catch((e)=>{
+        return res.status(401).send({
+            status:401,
+            message:"token has been expired.login to your page again ",
+            data:{}
+        })  
+    });
     },
 
-    readMaster:(req,res)=>{
+    readMaster:async (req,res)=>{
         let masterId=req.params.id
-        MasterService.readMaster(masterId).then((master)=>{
-            return res.status(200).send({
-                status:200,
-                message:"find master",
-                data:{master}
+        let user_token=req.headers["authorization"];
+        let user=await token.userBasedOnToken(user_token).then((usr)=>{
+            MasterService.readMaster(masterId,usr.id).then((master)=>{
+                return res.status(200).send({
+                    status:"ok",
+                    message:"find master",
+                    data:{master}
+                })
+            }).catch((e)=>{
+                return res.status(404).send({
+                    status:"error",
+                    message:"master not found",
+                    data:{}
+                })
             })
-        }).catch((e)=>{
-            return res.status(404).send({
-                status:404,
-                message:"master not found",
-                data:{}
-            })
-        })
-    }
+     }).catch((e)=>{
+        return res.status(401).send({
+            status:401,
+            message:"token has been expired.login to your page again ",
+            data:{}
+        })  
+    });
 
     }
+}
