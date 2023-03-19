@@ -2,18 +2,25 @@ const mongoose = require("mongoose");
 const plant = require("./plant");
 
 const slaveSchema = new mongoose.Schema({
-    name : {
+    slaveId : {
         type : String,
-        required : true
+        required : true ,
+        unique : true
     },
-    plantId :{
-        type : Number , 
+    slaveName : {
+        type : String,
+        required : true ,
+    },
+    masterId : {
+        type : String,
+        required : true 
+    },
+    plant :{
+        type : mongoose.Types.ObjectId , 
         ref : "plant" ,
-        required : true
     },
     userId :{
-        type : mongoose.Schema.Types.ObjectId , 
-        required : true
+        type : mongoose.Types.ObjectId , 
     },
     tempSesor : {
         type : Number,
