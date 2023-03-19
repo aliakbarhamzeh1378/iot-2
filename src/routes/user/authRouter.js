@@ -31,7 +31,7 @@ router.post(
   authController.resetPass
 ); 
 
-router.post(
+router.put(
   "/edit-profile",
   [MiddleWare.existToken, MiddleWare.confirmPassCheck],
   authController.editProfile
