@@ -1,5 +1,6 @@
 const { accounts } = require("../model/account");
 const bcrypt = require("bcrypt");
+let jwt = require("jsonwebtoken");
 
 class MiddleWare {
   static mailCheck(req, res, next) {
@@ -7,7 +8,7 @@ class MiddleWare {
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     );
     if (!emailCheck.test(req.body.email)) {
-      res.status(401).send({
+      return res.status(401).send({
         status: "error",
         message: "the email address is wrong",
       });
@@ -20,12 +21,11 @@ class MiddleWare {
     for (let key in req.body) {
       if (req.body[key].length == 0) {
         found = true;
-        res.status(404).send({
+        return res.status(404).send({
           status: "error",
           message: "fill all fields",
         });
       }
-      break;
     }
     if (!found) {
       next();
@@ -34,7 +34,7 @@ class MiddleWare {
 
   static passwordCheck(req, res, next) {
     if (req.body.password.length < 8) {
-      res.status(406).send({
+      return res.status(406).send({
         status: "error",
         message: "the password is very short.it must be at least 8 characters",
       });
@@ -43,7 +43,7 @@ class MiddleWare {
 
   static confirmPassCheck(req, res, next) {
     if (req.body.password != req.body.confirmPassword) {
-      res.status(401).send({
+      return res.status(401).send({
         status: "error",
         message: "passwords that you entered do not matched",
       });
@@ -58,6 +58,41 @@ class MiddleWare {
         message: "login to your account",
       });
     } else next();
+  }
+
+
+  static checkFullPermission(req, res, next) {
+    let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
+    console.log(req.path)
+    
+    var decoded = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(decoded)
+    if(decoded.permisson !=null || decoded.permisson !=undefined){
+      if (decoded.permisson == "Admin"){
+        next()
+      }
+    }
+    return res.status(403).send({
+      status: "access denid",
+      message: "You dont have permission to this url",
+    });
+
+  }
+  static checkReadPermission(req, res, next) {
+    let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
+    console.log(req.path)
+    var decoded = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(decoded)
+    if(decoded.permisson !=null || decoded.permisson !=undefined){
+      if (decoded.permisson == "User" || decoded.permisson == "Admin"){
+        next()
+      }
+    }
+    return res.status(403).send({
+      status: "access denid",
+      message: "You dont have permission to this url",
+    });
+
   }
 }
 
