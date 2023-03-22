@@ -4,22 +4,27 @@ const accountSchema = new mongoose.Schema({
   fullname: {
     type: String,
     trim: true,
+    required : true
   },
   email: {
     type: String,
     trim: true,
+    required : true
   },
   password: {
     type: String,
     trim: true,
+    required : true
   },
   actions: {
     type: Array,
     trim: true,
+    required : true
   },
   status: {
     type: String,
     trim: true,
+    required : true
   },
   permission:{
     type:String,
