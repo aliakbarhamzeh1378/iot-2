@@ -17,7 +17,7 @@ const slaveSchema = new mongoose.Schema({
     },
     plant :{
         type : mongoose.Types.ObjectId , 
-        ref : "plant" ,
+        ref : "plants" ,
     },
     userId :{
         type : mongoose.Types.ObjectId , 

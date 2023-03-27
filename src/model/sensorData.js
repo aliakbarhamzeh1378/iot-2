@@ -17,7 +17,7 @@ const plantSensorDataSchema = new mongoose.Schema({
 
         }],
     plant: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'plants',
+        type: mongoose.Schema.Types.ObjectId, ref: 'slaves',
         required: true
     }
 });
