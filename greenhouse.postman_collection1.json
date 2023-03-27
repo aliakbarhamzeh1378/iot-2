@@ -1,285 +1,11 @@
 {
 	"info": {
-		"_postman_id": "b353c2b1-2d7c-40fb-b654-d8ecd9b34985",
-		"name": "greenhouse",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "c13d3ca4-784e-4731-b04a-19ea79a9ce89",
+		"name": "Green House",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23305167"
 	},
 	"item": [
-		{
-			"name": "master",
-			"item": [
-				{
-					"name": "newMaster",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTEyODMzNiwiZXhwIjoxNjc5MTI5MzM2fQ.e9bmFjsuchRfkAbfUarG1lr301LOuI8Rahp56SRcEDY",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\":\"bahar56gh\",\n    \"name\":\"potato\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/master/master",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"master",
-								"master"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteMaster",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjc4OTc5OTY3LCJleHAiOjE2Nzg5ODA5Njd9.TNF2LkmWUryArft0hAl-0rMHMdmWJUZvtoCg60iZdkA",
-								"type": "default"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/master/master/kjhgfer5634nm",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"master",
-								"master",
-								"kjhgfer5634nm"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "readMaster",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTEyODMzNiwiZXhwIjoxNjc5MTI5MzM2fQ.e9bmFjsuchRfkAbfUarG1lr301LOuI8Rahp56SRcEDY",
-								"type": "default"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/master/master/bahar56gh",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"master",
-								"master",
-								"bahar56gh"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateMaster",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTEyODI0NiwiZXhwIjoxNjc5MTI5MjQ2fQ._KQFh5mCb9vIP9D2L41r9VHIQ4QaCon0nWF20BE9E3U",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\":\"kitchen\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/master/master/jkfk56ass",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"master",
-								"master",
-								"jkfk56ass"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "plants",
-			"item": [
-				{
-					"name": "lists",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjc4OTUxNjA2LCJleHAiOjE2Nzg5NTI2MDZ9.sSdINYnMIwGmba6iExz0lTDQpfK57WiVXBes09_QGTo",
-								"type": "default"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/plants/lists/?search=bab",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"plants",
-								"lists",
-								""
-							],
-							"query": [
-								{
-									"key": "search",
-									"value": "bab"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "lists",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/plants/lists/640c47db537efa0cccf9106a",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"plants",
-								"lists",
-								"640c47db537efa0cccf9106a"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "new",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTI2MDM0OSwiZXhwIjoxNjc5MjYxMzQ5fQ.48bg_R60Uy-IYzs8xk_aeu11ls41Ojz1y_2IkuKAMq0",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "temperature",
-									"value": "3",
-									"type": "default"
-								},
-								{
-									"key": "light",
-									"value": "20",
-									"type": "default"
-								},
-								{
-									"key": "moisture",
-									"value": "12",
-									"type": "default"
-								},
-								{
-									"key": "explanation",
-									"value": "hamishe bahar",
-									"type": "default"
-								},
-								{
-									"key": "image",
-									"type": "file",
-									"src": []
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/plants/new",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"plants",
-								"new"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "remove",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTI2MDM0OSwiZXhwIjoxNjc5MjYxMzQ5fQ.48bg_R60Uy-IYzs8xk_aeu11ls41Ojz1y_2IkuKAMq0",
-								"type": "default"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/plants/remove/640c47db537efa0cccf9106a",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"plants",
-								"remove",
-								"640c47db537efa0cccf9106a"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/plants/update/640c47db537efa0cccf9106a",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"plants",
-								"update",
-								"640c47db537efa0cccf9106a"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
 		{
 			"name": "accounts",
 			"item": [
@@ -287,16 +13,10 @@
 					"name": "auth",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTEyNTA4MCwiZXhwIjoxNjc5MTI2MDgwfQ.nYOpM1avo5QYqkRYu33xH9DyLSTEqExh6V2zho-YYvg",
-								"type": "default"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"baharsogand@gmail.com\",\n    \"password\":\"bahar76456\"\n}",
+							"raw": "{\r\n    \"email\":\"rojanrahmani2002@gmail.com\",\r\n    \"password\":\"4545455464\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,10 +40,16 @@
 					"name": "register",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFuQHlhaG9vLmNvbSIsImlhdCI6MTY3MDY2MzM5OSwiZXhwIjoxNjcwNjcwNTk5fQ.75VKSNEzcxWxKAuCVYLrsSUFQ1sy0Ji-o-kRE8k1ilk",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"fullname\": \"bahar\",\n  \"email\": \"rojanrahmani2002@gmail.com\",\n  \"password\": \"fvgyt654g\",\n  \"confirmPassword\":\"fvgyt654g\"\n\n}",
+							"raw": "{\r\n    \"fullname\":\"rozhan\",\r\n    \"email\":\"rojanrahmani2002@yahoo.com\",\r\n    \"password\":\"4545455464\",\r\n    \"confirmPassword\":\"4545455464\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,17 +71,41 @@
 				},
 				{
 					"name": "verify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFuQHlhaG9vLmNvbSIsImlhdCI6MTY3MDY4OTY3MSwiZXhwIjoxNzU3MDg5NjcxfQ.LI4OSOQ4OmnR2BzFmS1tefvsG1rAhz3wp3PFj7GC57s",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/accounts/verify",
+							"raw": "{{baseUrl}}/accounts/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFBaG1hZGlAZ21haWwuY29tRURJVCxSRU1PVkUsQURELFJFQUQiLCJpYXQiOjE2NzI3NDA1OTAsImV4cCI6MTY3Mjg0MDU5MH0.LGZGTzjwOBnt-ZqeRI-KGrFnxUm9gokWZwNPfHzRZrM",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"accounts",
 								"verify"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFBaG1hZGlAZ21haWwuY29tRURJVCxSRU1PVkUsQURELFJFQUQiLCJpYXQiOjE2NzI3NDA1OTAsImV4cCI6MTY3Mjg0MDU5MH0.LGZGTzjwOBnt-ZqeRI-KGrFnxUm9gokWZwNPfHzRZrM"
+								}
 							]
 						}
 					},
@@ -367,15 +117,15 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "",
+								"key": "Authorization",
 								"value": "",
-								"type": "default",
+								"type": "text",
 								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"\"\n}",
+							"raw": "{\r\n    \"email\":\"rojanrahmani2002@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -397,20 +147,18 @@
 				},
 				{
 					"name": "reset-password",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"password\":\"\",\n    \"confirmPassword\":\"\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}/accounts/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTI1ODk3NCwiZXhwIjoxNjc5MjU5OTc0fQ.zu79dCz3_zFT3vXAAu0AOM-lFer3uoY6M_alZQlv1_4",
+							"raw": "{{baseUrl}}/accounts/reset-password?hash=$2b$10$oR4yPt5QS/1DoPp5XhdTf.fRCwC/IiOJFdiBZAplHl6WvTTQg.xpS",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -420,8 +168,42 @@
 							],
 							"query": [
 								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyc29nYW5kQGdtYWlsLmNvbSIsImlhdCI6MTY3OTI1ODk3NCwiZXhwIjoxNjc5MjU5OTc0fQ.zu79dCz3_zFT3vXAAu0AOM-lFer3uoY6M_alZQlv1_4"
+									"key": "hash",
+									"value": "$2b$10$oR4yPt5QS/1DoPp5XhdTf.fRCwC/IiOJFdiBZAplHl6WvTTQg.xpS"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"dfghfhjfg54\",\r\n    \"confirmPassword\":\"dfghfhjfg54\",\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjcxNTU0MTk0LCJleHAiOjE2NzE2NTQxOTR9.6_AisOomXZnVx9zCT8xeRXq2ag6rvoklI1Se5ocim3k\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
@@ -441,6 +223,462 @@
 							"path": [
 								"accounts",
 								"edit-profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "plants",
+			"item": [
+				{
+					"name": "lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/plants/lists?search=si",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "si"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lists",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "new",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "name",
+									"value": "banafshe",
+									"type": "text"
+								},
+								{
+									"key": "temperature",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "light",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "moisture",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "explanation",
+									"value": "hasase",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/plants/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/plants/remove/63a70a9efd255dba78483665",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"remove",
+								"63a70a9efd255dba78483665"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/plants/update/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "plant-information",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"plantId\" : \"gjk\",\r\n    \"information\" : {\r\n        \"name\" : \"roz\",\r\n        \"dama\" : \"20\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/plants/plant-information",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"plant-information"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
+				{
+					"name": "edit-profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAeWFob28uY29tIiwiaWF0IjoxNjcyNDk0MDIzLCJleHAiOjE2NzI1OTQwMjN9.qkp58gorPltRUHCCT_RxDltg7UDO3oLfphv1bqMoA34",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\":\"narges\",\r\n    \"email\":\"rojanrahmani2002@yahoo.com\",\r\n    \"password\":\"rozhanweew\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/profile/edit-profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"profile",
+								"edit-profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "re_accounts",
+			"item": [
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"MARYAM234@yahoo.com\",\r\n    \"password\":\"rozhan_rozhin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/verify?token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik1BUllBTTIzNEB5YWhvby5jb20iLCJpYXQiOjE2NzUyNjI3NDksImV4cCI6MTY3NTM2Mjc0OX0.bKZPh8amgRHMRXbqDx8nmxVXozM-REkfe69cOn6tc_E",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": " eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ik1BUllBTTIzNEB5YWhvby5jb20iLCJpYXQiOjE2NzUyNjI3NDksImV4cCI6MTY3NTM2Mjc0OX0.bKZPh8amgRHMRXbqDx8nmxVXozM-REkfe69cOn6tc_E"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forget-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/forget-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit-profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re-accounts/edit-profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re-accounts",
+								"edit-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullname\":\"rozhan\",\n    \"email\":\"rojanrahmani2002@yahoo.com\",\n    \"password\":\"4545455464\",\n    \"confirmPassword\":\"4545455464\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "re_plants",
+			"item": [
+				{
+					"name": "lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re_plants/lists",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_plants",
+								"lists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"baboone\",\n        \"image\": \"newfile.jpg\",    \n        \"temperature\":12,\n        \"light\": 11,\n        \"moisture\": 5,\n        \"explanation\":\"khoshgel\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/re_accounts/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_accounts",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lists",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re_plants/remove",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_plants",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/re_plants/update/?id=640c4c77f2e9ecc4fcbc6d0f",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"re_plants",
+								"update",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "640c4c77f2e9ecc4fcbc6d0f"
+								}
 							]
 						}
 					},
