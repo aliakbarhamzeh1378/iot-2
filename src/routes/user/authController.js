@@ -190,7 +190,7 @@ module.exports = {
     })
   },
 
-  googleFail:(req,res,next)=>{
+  googleFailure:(req,res,next)=>{
     res.status(404).send({
       status:"error",
       message:"something went wrong...",

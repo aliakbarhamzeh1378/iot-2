@@ -43,14 +43,15 @@ router.get('/auth/google',
   passport.authenticate('google', { scope : ['profile', 'email'] }));
  
 
-router.get('/auth/google/callback', 
+router.get('/google/callback', 
   passport.authenticate('google', { 
+    successRedirect:"/protected",
     failureRedirect: '/auth/failure',
-    successRedirect:"/protected"
+
     
   }))
 
-router.get("/auth/failure",authController.googleFail)
+router.get("/auth/failure",authController.googleFailure)
 
 router.get("/protected",MiddleWare.isLoggedIn,authController.googleLogin)
 

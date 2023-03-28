@@ -20,13 +20,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use("/accounts",authRouter);
+app.use("/",authRouter);
 app.use("/plants",plantRouter);
 
 
 app.use(session({
-    resave: false,
-    saveUninitialized: true,
+    // resave: false,
+    // saveUninitialized: true,
     secret:process.env.SECRET_SESSION 
   }));
 app.use(passport.initialize());
