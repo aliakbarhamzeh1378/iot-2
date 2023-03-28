@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const authController = require("./authController");
 const { MiddleWare } = require("../../lib/middleware");
-const passport=require("passport")
+const passport=require("passport");
+require("./googleAuth")
+
 router.post(
   "/auth",
   [MiddleWare.emptyCheck, MiddleWare.mailCheck, MiddleWare.passwordCheck],
@@ -48,9 +50,7 @@ router.get('/auth/google/callback',
     
   }))
 
-router.get("/auth/failure",(req,res)=>{
-  res.send("something went wrong...")
-})
+router.get("/auth/failure",authController.googleFail)
 
 router.get("/protected",MiddleWare.isLoggedIn,authController.googleLogin)
 
