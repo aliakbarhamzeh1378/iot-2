@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("./authController");
 const { MiddleWare } = require("../../lib/middleware");
-
+const passport=require("passport")
 router.post(
   "/auth",
   [MiddleWare.emptyCheck, MiddleWare.mailCheck, MiddleWare.passwordCheck],
@@ -37,6 +37,23 @@ router.post(
   authController.editProfile
 );
 
+router.get('/auth/google', 
+  passport.authenticate('google', { scope : ['profile', 'email'] }));
+ 
 
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { 
+    failureRedirect: '/auth/failure',
+    successRedirect:"/protected"
+    
+  }))
+
+router.get("/auth/failure",(req,res)=>{
+  res.send("something went wrong...")
+})
+
+router.get("/protected",MiddleWare.isLoggedIn,authController.googleLogin)
+
+router.get("/logout",authController.googleLogout)
 
 module.exports = router;
