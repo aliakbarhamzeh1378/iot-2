@@ -5,7 +5,7 @@ const { MiddleWare } = require("../../lib/middleware");
 
 router.post(
   "/auth",
-  [MiddleWare.emptyCheck, MiddleWare.mailCheck, MiddleWare.passwordCheck],
+  [MiddleWare.emptyCheck, MiddleWare.mailCheck],
   authController.loginUser
 );
 
@@ -31,7 +31,7 @@ router.post(
   authController.resetPass
 ); 
 
-router.post(
+router.put(
   "/edit-profile",
   [MiddleWare.existToken, MiddleWare.confirmPassCheck],
   authController.editProfile
