@@ -186,8 +186,6 @@ module.exports = {
     let DB = [];
     try {
       if (req.body.credential) {
-        console.log("fdhdtjh")
-
         const verificationResponse = await token.verifyGoogleToken(req.body.credential);
         console.log(verificationResponse)
 
