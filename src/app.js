@@ -6,9 +6,9 @@ const authRouter=require("./routes/user/authRouter");
 const plantRouter=require("./routes/plant/plantRouter");
 const path = require("path");
 const cors=require("cors");
-const session=require("express-session");
-const passport = require('passport');
 
+
+const jwt = require("jsonwebtoken");
 
 require('dotenv').config();
 app.use(cors());
@@ -20,17 +20,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use("/",authRouter);
+app.use("/accounts",authRouter);
 app.use("/plants",plantRouter);
 
 
-app.use(session({
-    // resave: false,
-    // saveUninitialized: true,
-    secret:process.env.SECRET_SESSION 
-  }));
-app.use(passport.initialize());
-app.use(passport.session());
+
+
 
 
 const start=()=>{

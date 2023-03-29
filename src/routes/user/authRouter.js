@@ -39,22 +39,7 @@ router.post(
   authController.editProfile
 );
 
-router.get('/auth/google', 
-  passport.authenticate('google', { scope : ['profile', 'email'] }));
- 
+router.post("/google-signup",authController.googleVerify)
 
-router.get('/google/callback', 
-  passport.authenticate('google', { 
-    successRedirect:"/protected",
-    failureRedirect: '/auth/failure',
-
-    
-  }))
-
-router.get("/auth/failure",authController.googleFailure)
-
-router.get("/protected",MiddleWare.isLoggedIn,authController.googleLogin)
-
-router.get("/logout",authController.googleLogout)
 
 module.exports = router;

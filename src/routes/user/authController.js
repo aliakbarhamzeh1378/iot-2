@@ -181,30 +181,44 @@ module.exports = {
       });
   },
 
-  googleLogin:(req,res,next)=>{
-    let userName=req.user.displayName;
-    res.status(200).send({
-      status:"ok",
-      message:`Hello ${userName} \n successful login`,
-      data:{},
-    })
-  },
 
-  googleFailure:(req,res,next)=>{
-    res.status(404).send({
-      status:"error",
-      message:"something went wrong...",
-      data:{}
-      })
-  },
+  googleVerify:async (req, res) => {
+    let DB = [];
+    try {
+      if (req.body.credential) {
+        const verificationResponse = await verifyGoogleToken(req.body.credential);
+  
+        if (verificationResponse.error) {
+          return res.status(400).send({
+            status:"error",
+            message:"there is an error" ,
+            data:verificationResponse.error
+          });
+        }
+  
+        const profile = verificationResponse?.payload;
+  
+        DB.push(profile);
+  
+        res.status(201).send({
+          status:"ok",
+          message: "Signup was successful",
+          user: {
+            firstName: profile?.given_name,
+            lastName: profile?.family_name,
+            picture: profile?.picture,
+            email: profile?.email,
+            token: jwt.sign({ email: profile?.email }, process.env.SECRET_KEY, {
+              expiresIn: "1d",
+            }),
+          },
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "An error occurred. Registration failed.",
+      });
+    }}
 
-  googleLogout:(req,res,next)=>{
-    req.logOut();
-    req.session.destroy();
-    res.status(200).send({
-      status:"ok",
-      message:"GoodBye",
-      data:{},
-    })
-  }
+
 };

@@ -1,4 +1,6 @@
 let jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 let { accounts } = require("../model/account");
 class Token {
   generateToken(jsonData) {
@@ -26,7 +28,20 @@ class Token {
       }
     });
     return p;
-  }
+  };
+
+
+  async  verifyGoogleToken(token) {
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      return { payload: ticket.getPayload() };
+    } catch (error) {
+      return { error: "Invalid user detected. Please try again" };
+    }
+  }  
 }
 
 module.exports = { Token };
