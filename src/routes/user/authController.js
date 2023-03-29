@@ -186,8 +186,11 @@ module.exports = {
     let DB = [];
     try {
       if (req.body.credential) {
-        const verificationResponse = await verifyGoogleToken(req.body.credential);
-  
+        console.log("fdhdtjh")
+
+        const verificationResponse = await token.verifyGoogleToken(req.body.credential);
+        console.log(verificationResponse)
+
         if (verificationResponse.error) {
           return res.status(400).send({
             status:"error",
@@ -218,7 +221,8 @@ module.exports = {
       res.status(500).json({
         message: "An error occurred. Registration failed.",
       });
-    }}
+    }
+  }
 
 
 };
