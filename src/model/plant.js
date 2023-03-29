@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const plantSchema = new mongoose.Schema({
-  // user_id: mongoose.Types.ObjectId,
+  user_id: mongoose.Types.ObjectId,
   name: {
     type : String,
     required : true
