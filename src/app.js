@@ -7,13 +7,22 @@ const plantRouter=require("./routes/plant/plantRouter");
 const slaveRouter=require("./routes/slave/slaveRouter");
 const path = require("path");
 const cors=require("cors");
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
+const { OAuth2Client } =require("google-auth-library")
+const jwt = require("jsonwebtoken");
+
 require('dotenv').config();
 app.use(cors());
 
+app.use(
+    cors({
+        origin : ["http://localhost:3000"],
+        methods : "GET,POST,PUT,DELETE,OPTIONS",
+    })
+)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())

@@ -2,6 +2,14 @@ const express = require("express");
 const router = express.Router();
 const authController = require("./authController");
 const { MiddleWare } = require("../../lib/middleware");
+const { auth } = require("google-auth-library");
+
+
+router.post(
+  "google-signup" ,
+  authController.googleVerify
+)
+
 
 router.post(
   "/auth",
