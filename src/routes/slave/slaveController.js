@@ -5,9 +5,9 @@ const token = new Token;
 
 module.exports = {
     
-    add : function(req,res){
-        let checkToken = token.verifyToken(req.headers["authorization"])
-        .then(async(message)=>{
+    add : async function(req,res){
+        // let checkToken = token.verifyToken(req.headers["authorization"])
+        // .then(async(message)=>{
             let findSlave = await slaves.findOne({slaveId : req.body.slaveId})
             if(findSlave==null){
                 let craeteSlave = SlaveService.addNewSlave(req)
@@ -32,14 +32,14 @@ module.exports = {
                     data : findSlave
                 })
             }
-        })
-        .catch((message)=>{
-            return res.status(404).send({
-                status : "error" ,
-                message : "token expired or not found",
-                data : {}
-            })
-        })
+        // })
+        // .catch((message)=>{
+        //     return res.status(404).send({
+        //         status : "error" ,
+        //         message : "token expired or not found",
+        //         data : {}
+        //     })
+        // })
 
     },
 

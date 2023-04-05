@@ -1,4 +1,4 @@
-const { plants } = require("../model/plant");
+const { slaves } = require("../model/slave");
 const { PlantSensorData, SensorValue } = require("../model/sensorData");
 
 class PlantService {
@@ -80,7 +80,7 @@ class PlantService {
         reject ("couldn't find plant")
       }
       PlantSensorData.findOneAndUpdate(
-        { plant: plant },
+        { slave: slaves },
         {
           $push: {
             value: {
@@ -99,8 +99,6 @@ class PlantService {
         });
     });
     return sensorData
-    
-    
 
   }
   
