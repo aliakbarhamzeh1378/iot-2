@@ -4,7 +4,9 @@ const mongoose=require("mongoose");
 const bodyParser = require("body-parser");
 const authRouter=require("./routes/user/authRouter");
 const plantRouter=require("./routes/plant/plantRouter");
-const masterRouter=require("./routes/master/masterRouter")
+const masterRouter=require("./routes/master/masterRouter");
+const slaveRouter=require("./routes/slave/slaveRouter");
+
 const path = require("path");
 const cors=require("cors");
 
@@ -22,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/accounts",authRouter);
 app.use("/plants",plantRouter);
 app.use("/master",masterRouter)
+app.use("/slaves" ,slaveRouter)
 
 
 const start=()=>{

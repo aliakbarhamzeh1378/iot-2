@@ -1,30 +1,28 @@
 const {slaves} = require("../model/slave");
+const {plants} = require("../model/plant");
 const {Token} = require("../lib/token")
 
 class SlaveService {
-    static addNewSlave(req){
-        return new Promise(async(resolve , reject)=>{
-            let body = req.body;
-            let newSlave = await new slaves({
-                slaveId : body.slaveId ,
-                slaveName : body.slaveName ,
-                masterId : body.masterId ,
-                tempSesor : body.tempSesor ,
-                lightSesor : body.lightSesor ,
-                ambientHumidSesor : body.ambientHumidSesor ,
-                soilHumidSesor : body.soilHumidSesor ,
-                fanButton : body.fanButton,
-                lightButton : body.lightButton ,
-                heatButton : body.heatButton ,
-                waterPompButton : body.waterPompButton
-            });
-            if(newSlave.save()){
-                resolve(true)
-            }else{
-                reject(false)
-            }
-        })
-
+    static async addNewSlave(req){
+        let body = req.body;
+        let plantId = await plants.findOne({name : body.plantName});
+        if (plantId!=null){
+            return new Promise(async(resolve , reject)=>{
+                let newSlave = await new slaves({
+                    slaveId : body.slaveId ,
+                    slaveName : body.slaveName ,
+                    masterId : body.masterId ,
+                    plant : plantId._id
+                });
+                if(newSlave.save()){
+                    resolve(true)
+                }else{
+                    reject(false)
+                }
+            })
+        }else{
+            console.log("can't find plant")
+        }
     };
 
     static updateSlave(req){
@@ -35,14 +33,7 @@ class SlaveService {
                 slaveId : slaves.slaveId , 
                 slaveName : body.slaveName=="" ? slaves.slaveName : body.slaveName,
                 masterId : body.masterId=="" ? slaves.masterId : body.masterId, 
-                tempSesor : body.tempSesor=="" ? slaves.tempSesor : body.tempSesor ,
-                lightSesor : body.lightSesor=="" ? slaves.lightSesor : body.lightSesor,
-                ambientHumidSesor : body.ambientHumidSesor=="" ? slaves.ambientHumidSesor : body.ambientHumidSesor,
-                soilHumidSesor : body.soilHumidSesor=="" ? slaves.soilHumidSesor : body.soilHumidSesor,
-                fanButton : body.fanButton=="" ? slaves.fanButton : body.fanButton,
-                lightButton : body.lightButton=="" ? slaves.lightButton : body.lightButton,
-                heatButton : body.heatButton=="" ? slaves.heatButton : body.heatButton,
-                waterPompButton : body.waterPompButton=="" ? slaves.waterPompButton : body.waterPompButton,
+  
             },function(error , docs){
                 if(docs){
                     resolve("Update iformation");
