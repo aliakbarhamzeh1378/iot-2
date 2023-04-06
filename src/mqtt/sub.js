@@ -3,6 +3,7 @@ const client = mqtt.connect("mqtt://broker.emqx.io:1883");
 const topicName = "m003/publish";
 const { slaves } = require("../model/slave");
 const { PlantSensorData } = require("../model/sensorData");
+const redis=require("redis");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 try{
@@ -42,6 +43,11 @@ client.on("message", async (topic, message, packet) => {
                 let findSlaveId = await slaves.findOne({ slaveId: ('s' + each_data[0]).toString()});
                 console.log(findSlaveId)
                 if (findSlaveId != null) {
+                  
+                const client = redis.createClient({
+                    host: '127.0.0.1',
+                    port: '<port>',})
+
                     let p = new Promise((resolve, reject) => {
                         PlantSensorData.findOneAndUpdate(
                             { slave: findSlaveId._id },
