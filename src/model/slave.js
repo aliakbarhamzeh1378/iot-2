@@ -13,7 +13,7 @@ const slaveSchema = new mongoose.Schema({
         type : String,
         required : true 
     },
-    plant :{
+    plantId :{
         type : mongoose.Types.ObjectId , 
         ref : "plants" ,
     },

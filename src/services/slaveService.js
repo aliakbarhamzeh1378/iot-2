@@ -12,7 +12,7 @@ class SlaveService {
                     slaveId : body.slaveId ,
                     slaveName : body.slaveName ,
                     masterId : body.masterId ,
-                    plant : plantId._id
+                    plantId : plantId._id
                 });
                 if(newSlave.save()){
                     resolve(true)
@@ -33,7 +33,8 @@ class SlaveService {
                 slaveId : slaves.slaveId , 
                 slaveName : body.slaveName=="" ? slaves.slaveName : body.slaveName,
                 masterId : body.masterId=="" ? slaves.masterId : body.masterId, 
-  
+                plantId : body.plantId=="" ? slaves.plantId : body.plantId, 
+
             },function(error , docs){
                 if(docs){
                     resolve("Update iformation");
