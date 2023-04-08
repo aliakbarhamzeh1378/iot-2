@@ -11,13 +11,16 @@ class RedisService{
         this.client.on("err",(err)=>{
         console.log(err)
         })
+        const x=async()=>{
+            await this.client.connect()
+        }
+        x()
+
     };
 
-    static async  setData(key,value){
+    async setData(key,value){
         try{
-            await this.client.connect()
             await this.client.set(key,value);
-            console.log("your data is set")
         }
         catch(e){
             throw e 
@@ -26,9 +29,8 @@ class RedisService{
 
     };
 
-    static async getData(key){
+    async getData(key){
         try{
-            await this.client.connect()
             const value = await this.client.get(key);  
             return value
         }

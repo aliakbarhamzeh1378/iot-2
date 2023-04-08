@@ -6,7 +6,7 @@ class SlaveService {
     static async addNewSlave(req){
         let body = req.body;
         let plantId = await plants.findOne({name : body.plantName});
-        if (plantId!=null){
+        if (plantId!=null || plantId!=undefined){
             return new Promise(async(resolve , reject)=>{
                 let newSlave = await new slaves({
                     slaveId : body.slaveId ,
