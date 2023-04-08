@@ -3,7 +3,7 @@ const client = mqtt.connect("mqtt://broker.emqx.io:1883");
 const topicName = "m003/publish";
 const { slaves } = require("../model/slave");
 const { PlantSensorData } = require("../model/sensorData");
-const redis=require("redis");
+const {RedisService}=require("../services/redisService")
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 try{
@@ -26,6 +26,7 @@ client.on("connect", () => {
 client.on("message", async (topic, message, packet) => {
     if (topic === topicName) {
         let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
+        // console.log(data)
         for (let i = 0 ; i < data.length; i++){
             if(data[i][0]==='"'){
                 try{
@@ -40,51 +41,61 @@ client.on("message", async (topic, message, packet) => {
 
             }else{
                 let each_data = data[i].replace("s:", "").split(",");
-                let findSlaveId = await slaves.findOne({ slaveId: ('s' + each_data[0]).toString()});
-                console.log(findSlaveId)
+                let slaveId=('s' + each_data[0]).toString()
+                let findSlaveId = await slaves.findOne({slaveId:slaveId });
+                console.log(each_data)
                 if (findSlaveId != null) {
-                  
-                const client = redis.createClient({
-                    host: '127.0.0.1',
-                    port: '<port>',})
+                    let keys=[t,s,h,l]
+                    // console.log(keys,each_data)
 
-                    let p = new Promise((resolve, reject) => {
-                        PlantSensorData.findOneAndUpdate(
-                            { slave: findSlaveId._id },
-                            {
-                                $push: {
-                                    value: {
-                                        time: new Date(),
-                                        TempSensor: each_data[1].trim(),
-                                        Soil_moisture: each_data[2].trim(),
-                                        Ambient_humidity: each_data[3].trim(),
-                                        Light: each_data[4].trim(),
-                                        fanButton: each_data[5].trim(),
-                                        Water_pomp: each_data[6].trim(),
-                                        Heater: each_data[7].trim(),
-                                        Fan: each_data[8].trim()
-    
-                                    }
-                                }
-                            }
-                            , { upsert: true }
-                        ),
-                        function(result , err){
-                            if(result){
-                                resolve(true)
-                            }else{
-                                console.log(err)
-                                reject(false)
-                            }
+                    const y=(keys,value )=>{
+                        for(let x=1;x<=keys.length;x++){
+                            console.log(`${slaveId}_${keys[x-1]}`)
+                            RedisService.setData(`${slaveId}_${keys[x-1]}`,value[x])
                         }
-                    });
-                    p.then((message)=>{
-                        console.log("save")                    
-                    }).catch((message)=>{
-                        console.log("can'tSave")
-                    })
+                    }
+                    y(keys,each_data)
+                    
+                    // let p = new Promise((resolve, reject) => {
+                    //     PlantSensorData.findOneAndUpdate(
+                    //         { slave: findSlaveId._id },
+                    //         {
+                    //             $push: {
+                    //                 value: {
+                    //                     time: new Date(),
+                    //                     TempSensor: each_data[1].trim(),
+                    //                     Soil_moisture: each_data[2].trim(),
+                    //                     Ambient_humidity: each_data[3].trim(),
+                    //                     Light: each_data[4].trim(),
+                    //                     fanButton: each_data[5].trim(),
+                    //                     Water_pomp: each_data[6].trim(),
+                    //                     Heater: each_data[7].trim(),
+                    //                     Fan: each_data[8].trim()
+    
+                    //                 }
+                    //             }
+                    //         }
+                    //         , { upsert: true }
+                    //     ),
+                    //     function(result , err){
+                    //         if(result){
+                    //             resolve(true)
+                    //         }else{
+                    //             console.log(err)
+                    //             reject(false)
+                    //         }
+                    //     }
+                    // });
+                    // p.then((message)=>{
+                    //     console.log("save")                    
+                    // }).catch((message)=>{
+                    //     console.log("can'tSave")
+                    // })
                 }
-                return p;
+                else{
+                    console.log("can't find slave")
+                }
+                // return p;
             } 
       };
         console.log("finish")
