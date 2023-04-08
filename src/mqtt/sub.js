@@ -43,7 +43,7 @@ client.on("message", async (topic, message, packet) => {
                 let each_data = data[i].replace("s:", "").split(",");
                 let slaveId=('s' + each_data[0]).toString()
                 let findSlaveId = await slaves.findOne({slaveId:slaveId });
-                console.log(each_data)
+                // console.log(each_data)
                 if (findSlaveId != null) {
                     let keys=[t,s,h,l]
                     // console.log(keys,each_data)
