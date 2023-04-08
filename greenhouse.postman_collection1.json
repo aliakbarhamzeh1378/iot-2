@@ -107,7 +107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"rojanrahmani2002@gmail.com\",\r\n    \"password\":\"4545455464\"\r\n}",
+							"raw": "{\r\n    \"email\":\"rojanrahmani2002@yahoo.com\",\r\n    \"password\":\"4545455464\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -478,6 +478,106 @@
 							"path": [
 								"plants",
 								"plant-information"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "master",
+			"item": [
+				{
+					"name": "addMaster",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"master_id\":\"\",\n    \"user_id\":\"\",\n    \"name\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/master/master",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMaster",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/master/master/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "readMaster",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/master/master",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateMaster",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/master/master/643160e7576f25d53cdade4e",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master",
+								"643160e7576f25d53cdade4e"
 							]
 						}
 					},
