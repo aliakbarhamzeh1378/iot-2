@@ -5,12 +5,14 @@ const token = new Token;
 
 module.exports = {
     
-    add : function(req,res){
+    add : async function(req,res){
         let checkToken = token.verifyToken(req.headers["authorization"])
         .then(async(message)=>{
+        let plantID = await plants.findById(req.body.plantId);
+        if (plantID!=null){
             let findSlave = await slaves.findOne({slaveId : req.body.slaveId})
             if(findSlave==null){
-                let craeteSlave = SlaveService.addNewSlave(req)
+                let craeteSlave = SlaveService.addNewSlave(req ,plantID)
                 .then((message)=>{
                     return res.status(201).send({
                         status : "Ok" ,
@@ -32,16 +34,22 @@ module.exports = {
                     data : findSlave
                 })
             }
-        })
-        .catch((message)=>{
+        }else{
+            return res.status(404).send({
+                status : "error" , 
+                message : "There isn't such plant" ,
+                data : {}
+            })    
+        }
+    }).catch((message)=>{
             return res.status(404).send({
                 status : "error" ,
                 message : "token expired or not found",
                 data : {}
             })
         })
-
     },
+
 
     delete : async function(req,res){
         let findToken = token.verifyToken(req.headers["authorization"])

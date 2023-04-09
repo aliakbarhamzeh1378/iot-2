@@ -1,18 +1,17 @@
 const {slaves} = require("../model/slave");
 const {plants} = require("../model/plant");
 const {Token} = require("../lib/token")
+const {PlantSensorData} = require("../model/sensorData")
 
 class SlaveService {
-    static async addNewSlave(req){
+    static async addNewSlave(req,plantId){
         let body = req.body;
-        let plantId = await plants.findOne({name : body.plantName});
-        if (plantId!=null){
             return new Promise(async(resolve , reject)=>{
                 let newSlave = await new slaves({
                     slaveId : body.slaveId ,
                     slaveName : body.slaveName ,
                     masterId : body.masterId ,
-                    plantId : plantId._id
+                    plantId : plantId
                 });
                 if(newSlave.save()){
                     resolve(true)
@@ -20,9 +19,7 @@ class SlaveService {
                     reject(false)
                 }
             })
-        }else{
-            console.log("can't find plant")
-        }
+
     };
 
     static updateSlave(req){
@@ -76,7 +73,42 @@ class SlaveService {
             }
             )
         })
-    }
+    };
+
+    
+    static addSensorData(each_data , slaveId){
+        let data = new Promise((resolve, reject) => {
+          PlantSensorData.findOneAndUpdate(
+              { slaves: slaveId },
+              {
+                  $push: {
+                      value: {
+                          time: new Date(),
+                          TempSensor: each_data[1],
+                          Soil_moisture: each_data[2],
+                          Ambient_humidity: each_data[3],
+                          Light: each_data[4],
+                          fanButton: each_data[5],
+                          Water_pomp: each_data[6],
+                          Heater: each_data[7],
+                          Fan: each_data[8]
+  
+                      }
+                  }
+              }
+              ,{upsert:true},
+              function (error, result) {
+                if (error) {
+                  console.log(error);
+                  reject(error)
+                } else {
+                  resolve(result) 
+                }
+            }
+          )
+      });
+      return data
+    };
 };
 
 module.exports = {SlaveService};

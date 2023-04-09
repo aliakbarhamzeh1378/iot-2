@@ -5,6 +5,8 @@ const { slaves } = require("../model/slave");
 const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
+const {SlaveService} = require("../services/slaveService");
+
 try{
     mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
 }catch{
@@ -36,49 +38,18 @@ client.on("message", async (topic, message, packet) => {
                     console.log("Can't save slaves")
                 };
 
-
             }else{
                 let each_data = data[i].replace("s:", "").split(",");
                 let findSlaveId = await slaves.findOne({ slaveId: ('s' + each_data[0]).toString()});
-                console.log(findSlaveId)
+                // console.log(findSlaveId);
                 if (findSlaveId != null) {
-                    let p = new Promise((resolve, reject) => {
-                        PlantSensorData.findOneAndUpdate(
-                            { slave: findSlaveId._id },
-                            {
-                                $push: {
-                                    value: {
-                                        time: new Date(),
-                                        TempSensor: each_data[1].trim(),
-                                        Soil_moisture: each_data[2].trim(),
-                                        Ambient_humidity: each_data[3].trim(),
-                                        Light: each_data[4].trim(),
-                                        fanButton: each_data[5].trim(),
-                                        Water_pomp: each_data[6].trim(),
-                                        Heater: each_data[7].trim(),
-                                        Fan: each_data[8].trim()
-    
-                                    }
-                                }
-                            }
-                            , { upsert: true }
-                        ),
-                        function(result , err){
-                            if(result){
-                                resolve(true)
-                            }else{
-                                console.log(err)
-                                reject(false)
-                            }
-                        }
-                    });
-                    p.then((message)=>{
-                        console.log("save")                    
-                    }).catch((message)=>{
-                        console.log("can'tSave")
+                    await SlaveService.addSensorData(each_data , findSlaveId._id)
+                    .then((message)=>{
+                        console.log(message)                    
+                    }).catch((e)=>{
+                        console.log(e)
                     })
-                }
-                return p;
+                };
             } 
       };
         console.log("finish")
