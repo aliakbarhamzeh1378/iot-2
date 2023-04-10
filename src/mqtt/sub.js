@@ -59,7 +59,7 @@ client.on("message", async (topic, message, packet) => {
                 let findSlaveId = await slaves.findOne({slaveId:slaveId });
                 // console.log(each_data)
                 if (findSlaveId != null) {
-                    let keys=["t","s","h","l"];
+                    let keys=["temp","soil","ambient","light"];
                     // console.log(keys,each_data)
 
                     const y=(keys,value )=>{

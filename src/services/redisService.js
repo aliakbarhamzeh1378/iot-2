@@ -29,14 +29,36 @@ class RedisService{
 
     };
 
-    async getData(key){
-        try{
-            const value = await this.client.get(key);  
-            return value
-        }
-        catch(e){
-            throw e 
-        }
-    }
+    getData(key){
+        return new Promise(async(resolve,reject)=>{
+            const x=await this.client.get(key)
+            if(x.length>0){
+                resolve(x)
+            }
+            else{
+                reject("not found")
+            }
+    });
+}
+    
+        // try{
+        //     const value =  this.client.get(key,function(err,result) {
+        //         if(err){
+        //             console.log(err)
+        //             throw err
+        //         }
+        //         else{
+        //             console.log(result); 
+        //             return result
+        //         }
+               
+        //     });
+        //     return value
+        // }
+        // catch(e){
+        //     throw e 
+        // }
+        
+    // }
 }
 module.exports={RedisService}
