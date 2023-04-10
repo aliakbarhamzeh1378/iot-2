@@ -40,5 +40,4 @@ router.put(
     [MiddleWare.existToken,MiddleWare.checkFullPermission],
     plantController.update
 );
-router.post("/addSensorData/", plantController.AddSensorData)
 module.exports = router;

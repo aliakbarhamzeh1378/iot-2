@@ -70,39 +70,7 @@ class PlantService {
     return plant
   }
 
-  static async AddSensorData(req) {
-    console.log(req.body)
 
-    let plant = await plants.findById(req.body.plantId)
-    console.log(plant)
-    let sensorData = new Promise((resolve, reject) => {
-      if (plant == null || plant==undefined){
-        reject ("couldn't find plant")
-      }
-      PlantSensorData.findOneAndUpdate(
-        { plant: plant },
-        {
-          $push: {
-            value: {
-              time: new Date(),
-              data: req.body.value
-            }
-          }
-        },{upsert:true},
-        function (error, result) {
-          if (error) {
-            console.log(error);
-            reject(error)
-          } else {
-            resolve(result) 
-          }
-        });
-    });
-    return sensorData
-    
-    
-
-  }
   
 }
 
