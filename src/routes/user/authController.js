@@ -28,7 +28,7 @@ module.exports = {
           "sendLink.html",
           (replacement = {
             name: req.body.fullname,
-            link: `http://127.0.0.1:3000/accounts/verify?token=${token}`,
+            link: `http://178.63.147.27:3000/accounts/verify?token=${token}`,
           }),
           req.body.email,
           "Verify your account"
