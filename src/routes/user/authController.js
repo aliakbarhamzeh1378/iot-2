@@ -28,7 +28,7 @@ module.exports = {
           "sendLink.html",
           (replacement = {
             name: req.body.fullname,
-            link: `http://localhost:3000/accounts/verify?token=${token}`,
+            link: `http://178.63.147.27:3000/accounts/verify?token=${token}`,
           }),
           req.body.email,
           "Verify your account"
@@ -76,19 +76,17 @@ module.exports = {
   },
 
   verifyUser: (req, res, next) => {
-    //verify token has a problem
     const user_token = req.query.token;
     let p = token.verifyToken(user_token);
     p.then(async (message) => {
       AuthService.find_Update(message.email, { status: "active" });
-      res.status(200).send({
-        //load verify.ejs
+      return res.status(200).send({
         status: "Ok",
         message: "set account to active",
         data: {},
       });
     }).catch((message) => {
-      res.status(406).send({
+      return res.status(406).send({
         status: "error",
         message: "the token is not correct or expired",
         data: {},
