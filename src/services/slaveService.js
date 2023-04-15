@@ -88,10 +88,10 @@ class SlaveService {
                           Soil_moisture: each_data[2],
                           Ambient_humidity: each_data[3],
                           Light: each_data[4],
-                          WaterPompBotton : each_data[5],
-                          HeaterBotton: each_data[6],
-                          FanBotton : each_data[7],
-                          LightBotton: each_data[8]
+                          fanButton: each_data[5],
+                          Water_pomp: each_data[6],
+                          Heater: each_data[7],
+                          Fan: each_data[8]
   
                       }
                   }
