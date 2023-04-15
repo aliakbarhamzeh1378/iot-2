@@ -34,8 +34,9 @@ class PlantService {
 
   static deletePlant(plantId) {
     let p = new Promise((resolve, reject) => {
-      let deletedPlant = plants.findByIdAndDelete(plantId, function (err, result) {
+      plants.findByIdAndDelete(plantId, function (err, result) {
         if (result) {
+          console.log(result)
           resolve(result);
         } else {
           reject("Failed");

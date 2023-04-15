@@ -28,9 +28,9 @@ router.post("/new", upload.single("image"),
     [MiddleWare.checkFullPermission],
     plantController.createNewPlant);
 
-router.post(
+router.delete(
     "/remove/:id",
-    [MiddleWare.existToken, MiddleWare.checkFullPermission],
+    [MiddleWare.checkToken, MiddleWare.checkFullPermission],
 
     plantController.delete
 );

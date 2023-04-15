@@ -60,7 +60,11 @@ module.exports = {
 
   findPlantById: (req, res, next) => {
     let plantId = req.params.plantId;
-    plants.findById(plantId, (result, err) => {
+    console.log(plantId)
+
+    plants.findOne({_id:plantId}, (result, err) => {
+      // console.log(result);
+      // console.log(err)
       if (result) {
         res.status(200).send({
           status: "ok",
