@@ -63,20 +63,17 @@ class MiddleWare {
 
   static checkToken(req, res, next) {
     let token = req.headers['x-access-token'] || req.headers['authorization'];
-    console.log(token)
     if (token) {
       var privateKey = process.env.SECRET_KEY
       jwt.verify(token, privateKey, {
         ignoreExpiration: true
       }, (err, decoded) => {
         if (err) {
-          console.log(err)
           return res.status(403).send({
             status: "error",
             message: "login to your account",
           });
         } else {
-          console.log('----------------')
           console.log(decoded)
           
           req.decoded = decoded;

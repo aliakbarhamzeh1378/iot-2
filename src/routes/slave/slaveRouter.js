@@ -4,19 +4,19 @@ const slaveController = require("./slaveController");
 const { MiddleWare } = require("../../lib/middleware")
 
 router.post("/slave",
-    [MiddleWare.existToken, MiddleWare.emptyCheck],
+    [MiddleWare.checkToken, MiddleWare.emptyCheck],
     slaveController.add);
 
 router.delete("/slave",
-    [MiddleWare.existToken]
+    [MiddleWare.checkToken]
     , slaveController.delete)
 
 router.put("/slave",
-    [MiddleWare.existToken]
+    [MiddleWare.checkToken]
     , slaveController.update);
 
 router.get("/slave",
-    [MiddleWare.existToken]
+    [MiddleWare.checkToken]
     , slaveController.data);
 
 module.exports = router;
