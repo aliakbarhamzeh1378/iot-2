@@ -1,0 +1,590 @@
+{
+	"info": {
+		"_postman_id": "0a89fc90-9236-4ae0-bf1f-3b4b6ebb4b47",
+		"name": "Green House",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24818045"
+	},
+	"item": [
+		{
+			"name": "slave",
+			"item": [
+				{
+					"name": "addSlave",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAeWFob28uY29tIiwiaWF0IjoxNjgwOTUxOTQyLCJleHAiOjE2ODA5NTI5NDJ9.n3QwonhtgqgdjBcF5HazT21wOXaDQ6X5irS_Hz8NKw0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slaveId\" : \"s003\",\n    \"slaveName\" : \"babooneh\",\n    \"masterId\" : \"003\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/slaves/slave",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"slaves",
+								"slave"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSlave",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slaveId\" : \"s001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/slaves/slave",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"slaves",
+								"slave"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateSlave",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slaveId\" : \"s001\",\n    \"masterId\" : \"003\" \n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/slaves/slave",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"slaves",
+								"slave"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"rojanrahmani2002@yahoo.com\",\r\n    \"password\":\"4545455464\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/auth",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFuQHlhaG9vLmNvbSIsImlhdCI6MTY3MDY2MzM5OSwiZXhwIjoxNjcwNjcwNTk5fQ.75VKSNEzcxWxKAuCVYLrsSUFQ1sy0Ji-o-kRE8k1ilk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\":\"rozhan\",\r\n    \"email\":\"rojanrahmani2002@yahoo.com\",\r\n    \"password\":\"4545455464\",\r\n    \"confirmPassword\":\"4545455464\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFuQHlhaG9vLmNvbSIsImlhdCI6MTY3MDY4OTY3MSwiZXhwIjoxNzU3MDg5NjcxfQ.LI4OSOQ4OmnR2BzFmS1tefvsG1rAhz3wp3PFj7GC57s",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFBaG1hZGlAZ21haWwuY29tRURJVCxSRU1PVkUsQURELFJFQUQiLCJpYXQiOjE2NzI3NDA1OTAsImV4cCI6MTY3Mjg0MDU5MH0.LGZGTzjwOBnt-ZqeRI-KGrFnxUm9gokWZwNPfHzRZrM",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFBaG1hZGlAZ21haWwuY29tRURJVCxSRU1PVkUsQURELFJFQUQiLCJpYXQiOjE2NzI3NDA1OTAsImV4cCI6MTY3Mjg0MDU5MH0.LGZGTzjwOBnt-ZqeRI-KGrFnxUm9gokWZwNPfHzRZrM"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forget-password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"rojanrahmani2002@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/forget-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/reset-password?hash=$2b$10$oR4yPt5QS/1DoPp5XhdTf.fRCwC/IiOJFdiBZAplHl6WvTTQg.xpS",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "hash",
+									"value": "$2b$10$oR4yPt5QS/1DoPp5XhdTf.fRCwC/IiOJFdiBZAplHl6WvTTQg.xpS"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"dfghfhjfg54\",\r\n    \"confirmPassword\":\"dfghfhjfg54\",\r\n    \"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjcxNTU0MTk0LCJleHAiOjE2NzE2NTQxOTR9.6_AisOomXZnVx9zCT8xeRXq2ag6rvoklI1Se5ocim3k\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/accounts/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit-profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/accounts/edit-profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"accounts",
+								"edit-profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "plants",
+			"item": [
+				{
+					"name": "lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/plants/lists?search=si",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "si"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAeWFob28uY29tIiwiaWF0IjoxNjgwOTU3NTcyLCJleHAiOjE2ODA5NTg1NzJ9.EJmDRZnNZvYrvZUu5sBAiWPe75638bgQyxlnXPITei8",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/rozhan/Pictures/Screenshot from 2023-04-03 10-09-33.png"
+								},
+								{
+									"key": "name",
+									"value": "banafshe",
+									"type": "text"
+								},
+								{
+									"key": "temperature",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "light",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "moisture",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "explanation",
+									"value": "hasase",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/plants/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/plants/remove/63a70a9efd255dba78483665",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"remove",
+								"63a70a9efd255dba78483665"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/plants/update/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "plant-information",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"plantId\" : \"gjk\",\r\n    \"information\" : {\r\n        \"name\" : \"roz\",\r\n        \"dama\" : \"20\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/plants/plant-information",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"plant-information"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "master",
+			"item": [
+				{
+					"name": "addMaster",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"master_id\":\"\",\n    \"user_id\":\"\",\n    \"name\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/master/master",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMaster",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/master/master/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "readMaster",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/master/master",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateMaster",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/master/master/643160e7576f25d53cdade4e",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"master",
+								"master",
+								"643160e7576f25d53cdade4e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
