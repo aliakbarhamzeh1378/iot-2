@@ -34,7 +34,7 @@ class SlaveService {
 
             },function(error , docs){
                 if(docs){
-                    resolve("Update iformation");
+                    resolve("Update information");
                 }else{
                     reject("Can't update information.No such slave")
                 }

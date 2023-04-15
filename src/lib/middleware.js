@@ -53,7 +53,7 @@ class MiddleWare {
   static existToken(req, res, next) {
     let token = req.headers["x-access-token"] || req.headers["authorization"];
     if (!token) {
-      return res.status(404).send({
+      return res.status(403).send({
         status: "error",
         message: "login to your account",
       });
@@ -61,14 +61,47 @@ class MiddleWare {
   }
 
 
+  static checkToken(req, res, next) {
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+    console.log(token)
+    if (token) {
+      var privateKey = process.env.SECRET_KEY
+      jwt.verify(token, privateKey, {
+        ignoreExpiration: true
+      }, (err, decoded) => {
+        if (err) {
+          console.log(err)
+          return res.status(403).send({
+            status: "error",
+            message: "login to your account",
+          });
+        } else {
+          console.log('----------------')
+          console.log(decoded)
+          
+          req.decoded = decoded;
+          next();
+        }
+      });
+    } else {
+      return res.status(403).send({
+        status: "error",
+        message: "token is missing",
+      });
+    }
+
+  }
+
+
+
   static checkFullPermission(req, res, next) {
     let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
     console.log(req.path)
-    
+
     var decoded = jwt.verify(token, process.env.SECRET_KEY);
     console.log(decoded)
-    if(decoded.permisson !=null || decoded.permisson !=undefined){
-      if (decoded.permisson == "Admin"){
+    if (decoded.permisson != null || decoded.permisson != undefined) {
+      if (decoded.permisson == "Admin") {
         next()
       }
     }
@@ -83,8 +116,8 @@ class MiddleWare {
     console.log(req.path)
     var decoded = jwt.verify(token, process.env.SECRET_KEY);
     console.log(decoded)
-    if(decoded.permisson !=null || decoded.permisson !=undefined){
-      if (decoded.permisson == "User" || decoded.permisson == "Admin"){
+    if (decoded.permisson != null || decoded.permisson != undefined) {
+      if (decoded.permisson == "User" || decoded.permisson == "Admin") {
         next()
       }
     }

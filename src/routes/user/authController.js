@@ -9,22 +9,22 @@ const { hashs } = require("../../model/hash");
 
 module.exports = {
 
-  registerUser : async function(req , res ){
+  registerUser: async function (req, res) {
     let pass = req.body.password
-    let email=req.body.email
+    let email = req.body.email
     let existing = await Validation.existToDB(email);
-    if(existing==true){
+    if (existing == true) {
       res.status(406).send({
-        status : "error",
-        message : "There is an account with this email",
-        data : {}
+        status: "error",
+        message: "There is an account with this email",
+        data: {}
       })
-    }else{
+    } else {
       let hashed = await AuthService.hashPassword(pass)
-      AuthService.addNewPerson(req.body , hashed);
-      let userToken = token.generateToken({email:email});
-      userToken.then((token)=>{
-      send_email(
+      let user = AuthService.addNewPerson(req.body, hashed);
+      let userToken = token.generateToken({ email: user.email, id: user._id, permission: user.permission });
+      userToken.then((token) => {
+        send_email(
           "sendLink.html",
           (replacement = {
             name: req.body.fullname,
@@ -47,19 +47,21 @@ module.exports = {
     const email = req.body.email;
     const password = req.body.password;
     let p = AuthService.loginCheck(email, password);
-    p.then(async(message) => {
-      if (message == 200) {
-        let userToken = await token.generateToken({ email: email }).then((data)=>{
-          return data;
-        }).catch((error)=>{throw error});
-        res.status(200).send({
-          status: "Ok",
-          message: "welcome to your page",
-          data: {
-            token: userToken,
-          },
-        });
-      } else if (message == 403) {
+    p.then(async (message) => {
+      console.log(message)
+      let userToken = await token.generateToken({ email: message.email, id: message._id, permission: message.permission }).then((data) => {
+        return data;
+      }).catch((error) => { throw error });
+      res.status(200).send({
+        status: "Ok",
+        message: "welcome to your page",
+        data: {
+          token: userToken,
+        },
+      });
+
+    }).catch((message) => {
+      if (message == 403) {
         res.status(403).send({
           status: "error",
           message: "your account is deactivated.verify your account",
@@ -94,34 +96,34 @@ module.exports = {
     });
   },
 
-    resetPass : async (req,res)=>{
-      let hash=await AuthService.hashPassword(req.body.password);
-      let p=token.verifyToken(req.body.token);
-      p.then(async(message)=>{
-        AuthService.find_Update(message.email,{password:hash})
+  resetPass: async (req, res) => {
+    let hash = await AuthService.hashPassword(req.body.password);
+    let p = token.verifyToken(req.body.token);
+    p.then(async (message) => {
+      AuthService.find_Update(message.email, { password: hash })
       res.status(200).send({
-          status: "Ok",
-          message: "your password was reset successfully",
-          data: {},
-        })
+        status: "Ok",
+        message: "your password was reset successfully",
+        data: {},
       })
+    })
       .catch((message) => {
-          res.status(406).send({
-              status: "error",
-              message: "the token was not correct or expired",
-              data: {},
-          });
-          console.log(message)
+        res.status(406).send({
+          status: "error",
+          message: "the token was not correct or expired",
+          data: {},
+        });
+        console.log(message)
 
       });
   },
 
 
 
-    forgetPassword: async (req, res, next) => {
+  forgetPassword: async (req, res, next) => {
     const email = req.body.email;
     let user = await Validation.existToDB(email);
-    if (user==true) {
+    if (user == true) {
       let randomHash = await AuthService.hashPassword("\\w+")
       AuthService.deleteHash(email);
       AuthService.addHash(email, randomHash);
@@ -157,7 +159,7 @@ module.exports = {
           req.body.password.length < 8
             ? message.password
             : await AuthService.hashPassword(req.body.password);
-        let fullname = null ? message.fullname :req.body.fullname ;
+        let fullname = null ? message.fullname : req.body.fullname;
         AuthService.find_Update(message.email, {
           fullname: fullname,
           password: hashPass,

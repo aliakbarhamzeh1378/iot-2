@@ -41,7 +41,8 @@ module.exports = {
   },
   listOfPlants: async (req, res, next) => {
     const search = req.query.search;
-    const similarPlants = await PlantService.listOfPlants(search);
+    console.log(req.decoded)
+    const similarPlants = await PlantService.listOfPlants(search,req.decoded.id);
     if (similarPlants.length == 0) {
       res.status(404).send({
         status: "error",
@@ -76,6 +77,7 @@ module.exports = {
     });
   },
  createNewPlant : async function(req,res){
+  console.log(req.decoded)
     if(req.file==undefined){
       return res.status(406).send({
         status: "error",
@@ -83,27 +85,22 @@ module.exports = {
         data: {},
       });
     }
-    if ((await plants.findOne({ name: req.body.name })) == null) {
-      let user_email=token.verifyToken(req.headers["authorization"]).then(async (usrToken)=>{
-        let user=await accounts.findOne({email:usrToken.email});
-        try {
-          PlantService.addNewPlant(req,user._id);
-          return res.status(200).send({
-            status: "ok",
-            message: "your new plant created",
-            data: {},
-          });
-        } catch {
-          res.status(408).send({
-            status: "error",
-            message: "saving new plant failed",
-            data: {},
-          });
-        }
-        return user._id
-      }).catch((err)=>{
-        throw err
-      })
+    if ((await plants.findOne({ name: req.body.name,user_id:req.decoded.id })) == null) {
+      try {
+        PlantService.addNewPlant(req,req.decoded.id);
+        return res.status(200).send({
+          status: "ok",
+          message: "your new plant created",
+          data: {},
+        });
+      } catch {
+        res.status(408).send({
+          status: "error",
+          message: "saving new plant failed",
+          data: {},
+        });
+      }
+      return user._id
       
     }else {
         res.status(406).send({

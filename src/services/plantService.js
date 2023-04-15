@@ -3,8 +3,8 @@ const { PlantSensorData, SensorValue } = require("../model/sensorData");
 
 class PlantService {
 
-  static async listOfPlants(search) {
-    let allPlants = await plants.find({});
+  static async listOfPlants(search,user_id) {
+    let allPlants = await plants.find({user_id:user_id});
     const foundPlants = [];
     allPlants.forEach((plant) => {
       console.log(plant)

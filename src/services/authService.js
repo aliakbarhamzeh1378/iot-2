@@ -18,7 +18,7 @@ class AuthService {
         status: "deactive",
       });
       if (newCreate.save()) {
-        resolve(true)
+        resolve(newCreate)
       } else {
         reject(false)
       }
@@ -49,15 +49,19 @@ class AuthService {
         const passCheck = await bcrypt.compare(password, user.password);
         if (passCheck){
           if (user.status == "active") {
-            resolve(200); //account is active
+            console.log("active")
+            resolve(user); //account is active
           } else {
-            resolve(403); //account is deactivated
+            console.log("403")
+            reject(403); //account is deactivated
           }
         }else{
-          resolve("password is wrong");
+          console.log("password is wrong")
+          reject("password is wrong");
         }
       }else{
-        resolve("your email is wrong");
+        console.log("your email is wrong")
+        reject("your email is wrong");
       }
     });
   }
