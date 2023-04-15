@@ -1,2 +1,1 @@
-const temp=12 
-if (temp>30){'fan on'}
+if temp >= 30 and if light > 12 then fanOn 

@@ -1,10 +1,15 @@
 const celery = require('celery-node');
-require("../lib/jsInput")
 const client = celery.createClient(
     "redis://", "redis://"
 );
+const userFile=require("../lib/jsInput")
 
-const task = client.sendTask(require("../lib/jsInput")).get().then(data => {
+
+const task = client.createTask(userFile);
+
+async function main() {
+  const result = task.applyAsync();
+  const data = await result.get();
   console.log(data);
-  client.disconnect();
-});
+  await client.disconnect();
+}

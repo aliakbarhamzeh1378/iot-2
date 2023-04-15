@@ -31,13 +31,15 @@ class RedisService{
 
     getData(key){
         return new Promise(async(resolve,reject)=>{
-            const x=await this.client.get(key)
-            if(x.length>0){
-                resolve(x)
-            }
-            else{
-                reject("not found")
-            }
+                const x=await this.client.get(key);
+                if(x!=null || x!=undefined){
+                    resolve(x)
+                }
+                else{
+                    reject("not found")
+                }
+
+           
     });
 }
     

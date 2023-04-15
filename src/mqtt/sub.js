@@ -26,18 +26,16 @@ client.on("connect", () => {
 
 client.on("message", async (topic, message, packet) => {
 
-    // let keys=["t","s","h","l"];
-    // let each_data=["003",12,20,2,3,4];
-    // let slaveId="s003"
-    // const y=(keys,value )=>{
-    //     for(let x=1;x<=keys.length;x++){
-    //         console.log(`${slaveId}_${keys[x-1]}`)
-    //         redisObj.setData(`${slaveId}_${keys[x-1]}`,value[x])
-    //     }
-    // }
-    // y(keys,each_data)
-
-
+    let  keys=["temp","soil","ambient","light"];
+    let each_data=["003",12,20,2,3,4];
+    let slaveId="s003"
+    const y=(keys,value )=>{
+        for(let x=1;x<=keys.length;x++){
+            console.log(`${slaveId}_${keys[x-1]}`)
+            redisObj.setData(`${slaveId}_${keys[x-1]}`,value[x])
+        }
+    }
+    y(keys,each_data)
 
     if (topic === topicName) {
         let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
@@ -57,20 +55,14 @@ client.on("message", async (topic, message, packet) => {
                 let each_data = data[i].replace("s:", "").split(",");
                 let slaveId=('s' + each_data[0]).toString()
                 let findSlaveId = await slaves.findOne({slaveId:slaveId });
-                // console.log(each_data)
                 if (findSlaveId != null) {
                     let keys=["temp","soil","ambient","light"];
-                    // console.log(keys,each_data)
-
-                    const y=(keys,value )=>{
-                        for(let x=1;x<=keys.length;x++){
-                            console.log(`${slaveId}_${keys[x-1]}`)
-                            RedisService.setData(`${slaveId}_${keys[x-1]}`,value[x])
-                        }
+                    for(let x=1;x<=keys.length;x++){
+                        console.log(`${slaveId}_${keys[x-1]}`)
+                        RedisService.setData(`${slaveId}_${keys[x-1]}`,each_data[x])
                     }
-                    y(keys,each_data)
-                  
-                }
+                    }
+
                 else{
                     console.log("can't find slave")
                 }
