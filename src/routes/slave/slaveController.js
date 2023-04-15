@@ -6,8 +6,6 @@ const token = new Token;
 module.exports = {
     
     add : async function(req,res){
-        let checkToken = token.verifyToken(req.headers["authorization"])
-        .then(async(message)=>{
         let plantID = await plants.findById(req.body.plantId);
         if (plantID!=null){
             let findSlave = await slaves.findOne({slaveId : req.body.slaveId})
@@ -41,20 +39,11 @@ module.exports = {
                 data : {}
             })    
         }
-    }).catch((message)=>{
-            return res.status(404).send({
-                status : "error" ,
-                message : "token expired or not found",
-                data : {}
-            })
-        })
     },
 
 
     delete : async function(req,res){
-        let findToken = token.verifyToken(req.headers["authorization"])
-        .then(async(message)=>{
-        let callDeleteSlave = await SlaveService.deleteSlave(req) 
+        await SlaveService.deleteSlave(req) 
         .then((message)=>{
             return res.status(200).send({
                 status : "Ok" ,
@@ -69,19 +58,11 @@ module.exports = {
                 data : {}
             })
         });
-    })
-    .catch((message)=>{
-        return res.status(404).send({
-            status : "error" , 
-            message : "token expired or not found" ,
-            data : {}
-        })
-    })
-
+    
     },
+
+
     update : function(req,res){
-        let checkToken = token.verifyToken(req.headers["authorization"])
-        .then((message)=>{
         let updateInformation =SlaveService.updateSlave(req)
         .then((message)=>{
             return res.status(200).send({
@@ -97,14 +78,6 @@ module.exports = {
                 data:{}
             })
         });
-    })
-    .catch((message)=>{
-        return res.status(404).send({
-            status : "error",
-            message :  "token expired or not found" ,
-            data : {}
-        })
-    })
     },
 
     data : function(req,res){

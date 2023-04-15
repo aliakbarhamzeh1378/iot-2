@@ -41,7 +41,6 @@ client.on("message", async (topic, message, packet) => {
             }else{
                 let each_data = data[i].replace("s:", "").split(",");
                 let findSlaveId = await slaves.findOne({ slaveId: ('s' + each_data[0]).toString()});
-                // console.log(findSlaveId);
                 if (findSlaveId != null) {
                     await SlaveService.addSensorData(each_data , findSlaveId._id)
                     .then((message)=>{
