@@ -66,7 +66,7 @@ class MiddleWare {
     if (token) {
       var privateKey = process.env.SECRET_KEY
       jwt.verify(token, privateKey, {
-        ignoreExpiration: true
+        // ignoreExpiration: true
       }, (err, decoded) => {
         if (err) {
           return res.status(403).send({
@@ -74,7 +74,6 @@ class MiddleWare {
             message: "login to your account",
           });
         } else {
-          console.log(decoded)
           req.decoded = decoded;
           next();
         }

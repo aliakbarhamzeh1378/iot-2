@@ -7,7 +7,8 @@ let token=new Token();
 module.exports = {
 
   delete : async function(req,res){
-      PlantService.deletePlant(req.params.id)
+    let userId=req.decoded.id
+      PlantService.deletePlant(req.params.id,userId)
       .then((message) => {
           res.status(200).send({
           status: "ok",
@@ -17,14 +18,15 @@ module.exports = {
       }).catch((message) => {
           res.status(401).send({
           status: "error",
-          message: "there isn't any plant with this id",
+          message: "there isn't any plant by this id",
           data: {},
           });
       });
   },
 
   update : async function(req,res){
-      let p = PlantService.updatePlant(req.body, req.params.id);
+      let p = PlantService.updatePlant(req.body, req.params.id,req.decoded.id);
+      console.log(req.params.id,req.decoded.id)
       p.then((message) => {
         res.status(200).send({
           status: "Ok",
@@ -39,6 +41,8 @@ module.exports = {
         });
       });
   },
+
+  
   listOfPlants: async (req, res, next) => {
     const search = req.query.search;
     console.log(req.decoded)

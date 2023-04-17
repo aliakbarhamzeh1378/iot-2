@@ -32,11 +32,10 @@ class PlantService {
       });
    }
 
-  static deletePlant(plantId) {
+  static deletePlant(plantId,userId) {
     let p = new Promise((resolve, reject) => {
-      plants.findByIdAndDelete(plantId, function (err, result) {
+      plants.findOneAndDelete({id:plantId,user_id:userId}, function (err, result) {
         if (result) {
-          console.log(result)
           resolve(result);
         } else {
           reject("Failed");
@@ -47,10 +46,10 @@ class PlantService {
     return p;
   }
 
-  static updatePlant(body, plantId) {
+  static updatePlant(body, plantId,userId) {
     let plant = new Promise((resolve, reject) => {
-      plants.findByIdAndUpdate(
-        plantId,
+      plants.findOneAndUpdate(
+        {id:plantId,user_id:userId},
         {
           name: body.name,
           image: body.image,

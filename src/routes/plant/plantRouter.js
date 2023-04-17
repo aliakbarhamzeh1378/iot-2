@@ -30,14 +30,14 @@ router.post("/new", upload.single("image"),
 
 router.delete(
     "/remove/:id",
-    [MiddleWare.checkToken, MiddleWare.checkFullPermission],
+    [MiddleWare.checkToken],
 
     plantController.delete
 );
 
 router.put(
     "/update/:id",
-    [MiddleWare.existToken, MiddleWare.checkFullPermission],
+    [MiddleWare.checkToken],
     plantController.update
 );
 module.exports = router;
