@@ -74,12 +74,8 @@ class MiddleWare {
             message: "login to your account",
           });
         } else {
-<<<<<<< HEAD
           console.log('----------------')
          
-=======
-          console.log(decoded)
->>>>>>> f53ffd022e8cd066a244360e9a10c0d47fa9896f
           
           req.decoded = decoded;
           next();
