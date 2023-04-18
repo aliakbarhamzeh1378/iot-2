@@ -18,11 +18,6 @@ router.post("/new",
     [MiddleWare.checkToken],
     upload.single("image"), plantController.createNewPlant);
 
-router.get("/lists",
-    [MiddleWare.checkToken],
-    plantController.listOfPlants);
-
-
 
 router.post("/new", upload.single("image"),
     [MiddleWare.checkFullPermission],
