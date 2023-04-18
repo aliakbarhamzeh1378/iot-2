@@ -14,9 +14,6 @@ router.get("/lists/:plantId",
     [MiddleWare.checkToken],
     plantController.findPlantById);
 
-router.post("/new",
-    [MiddleWare.checkToken],
-    upload.single("image"), plantController.createNewPlant);
 
 
 router.post("/new", upload.single("image"),

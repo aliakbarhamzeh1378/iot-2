@@ -62,13 +62,10 @@ module.exports = {
     }
   },
 
+
   findPlantById: (req, res, next) => {
     let plantId = req.params.plantId;
-    console.log(plantId)
-
-    plants.findOne({_id:plantId}, (result, err) => {
-      // console.log(result);
-      // console.log(err)
+    plants.findOne({_id:plantId,user_id:req.decoded.id},(err, result) => {
       if (result) {
         res.status(200).send({
           status: "ok",
@@ -84,6 +81,8 @@ module.exports = {
       }
     });
   },
+
+
  createNewPlant : async function(req,res){
   console.log(req.decoded)
     if(req.file==undefined){
