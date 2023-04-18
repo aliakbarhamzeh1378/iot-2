@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const slaveSchema = new mongoose.Schema({
+    userId :{
+        type : mongoose.Types.ObjectId 
+    },
     slaveId : {
         type : String,
         required : true ,
@@ -16,11 +19,7 @@ const slaveSchema = new mongoose.Schema({
     plantId :{
         type : mongoose.Types.ObjectId , 
         ref : "plants" ,
-    },
-    userId :{
-        type : mongoose.Types.ObjectId , 
-    }
-   
+    }   
 });
 
 slaves = mongoose.model("slaves" , slaveSchema) ;

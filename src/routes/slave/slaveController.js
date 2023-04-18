@@ -10,7 +10,8 @@ module.exports = {
         if (plantID!=null){
             let findSlave = await slaves.findOne({slaveId : req.body.slaveId})
             if(findSlave==null){
-                let craeteSlave = SlaveService.addNewSlave(req ,plantID)
+                let userId = req.decoded.id
+                SlaveService.addNewSlave(req ,plantID,userId)
                 .then((message)=>{
                     return res.status(201).send({
                         status : "Ok" ,
@@ -63,7 +64,7 @@ module.exports = {
 
 
     update : function(req,res){
-        let updateInformation =SlaveService.updateSlave(req)
+        SlaveService.updateSlave(req)
         .then((message)=>{
             return res.status(200).send({
                 status : "Ok" ,

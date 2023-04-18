@@ -12,11 +12,11 @@ class PlantService {
         foundPlants.push({
           name: plant.name,
           image: plant.image,
-          objId: plant._id,
+          objId: plant._id
         });
       }
     });
-    return foundPlants
+    return foundPlants;
   }
 
 
