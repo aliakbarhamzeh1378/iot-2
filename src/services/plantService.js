@@ -34,7 +34,7 @@ class PlantService {
 
   static deletePlant(plantId,userId) {
     let p = new Promise((resolve, reject) => {
-      plants.findOneAndDelete({id:plantId,user_id:userId}, function (err, result) {
+      plants.findOneAndDelete({_id:plantId,user_id:userId}, function (err, result) {
         if (result) {
           resolve(result);
         } else {
@@ -49,7 +49,7 @@ class PlantService {
   static updatePlant(body, plantId,userId) {
     let plant = new Promise((resolve, reject) => {
       plants.findOneAndUpdate(
-        {id:plantId,user_id:userId},
+        {_id:plantId,user_id:userId},
         {
           name: body.name,
           image: body.image,
@@ -58,6 +58,7 @@ class PlantService {
           moisture: body.moisture,
           explanation: body.explanation,
         },
+        null,
         function (err, result) {
           if (result) {
             resolve(result);
