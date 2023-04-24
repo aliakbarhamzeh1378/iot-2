@@ -28,6 +28,7 @@ router.post(
 
 router.post(
   "/reset-password",
+  [MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
   authController.resetPass
 ); 
 

@@ -30,7 +30,7 @@ client.on("message", async (topic, message, packet) => {
         for (let i = 0 ; i < data.length; i++){
             if(data[i][0]==='"'){
                 try{
-                    let newSave = await masterSavedSlaves.create({
+                    await masterSavedSlaves.create({
                         time : Date.now(),
                         value : data[i]
                     });

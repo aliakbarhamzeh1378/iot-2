@@ -7,10 +7,8 @@ class Token {
         expiresIn: process.env.TOKEN_EXPIRE_TIME
       })
       if (token) {
-        console.log(token)
         resolve(token)
       } else {
-        console.log('failes')
         reject("failed")
         
       }

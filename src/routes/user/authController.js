@@ -127,11 +127,13 @@ module.exports = {
       let randomHash = await AuthService.hashPassword("\\w+")
       AuthService.deleteHash(email);
       AuthService.addHash(email, randomHash);
+      let userToken=await token.generateToken({email:email});
+      console.log(userToken)
       send_email(
         "sendLink.html",
         (replacement = {
           name: user.fullname,
-          link: `https://test.com/accounts/reset-password?hash=${randomHash}`,
+          link: `http://127.0.0.1:3000/accounts/reset-password?hash=${randomHash}`,
         }),
         email,
         "Reset password"
@@ -139,7 +141,9 @@ module.exports = {
       res.status(200).send({
         status: "200",
         message: "the message is sent to your email address",
-        data: {},
+        data: {
+          token:userToken
+        },
       });
     } else {
       res.status(404).send({
