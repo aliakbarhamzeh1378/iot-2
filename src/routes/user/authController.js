@@ -97,7 +97,7 @@ module.exports = {
   },
 
   resetPass: async (req, res) => {
-    let hash = await AuthService.hashPassword(req.body.password);
+      let hash = await AuthService.hashPassword(req.body.password);
     let p = token.verifyToken(req.body.token);
     p.then(async (message) => {
       AuthService.find_Update(message.email, { password: hash })
@@ -113,11 +113,29 @@ module.exports = {
           message: "the token was not correct or expired",
           data: {},
         });
-        console.log(message)
 
-      });
+      });   
+    
   },
 
+
+  getResetPass:async(req,res)=>{
+    let findHash=await hashs.findOne({hash:req.query.hash});
+    if(Date.now()-findHash.time_created >=172,800,000 ){
+      res.status(404).send({
+        status: "error",
+        message: "hash has been expired.try again",
+        data: {},
+      });
+    }
+    else{
+      res.status(200).send({
+        status: "ok",
+        message: "reset your password",
+        data: {},
+      });
+    }
+  },
 
 
   forgetPassword: async (req, res, next) => {

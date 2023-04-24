@@ -21,11 +21,8 @@ class Token {
     return new Promise((resolve, reject) => {
       var decoded = jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
         if (err) {
-
-          console.log(err)
           reject(err);
         } else {
-          console.log(decodedToken)
           resolve(decodedToken);
         }
       });
