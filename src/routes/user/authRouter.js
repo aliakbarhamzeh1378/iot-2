@@ -39,7 +39,7 @@ router.get(
 
 router.put(
   "/edit-profile",
-  [MiddleWare.existToken, MiddleWare.confirmPassCheck],
+  [MiddleWare.checkToken],
   authController.editProfile
 );
 

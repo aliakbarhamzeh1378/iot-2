@@ -173,32 +173,24 @@ module.exports = {
   },
 
   editProfile: async (req, res, next) => {
-    let user_token = req.headers["authorization"];
-    let decodedToken = token.verifyToken(user_token)
-      .then(async (message) => {
-        console.log(message)
-        let hashPass =
-          req.body.password.length < 8
-            ? message.password
-            : await AuthService.hashPassword(req.body.password);
-        let fullname = null ? message.fullname : req.body.fullname;
-        AuthService.find_Update(message.email, {
-          fullname: fullname,
-          password: hashPass,
-        });
+    let user=await accounts.findOne({email:req.decoded.email});
+    let hashPass =
+      req.body.password.length < 8
+        ? user.password
+        : await AuthService.hashPassword(req.body.password);
 
-        res.status(200).send({
-          status: "Ok",
-          message: "your profile is updated",
-          data: {},
-        });
-      })
-      .catch((message) => {
-        res.status(404).send({
-          status: "error",
-          message: "token is incorrect or expired",
-          data: {},
-        });
-      });
+    console.log(hashPass)  
+    let fullname = req.body.fullname.trim().length<=0 ? user.fullname : req.body.fullname;
+    AuthService.find_Update(req.decoded.email, {
+      fullname: fullname,
+      password: hashPass,
+    });
+
+    res.status(200).send({
+      status: "Ok",
+      message: "your profile is updated",
+      data: {},
+    });
+
   },
 };
