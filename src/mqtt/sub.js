@@ -6,6 +6,8 @@ const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 const {SlaveService} = require("../services/slaveService");
+const {RedisService}=require("../services/redisService");
+const redisObj=new RedisService()
 
 try{
     mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
@@ -41,8 +43,15 @@ client.on("message", async (topic, message, packet) => {
 
             }else{
                 let each_data = data[i].replace("s:", "").split(",");
-                let findSlaveId = await slaves.findOne({ slaveId: ('s' + each_data[0]).toString()});
+                let slaveId=('s' + each_data[0]).toString();
+                let findSlaveId = await slaves.findOne({ slaveId: slaveId});
                 if (findSlaveId != null) {
+                    let keys=["temp","soil","ambient","light"];
+                    for(let x=1;x<=keys.length;x++){
+                        console.log(`${slaveId}_${keys[x-1]}`)
+                        redisObj.setData(`${slaveId}_${keys[x-1]}`,each_data[x])
+                    };
+
                     await SlaveService.addSensorData(each_data , findSlaveId._id)
                     .then((message)=>{
                         console.log(message)                    
@@ -55,3 +64,13 @@ client.on("message", async (topic, message, packet) => {
         console.log("finish")
    }
 });
+
+
+
+
+
+
+
+
+
+

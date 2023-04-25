@@ -28,12 +28,18 @@ router.post(
 
 router.post(
   "/reset-password",
+  [MiddleWare.passwordCheck,MiddleWare.confirmPassCheck],
   authController.resetPass
+); 
+
+router.get(
+  "/reset-password",
+  authController.getResetPass
 ); 
 
 router.put(
   "/edit-profile",
-  [MiddleWare.existToken, MiddleWare.confirmPassCheck],
+  [MiddleWare.checkToken],
   authController.editProfile
 );
 

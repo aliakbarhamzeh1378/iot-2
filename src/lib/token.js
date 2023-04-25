@@ -7,10 +7,8 @@ class Token {
         expiresIn: process.env.TOKEN_EXPIRE_TIME
       })
       if (token) {
-        console.log(token)
         resolve(token)
       } else {
-        console.log('failes')
         reject("failed")
         
       }
@@ -23,11 +21,8 @@ class Token {
     return new Promise((resolve, reject) => {
       var decoded = jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
         if (err) {
-
-          console.log(err)
           reject(err);
         } else {
-          console.log(decodedToken)
           resolve(decodedToken);
         }
       });
