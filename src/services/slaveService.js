@@ -4,14 +4,14 @@ const {Token} = require("../lib/token")
 const {PlantSensorData} = require("../model/sensorData")
 
 class SlaveService {
-    static async addNewSlave(req,plantId,userId){
+    static async addNewSlave(req,userId){
         let body = req.body;
             return new Promise(async(resolve , reject)=>{
                 let newSlave = await new slaves({
                     slaveId : body.slaveId ,
                     slaveName : body.slaveName ,
                     masterId : body.masterId ,
-                    plantId : plantId ,
+                    plantId : body.plantId ,
                     userId :userId
                 });
                 if(newSlave.save()){

@@ -17,7 +17,7 @@ const slaveSchema = new mongoose.Schema({
         required : true 
     },
     plantId :{
-        type : mongoose.Types.ObjectId , 
+        type : String, 
         ref : "plants" ,
     }   
 });
