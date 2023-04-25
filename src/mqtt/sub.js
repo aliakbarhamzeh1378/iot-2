@@ -29,8 +29,9 @@ client.on("message", async (topic, message, packet) => {
         let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
         for (let i = 0 ; i < data.length; i++){
             if(data[i][0]==='"'){
+                console.log(data[i])
                 try{
-                    let newSave = await masterSavedSlaves.create({
+                    await masterSavedSlaves.create({
                         time : Date.now(),
                         value : data[i]
                     });

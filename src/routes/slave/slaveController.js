@@ -6,12 +6,10 @@ const token = new Token;
 module.exports = {
     
     add : async function(req,res){
-        let plantID = await plants.findById(req.body.plantId);
-        if (plantID!=null){
             let findSlave = await slaves.findOne({slaveId : req.body.slaveId})
             if(findSlave==null){
                 let userId = req.decoded.id
-                SlaveService.addNewSlave(req ,plantID,userId)
+                SlaveService.addNewSlave(req ,userId)
                 .then((message)=>{
                     return res.status(201).send({
                         status : "Ok" ,
@@ -33,13 +31,6 @@ module.exports = {
                     data : findSlave
                 })
             }
-        }else{
-            return res.status(404).send({
-                status : "error" , 
-                message : "There isn't such plant" ,
-                data : {}
-            })    
-        }
     },
 
 
@@ -84,7 +75,7 @@ module.exports = {
     data : function(req,res){
         let checkToken = token.verifyToken(req.headers["authorization"])
         .then((message)=>{
-            let getDataOfSlave = SlaveService.getData(req)
+            SlaveService.getData(req)
             .then((message)=>{
                 return res.status(200).send({
                     status : "Ok" ,
