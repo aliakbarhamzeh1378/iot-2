@@ -151,7 +151,7 @@ module.exports = {
         "sendLink.html",
         (replacement = {
           name: user.fullname,
-          link: `http://127.0.0.1:3000/accounts/reset-password?hash=${randomHash}`,
+          link: `http://178.63.147.27:3000/accounts/reset-password?hash=${randomHash}`,
         }),
         email,
         "Reset password"

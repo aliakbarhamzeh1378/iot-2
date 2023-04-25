@@ -46,17 +46,19 @@ class PlantService {
     return p;
   }
 
-  static updatePlant(body, plantId,userId) {
-    let plant = new Promise((resolve, reject) => {
+
+  static updatePlant(req, plantId,userId) {
+    let plant = new Promise(async(resolve, reject) => {
+      let plantInfo=await plants.findOne({_id:plantId,user_id:userId})
       plants.findOneAndUpdate(
         {_id:plantId,user_id:userId},
         {
-          name: body.name,
-          image: body.image,
-          temperature: body.temperature,
-          light: body.light,
-          moisture: body.moisture,
-          explanation: body.explanation,
+          name: req.body.name.trim().length<=0 ? plantInfo.name :req.body.name,
+          image: req.file==undefined?plantInfo.image : req.file.path,
+          temperature: req.body.temperature.trim().length<=0 ? plantInfo.temperature :req.body.temperature,
+          light: req.body.light.trim().length<=0 ? plantInfo.light :req.body.light,
+          moisture: req.body.moisture.trim().length<=0 ? plantInfo.moisture :req.body.moisture,
+          explanation: req.body.explanation.trim().length<=0 ? plantInfo.explanation :req.body.explanation,
         },
         null,
         function (err, result) {

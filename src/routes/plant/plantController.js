@@ -25,8 +25,7 @@ module.exports = {
   },
 
   update : async function(req,res){
-      let p = PlantService.updatePlant(req.body, req.params.id,req.decoded.id);
-      console.log(req.params.id,req.decoded.id)
+      let p =PlantService.updatePlant(req, req.params.id,req.decoded.id);
       p.then((message) => {
         res.status(200).send({
           status: "Ok",

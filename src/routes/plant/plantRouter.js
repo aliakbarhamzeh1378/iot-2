@@ -17,7 +17,7 @@ router.get("/lists/:plantId",
 
 
 router.post("/new", upload.single("image"),
-    [MiddleWare.checkFullPermission],
+    [MiddleWare.checkToken],
     plantController.createNewPlant);
 
 router.delete(
@@ -29,6 +29,7 @@ router.delete(
 
 router.put(
     "/update/:id",
+    upload.single("image"),
     [MiddleWare.checkToken],
     plantController.update
 );
