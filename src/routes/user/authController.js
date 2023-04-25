@@ -97,45 +97,41 @@ module.exports = {
   },
 
   resetPass: async (req, res) => {
+    let findHash = await hashs.findOne({ hash: req.query.hash });
+    console.log(findHash)
+    console.log(Date.now() - findHash.time_created)
+    if (Date.now() - findHash.time_created <= 172, 800, 000) {
       let hash = await AuthService.hashPassword(req.body.password);
-    let p = token.verifyToken(req.body.token);
-    p.then(async (message) => {
-      AuthService.find_Update(message.email, { password: hash })
-      res.status(200).send({
-        status: "Ok",
-        message: "your password was reset successfully",
-        data: {},
-      })
-    })
-      .catch((message) => {
-        res.status(406).send({
-          status: "error",
-          message: "the token was not correct or expired",
+      let p = token.verifyToken(req.body.token);
+      p.then(async (message) => {
+        AuthService.find_Update(message.email, { password: hash })
+        res.status(200).send({
+          status: "Ok",
+          message: "your password was reset successfully!",
           data: {},
+        })
+      })
+        .catch((message) => {
+          res.status(406).send({
+            status: "error",
+            message: "the token was not correct or expired.",
+            data: {},
+          });
+
         });
 
-      });   
-    
-  },
-
-
-  getResetPass:async(req,res)=>{
-    let findHash=await hashs.findOne({hash:req.query.hash});
-    if(Date.now()-findHash.time_created >=172,800,000 ){
-      res.status(404).send({
+    }
+    else {
+      res.status(403).send({
         status: "error",
-        message: "hash has been expired.try again",
+        message: "your reset time has been expired,try again.",
         data: {},
       });
     }
-    else{
-      res.status(200).send({
-        status: "ok",
-        message: "reset your password",
-        data: {},
-      });
-    }
+
   },
+
+
 
 
   forgetPassword: async (req, res, next) => {
@@ -145,7 +141,7 @@ module.exports = {
       let randomHash = await AuthService.hashPassword("\\w+")
       AuthService.deleteHash(email);
       AuthService.addHash(email, randomHash);
-      let userToken=await token.generateToken({email:email});
+      let userToken = await token.generateToken({ email: email });
       console.log(userToken)
       send_email(
         "sendLink.html",
@@ -160,7 +156,7 @@ module.exports = {
         status: "200",
         message: "the message is sent to your email address",
         data: {
-          token:userToken
+          token: userToken
         },
       });
     } else {
@@ -173,14 +169,14 @@ module.exports = {
   },
 
   editProfile: async (req, res, next) => {
-    let user=await accounts.findOne({email:req.decoded.email});
+    let user = await accounts.findOne({ email: req.decoded.email });
     let hashPass =
       req.body.password.length < 8
         ? user.password
         : await AuthService.hashPassword(req.body.password);
 
-    console.log(hashPass)  
-    let fullname = req.body.fullname.trim().length<=0 ? user.fullname : req.body.fullname;
+    console.log(hashPass)
+    let fullname = req.body.fullname.trim().length <= 0 ? user.fullname : req.body.fullname;
     AuthService.find_Update(req.decoded.email, {
       fullname: fullname,
       password: hashPass,
