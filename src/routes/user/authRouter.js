@@ -41,5 +41,7 @@ router.put(
 );
 
 
+router.post("/google-signup",authController.googleVerify)  ;
+
 
 module.exports = router;
