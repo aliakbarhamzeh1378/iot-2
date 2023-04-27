@@ -6,6 +6,7 @@ const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 const {SlaveService} = require("../services/slaveService");
+let topics = ["m003" , "m001"];
 
 try{
     mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
@@ -30,7 +31,7 @@ client.on("message", async (topic, message, packet) => {
         for (let i = 0 ; i < data.length; i++){
             if(data[i][0]==='"'){
                 try{
-                    let newSave = await masterSavedSlaves.create({
+                    await masterSavedSlaves.create({
                         time : Date.now(),
                         value : data[i]
                     });
@@ -42,6 +43,8 @@ client.on("message", async (topic, message, packet) => {
                 let each_data = data[i].replace("s:", "").split(",");
                 let findSlaveId = await slaves.findOne({ slaveId: ('s' + each_data[0]).toString()});
                 if (findSlaveId != null) {
+                    console.log(each_data);
+
                     await SlaveService.addSensorData(each_data , findSlaveId._id)
                     .then((message)=>{
                         console.log(message)                    
