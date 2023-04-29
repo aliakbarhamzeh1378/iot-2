@@ -1,10 +1,16 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://broker.emqx.io:1883");
 const topicName = "m003/subscribe" ;
+const {logicParse}=require("../logic/parseLogic");
 
-client.on("connect" , ()=>{
+let x=async()=>{
+    
+}
+x()
+client.on("connect" , async()=>{
     console.log("client connected");
-    const payload = {s1:"001" , s2:"002" , s3:"003"};
+    let command=await logicParse();
+    const payload = {command};
     client.publish(topicName , JSON.stringify(payload) ,{qos : 0 , retain : true} , (err ,packet)=>{
         if(err){
             console.log(err , "Mqtt publish packet");

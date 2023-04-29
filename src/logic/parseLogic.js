@@ -1,13 +1,24 @@
 let fs=require("fs");
 let {RedisService}=require("../services/redisService");
 let redisObj=new RedisService();
-let x=require("./logicText.json");
-let insideIf="";
-let result="";
-let redisCondition=[];
-let condition="";
+let jsonTxt=require("./logicText.json");
+
+
+function writeToFile(data){
+    let writer=fs.createWriteStream("./text.js",{
+        flags:"w"
+    }).on("error",function(error){
+        console.log(error)
+    })
+    writer.write(data)
+}
+
+
 async function logicParse(){
-    for (let field of x){
+    let insideIf="";
+    let result="";
+    let redisCondition=[];
+    for (let field of jsonTxt){
         let slaveId=Object.keys(field).join("");
         for(let eachValue of Object.values(field).pop()){
             let editedvalues=Object.values(eachValue);
@@ -28,21 +39,23 @@ async function logicParse(){
             });
     
             let redisResult=await redisObj.getData(`${slaveId}_${editedvalues[0]}`);
-            if(redisCondition.includes(`const ${editedvalues[0]}=${redisResult}`)==false){
-                redisCondition.push(`const ${editedvalues[0]}=${redisResult}`)
+            let equalation=`const ${editedvalues[0]}=${redisResult}`
+            if(redisCondition.includes(equalation)==false){
+                redisCondition.push(equalation)
             }
             insideIf+=editedvalues.join(" ")
         }
     
     }
-    let jsCondition=redisCondition.join("\n")+`\nif(${insideIf}){console.log("${result}")}`;
-    console.log(jsCondition)
-    let writer=fs.createWriteStream("./text.js",{
-        flags:"w"
-    }).on("error",function(error){
-        console.log(error)
-    })
-    writer.write(jsCondition)
+    let jsCondition=redisCondition.join("\n")+`\nif(${insideIf}){
+         "${result}"
+    }`;
+    // console.log(eval(jsCondition))
+    return eval(jsCondition);
+    
+    // writeToFile(jsCondition)
+
 }
 
-logicParse()
+
+module.exports={logicParse}
