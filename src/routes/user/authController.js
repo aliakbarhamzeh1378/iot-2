@@ -96,43 +96,6 @@ module.exports = {
     });
   },
 
-  resetPass: async (req, res) => {
-    let findHash = await hashs.findOne({ hash: req.query.hash });
-    console.log(findHash)
-    console.log(Date.now() - findHash.time_created)
-    if (Date.now() - findHash.time_created <= 172, 800, 000) {
-      let hash = await AuthService.hashPassword(req.body.password);
-      let p = token.verifyToken(req.body.token);
-      p.then(async (message) => {
-        AuthService.find_Update(message.email, { password: hash })
-        res.status(200).send({
-          status: "Ok",
-          message: "your password was reset successfully!",
-          data: {},
-        })
-      })
-        .catch((message) => {
-          res.status(406).send({
-            status: "error",
-            message: "the token was not correct or expired.",
-            data: {},
-          });
-
-        });
-
-    }
-    else {
-      res.status(403).send({
-        status: "error",
-        message: "your reset time has been expired,try again.",
-        data: {},
-      });
-    }
-
-  },
-
-
-
 
   forgetPassword: async (req, res, next) => {
     const email = req.body.email;
@@ -167,6 +130,46 @@ module.exports = {
       });
     }
   },
+
+
+
+
+  resetPass: async (req, res) => {
+    let findHash = await hashs.findOne({ hash: req.query.hash });
+    console.log(findHash)
+    console.log(Date.now() - findHash.time_created)
+    if (Date.now() - findHash.time_created <= 172800000) {
+      let hash = await AuthService.hashPassword(req.body.password);
+      let p = token.verifyToken(req.body.token);
+      p.then(async (message) => {
+        AuthService.find_Update(message.email, { password: hash })
+        res.status(200).send({
+          status: "Ok",
+          message: "your password was reset successfully!",
+          data: {},
+        })
+      })
+        .catch((message) => {
+          res.status(406).send({
+            status: "error",
+            message: "the token was not correct or expired.",
+            data: {},
+          });
+
+        });
+
+    }
+    else {
+      res.status(403).send({
+        status: "error",
+        message: "your reset time has been expired,try again.",
+        data: {},
+      });
+    }
+
+  },
+
+
 
   editProfile: async (req, res, next) => {
     let user = await accounts.findOne({ email: req.decoded.email });
