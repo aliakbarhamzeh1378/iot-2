@@ -21,25 +21,34 @@ module.exports = {
       })
     } else {
       let hashed = await AuthService.hashPassword(pass)
-      let user = AuthService.addNewPerson(req.body, hashed);
-      let userToken = token.generateToken({ email: user.email, id: user._id, permission: user.permission });
-      userToken.then((token) => {
-        send_email(
-          "sendLink.html",
-          (replacement = {
-            name: req.body.fullname,
-            link: `http://178.63.147.27:3000/accounts/verify?token=${token}`,
-          }),
-          req.body.email,
-          "Verify your account"
-        );
-        res.status(201).send({
-          status: "Ok",
+      AuthService.addNewPerson(req.body, hashed).then((user)=>{
+        let userToken = token.generateToken({ email: user.email, id: user._id, permission: user.permission });
+        userToken.then((token) => {
+          send_email(
+            "sendLink.html",
+            (replacement = {
+              name: req.body.fullname,
+              link: `http://178.63.147.27:3000/accounts/verify?token=${token}`,
+            }),
+            req.body.email,
+            "Verify your account"
+          );
+          return res.status(201).send({
+            status: "Ok",
+            message:
+              "please verify your account by follow the link that sent to your email address",
+            data: {}
+          });
+        })
+      }).catch((e)=>{
+        return res.status(403).send({
+          status: "error",
           message:
-            "please verify your account by follow the link that sent to your email address",
+            "can't register your account,try again later!",
           data: {}
         });
       })
+     
     }
   },
 
@@ -48,7 +57,6 @@ module.exports = {
     const password = req.body.password;
     let p = AuthService.loginCheck(email, password);
     p.then(async (message) => {
-      console.log(message)
       let userToken = await token.generateToken({ email: message.email, id: message._id, permission: message.permission }).then((data) => {
         return data;
       }).catch((error) => { throw error });
@@ -81,7 +89,6 @@ module.exports = {
     const user_token = req.query.token;
     let p = token.verifyToken(user_token);
     p.then(async (message) => {
-      console.log(message.email)
       AuthService.find_Update(message.email, { status: "active" });
       return res.status(200).send({
         status: "Ok",
