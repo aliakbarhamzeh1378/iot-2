@@ -97,24 +97,6 @@ module.exports = {
     });
   },
 
-  signOut:(req,res,next)=>{
-    try{
-      if(req.headers['authorization']){
-        req.headers['authorization']=null;
-        return res.status(200).send({
-          status:"ok",
-          message:"You've been signed out!",
-          data:{}
-        })
-      }
-    }catch(err){
-      return res.status(200).send({
-        status:"ok",
-        message:err.message,
-        data:{}
-      })
-    }
-  },
 
   forgetPassword: async (req, res, next) => {
     const email = req.body.email;
