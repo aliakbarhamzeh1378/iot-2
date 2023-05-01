@@ -52,7 +52,7 @@ module.exports = {
       let userToken = await token.generateToken({ email: message.email, id: message._id, permission: message.permission }).then((data) => {
         return data;
       }).catch((error) => { throw error });
-      res.status(200).send({
+      return res.status(200).send({
         status: "Ok",
         message: "welcome to your page",
         data: {
@@ -62,13 +62,13 @@ module.exports = {
 
     }).catch((message) => {
       if (message == 403) {
-        res.status(403).send({
+        return res.status(403).send({
           status: "error",
           message: "your account is deactivated.verify your account",
           data: {},
         });
       } else {
-        res.status(401).send({
+        return res.status(401).send({
           status: "error",
           message: "email or password is wrong",
           data: {},
@@ -81,6 +81,7 @@ module.exports = {
     const user_token = req.query.token;
     let p = token.verifyToken(user_token);
     p.then(async (message) => {
+      console.log(message.email)
       AuthService.find_Update(message.email, { status: "active" });
       return res.status(200).send({
         status: "Ok",
@@ -96,6 +97,24 @@ module.exports = {
     });
   },
 
+  signOut:(req,res,next)=>{
+    try{
+      if(req.headers['authorization']){
+        req.headers['authorization']=null;
+        return res.status(200).send({
+          status:"ok",
+          message:"You've been signed out!",
+          data:{}
+        })
+      }
+    }catch(err){
+      return res.status(200).send({
+        status:"ok",
+        message:err.message,
+        data:{}
+      })
+    }
+  },
 
   forgetPassword: async (req, res, next) => {
     const email = req.body.email;
@@ -115,16 +134,16 @@ module.exports = {
         email,
         "Reset password"
       );
-      res.status(200).send({
-        status: "200",
+      return res.status(200).send({
+        status: "ok",
         message: "the message is sent to your email address",
         data: {
           token: userToken
         },
       });
     } else {
-      res.status(404).send({
-        status: "404",
+      return res.status(404).send({
+        status: "error",
         message: "email not found",
         data: {},
       });
@@ -143,14 +162,14 @@ module.exports = {
       let p = token.verifyToken(req.body.token);
       p.then(async (message) => {
         AuthService.find_Update(message.email, { password: hash })
-        res.status(200).send({
+        return res.status(200).send({
           status: "Ok",
           message: "your password was reset successfully!",
           data: {},
         })
       })
         .catch((message) => {
-          res.status(406).send({
+          return res.status(406).send({
             status: "error",
             message: "the token was not correct or expired.",
             data: {},
@@ -160,7 +179,7 @@ module.exports = {
 
     }
     else {
-      res.status(403).send({
+      return res.status(403).send({
         status: "error",
         message: "your reset time has been expired,try again.",
         data: {},
@@ -193,7 +212,7 @@ module.exports = {
 
   },
 
-  googleVerify:async (req, res) => {         
+  googleVerify: async (req, res) => {
     let DB = [];
     try {
       if (req.body.credential) {
@@ -202,18 +221,18 @@ module.exports = {
 
         if (verificationResponse.error) {
           return res.status(400).send({
-            status:"error",
-            message:"there is an error" ,
-            data:verificationResponse.error
+            status: "error",
+            message: "there is an error",
+            data: verificationResponse.error
           });
         }
-  
+
         const profile = verificationResponse?.payload;
-  
+
         DB.push(profile);
-  
+
         res.status(201).send({
-          status:"ok",
+          status: "ok",
           message: "Signup was successful",
           user: {
             firstName: profile?.given_name,
@@ -234,5 +253,5 @@ module.exports = {
   }
 
 
-  
+
 };

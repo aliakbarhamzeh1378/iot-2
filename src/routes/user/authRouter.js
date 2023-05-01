@@ -14,6 +14,11 @@ router.get(
   authController.verifyUser
 );
 
+router.post("/signOut",
+[MiddleWare.checkToken],
+authController.signOut)
+
+
 router.post(
   "/forget-password",
   [MiddleWare.emptyCheck, MiddleWare.mailCheck],

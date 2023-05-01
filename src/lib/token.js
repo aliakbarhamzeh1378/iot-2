@@ -19,7 +19,7 @@ class Token {
 
   verifyToken(token) {
     return new Promise((resolve, reject) => {
-      var decoded = jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
+      jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
         if (err) {
           reject(err);
         } else {
