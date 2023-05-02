@@ -1,11 +1,8 @@
 let jwt = require("jsonwebtoken");
 let bcrypt  =require("bcrypt");
 const { accounts } = require("../model/account");
-let {Validation} = require("../lib/validation");
 let {Token} = require("../lib/token");
-const mongoose = require("mongoose");
 const { hashs } = require("../model/hash");
-//mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
 const token = new Token();
 
 class AuthService {

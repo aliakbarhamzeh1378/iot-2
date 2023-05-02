@@ -7,11 +7,12 @@ const { Validation } = require("../../lib/validation");
 const { send_email } = require("../../lib/sendEmail");
 const { hashs } = require("../../model/hash");
 
+
 module.exports = {
 
   registerUser: async function (req, res) {
-    let pass = req.body.password
-    let email = req.body.email
+    let pass = req.body.password.trim();
+    let email = req.body.email.trim();
     let existing = await Validation.existToDB(email);
     if (existing == true) {
       res.status(406).send({
@@ -53,8 +54,8 @@ module.exports = {
   },
 
   loginUser: async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.email.trim();
+    const password = req.body.password.trim();
     let p = AuthService.loginCheck(email, password);
     p.then(async (message) => {
       let userToken = await token.generateToken({ email: message.email, id: message._id, permission: message.permission }).then((data) => {
@@ -96,6 +97,14 @@ module.exports = {
         data: {},
       });
     }).catch((message) => {
+      jwt.verify(user_token, process.env.SECRET_KEY,{
+        ignoreExpiration:true
+      },async function(err,decoded){
+        if(decoded){
+          console.log(decoded.email);
+          await accounts.findOneAndDelete({email:decoded.email,status:"deactive"});
+        }
+      });
       return res.status(406).send({
         status: "error",
         message: "the token is not correct or expired",
@@ -106,7 +115,7 @@ module.exports = {
 
 
   forgetPassword: async (req, res, next) => {
-    const email = req.body.email;
+    const email = req.body.email.trim();
     let user = await Validation.existToDB(email);
     if (user == true) {
       let randomHash = await AuthService.hashPassword("\\w+")
