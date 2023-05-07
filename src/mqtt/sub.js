@@ -1,8 +1,8 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://broker.emqx.io:1883");
-const topicName = "m003/publish";
+const topicName = "m001/publish";
 const { slaves } = require("../model/slave");
-const { PlantSensorData } = require("../model/sensorData");
+// const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 const {SlaveService} = require("../services/slaveService");
@@ -42,24 +42,31 @@ client.on("message", async (topic, message, packet) => {
                 };
 
             }else{
-                let each_data = data[i].replace("s:", "").split(",");
-                let slaveId=('s' + each_data[0]).toString();
-                let findSlaveId = await slaves.findOne({ slaveId: slaveId});
-                if (findSlaveId != null) {
-                    let keys=["temp","soil","ambient","light"];
-                    for(let x=1;x<=keys.length;x++){
-                        console.log(`${slaveId}_${keys[x-1]}`)
-                        redisObj.setData(`${slaveId}_${keys[x-1]}`,each_data[x])
-                    };
-
-                    await SlaveService.addSensorData(each_data , findSlaveId._id)
-                    .then((message)=>{
-                        console.log(message)                    
-                    }).catch((e)=>{
-                        console.log(e)
-                    })
+                for(let each_data of data){ 
+                    let eachData = each_data.replace("s:", "s").split(","); 
+                    let slaveId=eachData[0].toString();
+                    console.log(slaveId)
+                    slaves.findOne({slaveId: slaveId},async function(err,findSlave){
+                        if(err){
+                            console.log("can't find")
+                        }
+                        else{
+                            console.log(findSlave);
+                            redisObj.setData(eachData,slaveId);
+                            
+                            SlaveService.addSensorData(eachData , findSlave._id)
+                            // .then((message)=>{
+                            //     console.log(message)                    
+                            // }).catch((e)=>{
+                            //     console.log(e)
+                            // })
+                        }
+                    }); 
+                    console.log(eachData)             
+                  
+                }
                 };
-            } 
+            
       };
         console.log("finish")
    }

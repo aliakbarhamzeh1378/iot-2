@@ -74,11 +74,12 @@ class SlaveService {
             }
             )
         })
-    };
+    }
 
     
     static addSensorData(each_data , slaveId){
-        let data = new Promise((resolve, reject) => {
+        console.log(each_data,slaveId)
+        return new Promise((resolve, reject) => {
           PlantSensorData.findOneAndUpdate(
               { slaves: slaveId },
               {
@@ -100,7 +101,6 @@ class SlaveService {
               ,{upsert:true},
               function (error, result) {
                 if (error) {
-                  console.log(error);
                   reject(error)
                 } else {
                   resolve(result) 
@@ -108,7 +108,6 @@ class SlaveService {
             }
           )
       });
-      return data
     };
 };
 

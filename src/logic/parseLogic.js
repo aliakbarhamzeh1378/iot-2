@@ -2,7 +2,7 @@ let fs=require("fs");
 let {RedisService}=require("../services/redisService");
 let redisObj=new RedisService();
 let jsonTxt=require("./logicText.json");
-
+// let jsonData=JSON.parse(req.body)
 
 function writeToFile(data){
     let writer=fs.createWriteStream("./text.js",{
@@ -14,7 +14,7 @@ function writeToFile(data){
 }
 
 
-async function logicParse(){
+async function logicParse(jsonTxt){
     let insideIf="";
     let result="";
     let redisCondition=[];
@@ -50,12 +50,11 @@ async function logicParse(){
     let jsCondition=redisCondition.join("\n")+`\nif(${insideIf}){
          "${result}"
     }`;
-    // console.log(eval(jsCondition))
     return eval(jsCondition);
     
     // writeToFile(jsCondition)
 
 }
 
-
+logicParse(jsonTxt)
 module.exports={logicParse}
