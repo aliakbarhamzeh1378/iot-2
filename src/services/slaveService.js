@@ -78,7 +78,7 @@ class SlaveService {
 
     
     static addSensorData(each_data , slaveId){
-        console.log(each_data,slaveId)
+        // console.log(each_data,slaveId)
         return new Promise((resolve, reject) => {
           PlantSensorData.findOneAndUpdate(
               { slaves: slaveId },

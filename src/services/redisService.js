@@ -23,7 +23,7 @@ class RedisService {
             for (let x = 1; x <= this.keys.length; x++) {
               
                 try {
-                    console.log(`${slaveId}_${this.keys[x - 1]}`, data[x])
+                    // console.log(`${slaveId}_${this.keys[x - 1]}`, data[x])
                     await this.client.set(`${slaveId}_${this.keys[x - 1]}`, data[x]);
                 }
                 catch (e) {
