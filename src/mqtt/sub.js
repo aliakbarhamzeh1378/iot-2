@@ -43,6 +43,7 @@ client.on("message", async (topic, message, packet) => {
 
             }else{
                 for(let each_data of data){ 
+                    console.log(each_data)
                     let eachData = each_data.replace("s:", "s").split(","); 
                     let slaveId=eachData[0].toString();
                     slaves.findOne({slaveId: slaveId},async function(err,findSlave){
