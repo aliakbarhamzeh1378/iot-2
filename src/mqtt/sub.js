@@ -53,7 +53,7 @@ client.on("message", async (topic, message, packet) => {
                             Automation.saveToFile(eachData);
                             redisObj.setData(eachData,slaveId);
                             
-                            SlaveService.addSensorData(eachData , findSlave._id)
+                            // SlaveService.addSensorData(eachData , findSlave._id)
                             // .then((message)=>{
                             //     console.log(message)                    
                             // }).catch((e)=>{
@@ -67,7 +67,7 @@ client.on("message", async (topic, message, packet) => {
                 };
             
       };
-        console.log("finish")
+        console.log("finish");
    }
 });
 
