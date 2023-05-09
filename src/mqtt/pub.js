@@ -3,10 +3,6 @@ const client = mqtt.connect("mqtt://broker.emqx.io:1883");
 const topicName = "m003/subscribe" ;
 const {logicParse}=require("../logic/parseLogic");
 
-let x=async()=>{
-    
-}
-x()
 client.on("connect" , async()=>{
     console.log("client connected");
     let command=await logicParse();

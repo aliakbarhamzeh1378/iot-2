@@ -1,12 +1,13 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://broker.emqx.io:1883");
-const topicName = "m001/publish";
+const topicName = "m003/publish";
 const { slaves } = require("../model/slave");
 // const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 const {SlaveService} = require("../services/slaveService");
 const {RedisService}=require("../services/redisService");
+const {Automation}=require("../services/automationService")
 const redisObj=new RedisService()
 
 try{
@@ -31,7 +32,6 @@ client.on("message", async (topic, message, packet) => {
         let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
         for (let i = 0 ; i < data.length; i++){
             if(data[i][0]==='"'){
-                console.log(data[i])
                 try{
                     await masterSavedSlaves.create({
                         time : Date.now(),
@@ -45,13 +45,12 @@ client.on("message", async (topic, message, packet) => {
                 for(let each_data of data){ 
                     let eachData = each_data.replace("s:", "s").split(","); 
                     let slaveId=eachData[0].toString();
-                    console.log(slaveId)
                     slaves.findOne({slaveId: slaveId},async function(err,findSlave){
                         if(err){
                             console.log("can't find")
                         }
                         else{
-                            console.log(findSlave);
+                            Automation.saveToFile(eachData);
                             redisObj.setData(eachData,slaveId);
                             
                             SlaveService.addSensorData(eachData , findSlave._id)
@@ -62,7 +61,7 @@ client.on("message", async (topic, message, packet) => {
                             // })
                         }
                     }); 
-                    console.log(eachData)             
+                    // console.log(eachData)             
                   
                 }
                 };
