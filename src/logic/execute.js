@@ -7,7 +7,7 @@ let {sub}=require("../mqtt/sub");
 
 
 cron.schedule("* * * * *",()=>{
-    sub()
+    sub();
     fs.readdir(jsonFilesPath,(err,files)=>{
         if(err){
             console.log(err)

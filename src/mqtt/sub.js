@@ -17,7 +17,7 @@ try{
 };
 
 
-async function sub(){
+function sub(){
 
     client.on("connect", () => {
         console.log("connected");
@@ -80,7 +80,7 @@ async function sub(){
     //     console.log("Connection closed")
     // });
 }
-
+// sub();
 module.exports={sub}
 
 
