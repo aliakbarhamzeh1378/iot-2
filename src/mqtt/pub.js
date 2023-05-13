@@ -9,9 +9,8 @@ async function pub(jsonTxt) {
     client.on("connect", async () => {
         console.log("client connected");
         let boardData = await Automation.updateBoardData(jsonTxt);
-        const payload = {s:boardData} ;
-        console.log(payload);
-        client.publish(topicName, JSON.stringify(payload), { qos: 0, retain: true }, (err, packet) => {
+        const payload =JSON.stringify({s:boardData}).replace(/"/g, '') // develop by rozhan's love
+        client.publish(topicName, payload, { qos: 0, retain: true }, (err, packet) => {
             if (err) {
                 console.log(err, "Mqtt publish packet");
             }
@@ -28,11 +27,9 @@ async function pub(jsonTxt) {
             console.log("Network error , make sure you have an active internet connection")
         }
     });
-
-    // client.on("close" , ()=>{
-    //     console.log("Connection closed by client")
-    // })
+  
 }
+
 
 // pub(jsonTxt)
 module.exports = { pub }

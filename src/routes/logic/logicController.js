@@ -7,7 +7,7 @@ module.exports = {
         try {           
             for(let arr of logicJson){
                 const slaveId=Object.keys(arr).toString().toLowerCase();
-                Automation.saveToFile(`/home/rozhan/greenhouse/iot-2/src/routes/logic/jsonFiles/${slaveId}.json`,logicJson);
+                Automation.saveToFile(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsonFiles/${slaveId}.json`,logicJson);
             }
 
             // pub(logicJson)

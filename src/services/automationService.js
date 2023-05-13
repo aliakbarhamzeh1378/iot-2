@@ -68,9 +68,7 @@ class Automation{
             let slaveId = data[0].toLowerCase();
             let commnd = data[1].split(" ");
             try {
-                // /home/rozhan/greenhouse/iot-2/src/mqtt/s003.js
-                console.log(__dirname)
-                let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/${slaveId}.js`));
+                let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${slaveId}.js`));
                 if (commnd[0].includes("light")) {
                     if (commnd[1].toLowerCase() == "on") {
                         fileData[5] ="N"
@@ -109,7 +107,6 @@ class Automation{
                     }
                 }
                 const boardData=fileData.join(",").replace("s","");
-                console.log(boardData)
                 return boardData
         
             }

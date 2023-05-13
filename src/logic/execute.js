@@ -1,17 +1,29 @@
 let cron=require("node-cron");
 let fs=require("fs");
+let path=require("path");
+let jsonFilesPath="../mqtt/jsonFiles";
+let {pub}=require("../mqtt/pub");
+let {sub}=require("../mqtt/sub");
+
 
 cron.schedule("* * * * *",()=>{
-    fs.readdir(__dirname,(err,files)=>{
+    sub()
+    fs.readdir(jsonFilesPath,(err,files)=>{
         if(err){
             console.log(err)
         }
         else{
-            console.log(files)
             files.forEach(file=>{
-                // console.log(__dirname(file))
-                var x = require(`./${file}`)
-                console.log(x)
+                fs.readFile(path.join(jsonFilesPath,file),(err,fileData)=>{
+                    if(fileData){
+                        const jsonData = JSON.parse(fileData.toString());
+                        console.log(jsonData);
+                        pub(jsonData)
+                    }
+                    else{
+                        console.log(err);
+                    }
+                })
             })
         }
     

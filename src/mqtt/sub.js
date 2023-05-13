@@ -17,63 +17,71 @@ try{
 };
 
 
-client.on("connect", () => {
-    console.log("connected");
-    client.subscribe([topicName], (err, granted) => {
-        if (err) {
-            console.log("Can't connect");
-        }
-        console.log(`Subscribe to topic ${topicName}`);
-    })
-});
+async function sub(){
 
-client.on("message", async (topic, message, packet) => {
-    if (topic === topicName) {
-        console.log(packet.payload)
-        let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
-        for (let i = 0 ; i < data.length; i++){
-            if(data[i][0]==='"'){
-                try{
-                    await masterSavedSlaves.create({
-                        time : Date.now(),
-                        value : data[i]
-                    });
-                }catch{
-                    console.log("Can't save slaves")
-                };
+    client.on("connect", () => {
+        console.log("connected");
+        client.subscribe([topicName], (err, granted) => {
+            if (err) {
+                console.log("Can't connect");
+            }
+            console.log(`Subscribe to topic ${topicName}`);
+        })
+    });
 
-            }else{
-                for(let each_data of data){ 
-                    console.log(each_data)
-                    let eachData = each_data.replace("s:", "s").split(","); 
-                    let slaveId=eachData[0].toString();
-                    slaves.findOne({slaveId: slaveId},async function(err,findSlave){
-                        if(err){
-                            console.log("can't find")
-                        }
-                        else{
-                            const edit_slaveId=eachData[0];
-                            Automation.saveToFile(`./${edit_slaveId}.js`,eachData);
-                            redisObj.setData(eachData,slaveId);
-                            
-                            // SlaveService.addSensorData(eachData , findSlave._id)
-                            // .then((message)=>{
-                            //     console.log(message)                    
-                            // }).catch((e)=>{
-                            //     console.log(e)
-                            // })
-                        }
-                    }); 
-                    // console.log(eachData)             
-                  
-                }
-                };
-            
-      };
-        console.log("finish");
-   }
-});
+    client.on("message", async (topic, message, packet) => {
+        if (topic === topicName) {
+            console.log(typeof packet.payload)
+            let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
+            for (let i = 0 ; i < data.length; i++){
+                if(data[i][0]==='"'){
+                    try{
+                        await masterSavedSlaves.create({
+                            time : Date.now(),
+                            value : data[i]
+                        });
+                    }catch{
+                        console.log("Can't save slaves")
+                    };
+    
+                }else{
+                    for(let each_data of data){ 
+                        console.log(each_data)
+                        let eachData = each_data.replace("s:", "s").split(","); 
+                        let slaveId=eachData[0].toString();
+                        slaves.findOne({slaveId: slaveId},async function(err,findSlave){
+                            if(err){
+                                console.log("can't find")
+                            }
+                            else{
+                                const edit_slaveId=eachData[0];
+                                Automation.saveToFile(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${edit_slaveId}.js`,eachData);
+                                redisObj.setData(eachData,slaveId);
+                                
+                                // SlaveService.addSensorData(eachData , findSlave._id)
+                                // .then((message)=>{
+                                //     console.log(message)                    
+                                // }).catch((e)=>{
+                                //     console.log(e)
+                                // })
+                            }
+                        }); 
+                        // console.log(eachData)             
+                      
+                    }
+                    };
+                
+          };
+            console.log("finish");
+       }
+    });
+    
+    // client.on("close" , ()=>{
+    //     console.log("Connection closed")
+    // });
+}
 
+module.exports={sub}
 
 
 
