@@ -6,6 +6,7 @@ const authRouter=require("./routes/user/authRouter");
 const plantRouter=require("./routes/plant/plantRouter");
 const masterRouter=require("./routes/master/masterRouter");
 const slaveRouter=require("./routes/slave/slaveRouter");
+const automatinoRouter=require("./routes/logic/logicRouter")
 
 const path = require("path");
 const cors=require("cors");
@@ -26,7 +27,7 @@ app.use("/accounts",authRouter);
 app.use("/plants",plantRouter);
 app.use("/master",masterRouter)
 app.use("/slaves" ,slaveRouter)
-
+app.use("/automation",automatinoRouter);
 
 const start=()=>{
     mongoose.connect(process.env.DB_URL);

@@ -29,6 +29,7 @@ client.on("connect", () => {
 
 client.on("message", async (topic, message, packet) => {
     if (topic === topicName) {
+        console.log(packet.payload)
         let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
         for (let i = 0 ; i < data.length; i++){
             if(data[i][0]==='"'){
@@ -51,7 +52,8 @@ client.on("message", async (topic, message, packet) => {
                             console.log("can't find")
                         }
                         else{
-                            Automation.saveToFile(eachData);
+                            const edit_slaveId=eachData[0];
+                            Automation.saveToFile(`./${edit_slaveId}.js`,eachData);
                             redisObj.setData(eachData,slaveId);
                             
                             // SlaveService.addSensorData(eachData , findSlave._id)

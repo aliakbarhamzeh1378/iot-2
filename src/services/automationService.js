@@ -4,10 +4,9 @@ let { RedisService } = require("../services/redisService");
 let redisObj = new RedisService();
 
 class Automation{
-    static saveToFile(arrayData){
+    static saveToFile(fileAddress,arrayData){
         try{
-            const slaveId=arrayData[0];
-            let writer=fs.createWriteStream(`./${slaveId}.js`,{
+            let writer=fs.createWriteStream(fileAddress,{
                 flags:"w"
             }).on("error",function(error){
                 console.log(error)
@@ -69,7 +68,9 @@ class Automation{
             let slaveId = data[0].toLowerCase();
             let commnd = data[1].split(" ");
             try {
-                let fileData = JSON.parse(fs.readFileSync(`../mqtt/${slaveId}.js`, "utf-8"));
+                // /home/rozhan/greenhouse/iot-2/src/mqtt/s003.js
+                console.log(__dirname)
+                let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/${slaveId}.js`));
                 if (commnd[0].includes("light")) {
                     if (commnd[1].toLowerCase() == "on") {
                         fileData[5] ="N"
@@ -107,7 +108,8 @@ class Automation{
                         fileData[8] ="F"
                     }
                 }
-                const boardData=fileData.join(",").replace("s","s:");
+                const boardData=fileData.join(",").replace("s","");
+                console.log(boardData)
                 return boardData
         
             }
