@@ -10,6 +10,7 @@ async function pub(jsonTxt) {
         console.log("client connected");
         let boardData = await Automation.updateBoardData(jsonTxt);
         const payload =JSON.stringify({s:boardData}).replace(/"/g, '') // develop by rozhan's love
+        console.log(payload);
         client.publish(topicName, payload, { qos: 0, retain: true }, (err, packet) => {
             if (err) {
                 console.log(err, "Mqtt publish packet");
