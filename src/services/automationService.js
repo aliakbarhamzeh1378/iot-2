@@ -44,20 +44,27 @@ class Automation{
                             editedvalues.splice(index, index + 1)
                         }
                     });
-    
-                    let redisResult = await redisObj.getData(`${slaveId}_${editedvalues[0]}`);
-                    let equalation = `const ${editedvalues[0]}=${redisResult}`
-                    if (redisCondition.includes(equalation) == false) {
-                        redisCondition.push(equalation)
-                    }
-                    insideIf += editedvalues.join(" ")
+                    // console.log(`${slaveId}_${editedvalues[0]}`)
+                    return redisObj.getData(`${slaveId}_${editedvalues[0]}`).then((redisResult)=>{
+                        console.log(redisResult)
+                        let equalation = `const ${editedvalues[0]}=${redisResult}`
+                        if (redisCondition.includes(equalation) == false) {
+                            redisCondition.push(equalation)
+                        }
+                        insideIf += editedvalues.join(" ");
+                        let jsCondition = redisCondition.join("\n") + `\nif(${insideIf}){
+                            "${result}"
+                       }`;
+                           return [slaveId, eval(jsCondition)];
+                    }).catch((e)=>{
+                        console.log(e);
+                    })
+                  
                 }
     
             }
-            let jsCondition = redisCondition.join("\n") + `\nif(${insideIf}){
-             "${result}"
-        }`;
-            return [slaveId, eval(jsCondition)];
+
+     
     
     
         };
@@ -67,8 +74,10 @@ class Automation{
             let data = await this.parseLogic(jsonTxt);
             let slaveId = data[0].toLowerCase();
             let commnd = data[1].split(" ");
+
             try {
                 let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${slaveId}.js`));
+                // let fileData = JSON.parse(fs.readFileSync(`__dirname/${slaveId}.js`));
                 if (commnd[0].includes("light")) {
                     if (commnd[1].toLowerCase() == "on") {
                         fileData[5] ="N"

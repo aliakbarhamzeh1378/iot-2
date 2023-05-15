@@ -20,7 +20,7 @@ let { sub } = require("../mqtt/sub");
                 }
                 else {
                     files.forEach(file => {
-                        fs.readFile(path.join(jsonFilesPath, file), (err, fileData) => {
+                        fs.readFile(path.join(jsonFilesPath, file), async (err, fileData) => {
                             if (fileData) {
                                 const jsonData = JSON.parse(fileData.toString());
                                 console.log(jsonData);
@@ -34,7 +34,7 @@ let { sub } = require("../mqtt/sub");
                 }
 
             })
-            client.end()
+            // client.end()
         }).catch((e) => {
             console.log(e)
         })

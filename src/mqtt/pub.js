@@ -6,9 +6,10 @@ let jsonTxt = require("../logic/logicText.json");
 const { Automation } = require("../services/automationService");
 
 async function pub(jsonTxt) {
+    try{
         let boardData = await Automation.updateBoardData(jsonTxt);
         const payload =JSON.stringify({s:boardData}).replace(/"/g, '') // develop by rozhan's love
-        console.log(payload);
+        console.log(boardData);
         client.publish(topicName, payload, { qos: 0, retain: true }, (err, packet) => {
             if (err) {
                 console.log(err, "Mqtt publish packet");
@@ -17,9 +18,11 @@ async function pub(jsonTxt) {
                 console.log("data sent");
             }
         });
-
-
-
+        }
+        catch(e){
+            console.log(e);         //this related to save and get data from redis
+            // console.log("this slave is not connected")
+        }
   
 }
 

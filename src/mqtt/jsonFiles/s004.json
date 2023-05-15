@@ -1,1 +1,35 @@
-[{"S004":[{"content":"temp","operator":"<","value":2,"status":"and"},{"content":"temp","operator":">","value":10,"status":"or"}]},{"S004":[{"content":"light","operator":"<","value":10,"status":"and"},{"content":"light","operator":">","value":2,"status":"then","message":"fan on"}]}]
+[
+    {
+        "S004": [
+            {
+                "content": "temp",
+                "operator": "<",
+                "value": 2,
+                "status": "and"
+            },
+            {
+                "content": "temp",
+                "operator": ">",
+                "value": 10,
+                "status": "or"
+            }
+        ]
+    },
+    {
+        "S004": [
+            {
+                "content": "light",
+                "operator": "<",
+                "value": 10,
+                "status": "and"
+            },
+            {
+                "content": "light",
+                "operator": ">",
+                "value": 2,
+                "status": "then",
+                "message": "fan on"
+            }
+        ]
+    }
+]

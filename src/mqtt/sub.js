@@ -65,8 +65,9 @@ function sub(){
                                     Automation.saveToFile(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${edit_slaveId}.js`,eachData);
                                     // Automation.saveToFile(`__dirname/${edit_slaveId}.js`,eachData);
 
-                                    redisObj.setData(eachData,slaveId);
+                                    await redisObj.setData(eachData,slaveId);
                                     resolve("ok")
+
                                 }
                             }); 
                           

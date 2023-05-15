@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "0a89fc90-9236-4ae0-bf1f-3b4b6ebb4b47",
+		"_postman_id": "6ae30fa0-7a3c-47bb-afa2-584a938576a5",
 		"name": "Green House",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24818045"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -22,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"slaveId\" : \"s003\",\n    \"slaveName\" : \"babooneh\",\n    \"masterId\" : \"003\" \n}",
+							"raw": "{\n    \"slaveId\" : \"s003\",\n    \"slaveName\" : \"\",\n    \"masterId\" : \"\" ,\n    \"tempSesor\" : 20 ,\n    \"lightSesor\" : 20 ,\n    \"ambientHumidSesor\" :20,\n    \"soilHumidSesor\" : 20,\n    \"fanButton\" : 0 ,\n    \"lightButton\" : 1,\n    \"heatButton\" : 0,\n    \"waterPompButton\" : 0\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,7 +75,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"slaveId\" : \"s001\",\n    \"masterId\" : \"003\" \n}\n",
+							"raw": "{\n    \"slaveId\" : \"s001\",\n    \"masterId\" : \"\" ,\n    \"lightSesor\" : 20\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -185,7 +184,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/accounts/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFBaG1hZGlAZ21haWwuY29tRURJVCxSRU1PVkUsQURELFJFQUQiLCJpYXQiOjE2NzI3NDA1OTAsImV4cCI6MTY3Mjg0MDU5MH0.LGZGTzjwOBnt-ZqeRI-KGrFnxUm9gokWZwNPfHzRZrM",
+							"raw": "{{baseUrl}}/accounts/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAeWFob28uY29tIiwiaWQiOiI2NDUwZTk3MGUyNjY2NWQwYTc5NDFjYmEiLCJwZXJtaXNzaW9uIjoiQWRtaW4iLCJpYXQiOjE2ODMwMjQyNDAsImV4cCI6MTY4MzAyNTI0MH0.lPDjyFHQkVxhp1OJKCWnu7CVQHYU70FuuD91_lF5ZXQ",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -196,7 +195,7 @@
 							"query": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFBaG1hZGlAZ21haWwuY29tRURJVCxSRU1PVkUsQURELFJFQUQiLCJpYXQiOjE2NzI3NDA1OTAsImV4cCI6MTY3Mjg0MDU5MH0.LGZGTzjwOBnt-ZqeRI-KGrFnxUm9gokWZwNPfHzRZrM"
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAeWFob28uY29tIiwiaWQiOiI2NDUwZTk3MGUyNjY2NWQwYTc5NDFjYmEiLCJwZXJtaXNzaW9uIjoiQWRtaW4iLCJpYXQiOjE2ODMwMjQyNDAsImV4cCI6MTY4MzAyNTI0MH0.lPDjyFHQkVxhp1OJKCWnu7CVQHYU70FuuD91_lF5ZXQ"
 								}
 							]
 						}
@@ -232,37 +231,6 @@
 							"path": [
 								"accounts",
 								"forget-password"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reset-password",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseUrl}}/accounts/reset-password?hash=$2b$10$oR4yPt5QS/1DoPp5XhdTf.fRCwC/IiOJFdiBZAplHl6WvTTQg.xpS",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"accounts",
-								"reset-password"
-							],
-							"query": [
-								{
-									"key": "hash",
-									"value": "$2b$10$oR4yPt5QS/1DoPp5XhdTf.fRCwC/IiOJFdiBZAplHl6WvTTQg.xpS"
-								}
 							]
 						}
 					},
@@ -306,7 +274,13 @@
 					"name": "edit-profile",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgyMzUwNzc5LCJleHAiOjE2ODIzNTE3Nzl9.W9HlShgK0iCETEsrRvuoi9f89zEC3_2jb57aPCk85xo",
+								"type": "default"
+							}
+						],
 						"url": {
 							"raw": "{{baseUrl}}/accounts/edit-profile",
 							"host": [
@@ -327,11 +301,29 @@
 			"item": [
 				{
 					"name": "lists",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgxODExNDgyLCJleHAiOjE2ODE4MTI0ODJ9.aztegXVQE-1SkdIOzE6Y1x-14a8D62dh9XfEkM1Oelc",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/plants/lists?search=si",
+							"raw": "{{baseUrl}}/plants/lists?search=a",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -342,7 +334,7 @@
 							"query": [
 								{
 									"key": "search",
-									"value": "si"
+									"value": "a"
 								}
 							]
 						}
@@ -351,11 +343,39 @@
 				},
 				{
 					"name": "lists",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": {
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgxODE5MDEzLCJleHAiOjE2ODE4MjAwMTN9.hz4rTgThj0PIrBNe_aukig56x3f4udR5zIVwB421diw",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
 							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/plants/lists/643e6848fedbe4603409b2e5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"plants",
+								"lists",
+								"643e6848fedbe4603409b2e5"
+							],
+							"query": [
+								{
+									"key": "plantId",
+									"value": "643aa794d3f57474339ef3ff",
+									"disabled": true
+								}
+							]
 						}
 					},
 					"response": []
@@ -367,7 +387,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAeWFob28uY29tIiwiaWF0IjoxNjgwOTU3NTcyLCJleHAiOjE2ODA5NTg1NzJ9.EJmDRZnNZvYrvZUu5sBAiWPe75638bgQyxlnXPITei8",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgxNzQxMzkwLCJleHAiOjE2ODE3NDIzOTB9.uPU1Khxi0CTnPE2eO1kyBViya5n65WREZDIfpXMYdeo",
 								"type": "default"
 							}
 						],
@@ -377,11 +397,11 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/home/rozhan/Pictures/Screenshot from 2023-04-03 10-09-33.png"
+									"src": "/home/rozhan/Pictures/celery.png"
 								},
 								{
 									"key": "name",
-									"value": "banafshe",
+									"value": "narges",
 									"type": "text"
 								},
 								{
@@ -404,7 +424,12 @@
 									"value": "hasase",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{baseUrl}}/plants/new",
@@ -423,16 +448,22 @@
 					"name": "remove",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgxODEwNDIyLCJleHAiOjE2ODE4MTE0MjJ9.pLk7l0foxYqgJeBiA6s6nY4EtTsPvGb2ohCAp-nN5CM",
+								"type": "default"
+							}
+						],
 						"url": {
-							"raw": "{{baseUrl}}/plants/remove/63a70a9efd255dba78483665",
+							"raw": "{{baseUrl}}/plants/remove/643abf4899608a15692cad41",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"plants",
 								"remove",
-								"63a70a9efd255dba78483665"
+								"643abf4899608a15692cad41"
 							]
 						}
 					},
@@ -442,16 +473,67 @@
 					"name": "update",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InR3ZW50eWZpZnR5N0BnbWFpbC5jb20iLCJpZCI6IjY0NDZhNmRjODFjNDFiYjJjZTE1ODc1NyIsInBlcm1pc3Npb24iOiJBZG1pbiIsImlhdCI6MTY4MjQxNDAwMywiZXhwIjoxNjgyNDE1MDAzfQ.7LInTnjtvHSgcG5SAQ7t2CCHMW59xlr5pFNY_2nDxAM",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "rozxhan",
+									"type": "default"
+								},
+								{
+									"key": "temperature",
+									"value": "2",
+									"type": "default"
+								},
+								{
+									"key": "moisture",
+									"value": "3",
+									"type": "default"
+								},
+								{
+									"key": "explanation",
+									"value": "kuguy",
+									"type": "default"
+								},
+								{
+									"key": "light",
+									"value": "4",
+									"type": "default"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "default"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/plants/update/",
+							"raw": "{{baseUrl}}/plants/update/6446ac908beeca1d862e0011",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"plants",
 								"update",
-								""
+								"6446ac908beeca1d862e0011"
 							]
 						}
 					},
@@ -496,13 +578,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgxNzIwMjA2LCJleHAiOjE2ODE3MjEyMDZ9.GObsrwQZ7h15ugFTG7jWnqJKupkv-g0zZE20h95uDdE",
 								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"master_id\":\"\",\n    \"user_id\":\"\",\n    \"name\":\"\"\n}",
+							"raw": "{\n    \"master_id\":\"s003\",\n    \"name\":\"tomato\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -526,22 +608,22 @@
 					"name": "deleteMaster",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWQiOiI2NDNhOWI2MjlmZTFkMjUxZWE3YjliZWMiLCJwZXJtaXNzaW9uIjoiQWRtaW4iLCJpYXQiOjE2ODE3MTUxOTIsImV4cCI6MTY4MTcxNjE5Mn0.yD5rgjv7qLDRtIcGI83jSk_b9frmtpoXg_AQF6s_fK4",
+								"type": "default"
+							}
+						],
 						"url": {
-							"raw": "{{baseUrl}}/master/master/:id",
+							"raw": "{{baseUrl}}/master/master/s003",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"master",
 								"master",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
+								"s003"
 							]
 						}
 					},
@@ -551,15 +633,22 @@
 					"name": "readMaster",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhaGFyQGdtYWlsLmNvbSIsImlkIjoiNjQzZDAzNGI5MTI2YWM2OTA5NDk2NjZkIiwicGVybWlzc2lvbiI6IkFkbWluIiwiaWF0IjoxNjgxNzIwMjA2LCJleHAiOjE2ODE3MjEyMDZ9.GObsrwQZ7h15ugFTG7jWnqJKupkv-g0zZE20h95uDdE",
+								"type": "default"
+							}
+						],
 						"url": {
-							"raw": "{{baseUrl}}/master/master",
+							"raw": "{{baseUrl}}/master/master/s003",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"master",
-								"master"
+								"master",
+								"s003"
 							]
 						}
 					},
@@ -569,16 +658,69 @@
 					"name": "updateMaster",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWQiOiI2NDNhOWI2MjlmZTFkMjUxZWE3YjliZWMiLCJwZXJtaXNzaW9uIjoiQWRtaW4iLCJpYXQiOjE2ODE3MTgzODgsImV4cCI6MTY4MTcxOTM4OH0.iQS4AUVWK6rJKshgOGZiHWaCpi2h2MBRjiAn2WosF00",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"master_id\":\"\",\n    \"name\":\"pot\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/master/master/643160e7576f25d53cdade4e",
+							"raw": "{{baseUrl}}/master/master/s003",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"master",
 								"master",
-								"643160e7576f25d53cdade4e"
+								"s003"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "logic",
+			"item": [
+				{
+					"name": "automation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvamFucmFobWFuaTIwMDJAZ21haWwuY29tIiwiaWQiOiI2NDUzNmJmNTMzYjdhOGVmYzY4M2E2YjUiLCJwZXJtaXNzaW9uIjoiQWRtaW4iLCJpYXQiOjE2ODQxNTc4MjYsImV4cCI6MTY4NDE1ODgyNn0.E2SfpdI7Ib58mCeYxlZHQxYTdCffqPrzRmSMeaJtJYM",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"S004\":[\n            {\n                \"content\":\"temp\",\n                \"operator\":\"<\",\n                \"value\":2,\n                \"status\":\"and\"\n            },\n            {\n                \"content\":\"temp\",\n                \"operator\":\">\",\n                \"value\":10,\n                \"status\":\"or\"\n            }\n        ]\n    }\n    ,\n    {\n        \"S004\":[\n            {\n                \"content\":\"light\",\n                \"operator\":\"<\",\n                \"value\":10,\n                \"status\":\"and\"\n            },\n            {\n                \"content\":\"light\",\n                \"operator\":\">\",\n                \"value\":2,\n                \"status\":\"then\",\n                \"message\":\"fan on\"\n\n            }\n        ]\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/logic/automation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"logic",
+								"automation"
 							]
 						}
 					},

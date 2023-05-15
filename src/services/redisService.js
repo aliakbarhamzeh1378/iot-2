@@ -23,7 +23,7 @@ class RedisService {
             for (let x = 1; x <= this.keys.length; x++) {
               
                 try {
-                    // console.log(`${slaveId}_${this.keys[x - 1]}`, data[x])
+                    console.log(`${slaveId}_${this.keys[x - 1]}`, data[x])
                     await this.client.set(`${slaveId}_${this.keys[x - 1]}`, data[x]);
                 }
                 catch (e) {
@@ -36,7 +36,8 @@ class RedisService {
     getData(key) {
         return new Promise(async (resolve, reject) => {
             const x = await this.client.get(key);
-            if (x != null || x != undefined) {
+            if (x != null ) {
+                console.log(x)
                 resolve(x)
             }
             else {
@@ -47,4 +48,7 @@ class RedisService {
         });
     }
 }
+
+// let x=new RedisService();
+// x.getData("s004_temp")
 module.exports = { RedisService }
