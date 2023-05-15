@@ -19,16 +19,22 @@ try{
 
 function sub(){
     return new Promise((resolve,reject)=>{
-        client.on("connect", () => {
-            console.log("connected");
-            client.subscribe([topicName], (err, granted) => {
-                if (err) {
-                    console.log("Can't connect");
-                }
+        // client.on("connect", () => {
+        //     console.log("connected");
+        //     client.subscribe([topicName], (err, granted) => {
+        //         if (err) {
+        //             console.log("Can't connect");
+        //         }
+        //         console.log(`Subscribe to topic ${topicName}`);
+        //     })
+        // });
+
+        client.subscribe(topicName,function(err){
+            if(!err){
                 console.log(`Subscribe to topic ${topicName}`);
-            })
-        });
-    
+            }
+        })
+
         client.on("message", async (topic, message, packet) => {
             if (topic === topicName) {
                 console.log(typeof packet.payload)
@@ -57,18 +63,12 @@ function sub(){
                                 else{
                                     const edit_slaveId=eachData[0];
                                     Automation.saveToFile(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${edit_slaveId}.js`,eachData);
+                                    // Automation.saveToFile(`__dirname/${edit_slaveId}.js`,eachData);
+
                                     redisObj.setData(eachData,slaveId);
                                     resolve("ok")
-                                    
-                                    // SlaveService.addSensorData(eachData , findSlave._id)
-                                    // .then((message)=>{
-                                    //     console.log(message)                    
-                                    // }).catch((e)=>{
-                                    //     console.log(e)
-                                    // })
                                 }
                             }); 
-                            // console.log(eachData)             
                           
                         }
                         };
@@ -78,18 +78,9 @@ function sub(){
            }
         });
 
-        client.on("close" , ()=>{
-            console.log("Connection closed");
-            });
-        client.end()
+        // client.end()
 
     })
-
-    
-    
-    // client.on("close" , ()=>{
-    //     console.log("Connection closed")
-    // });
 }
 
 
