@@ -6,9 +6,10 @@ const plantSensorDataSchema = new mongoose.Schema({
 
         }],
     slaves: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'slaves',
+        type: String,
         required: true
-    }
+    },
+    time : Date
 });
 
 const PlantSensorData = mongoose.model("PlantSensorData", plantSensorDataSchema);

@@ -1,44 +1,35 @@
-const redis=require("redis");
+const redis = require('redis');
 
-class RedisService{
+class RedisService {
     constructor(){
-        this.client = redis.createClient({
-            host: '127.0.0.1',
-            port: '6379'
-        });
-        this.client.on("err",(err)=>{
-        console.log(err)
-        })
-        const x=async()=>{
+        this.keys = ["tempSensor","soil_moisture","ambient_humidity","light", "fanButton" ,"water_pomp" , "heater" ];
+        this.client = redis.createClient();
+        let connection = async()=>{
             await this.client.connect()
         }
-        x()
+        connection()
+    }
 
-    };
-
-    async setData(key,value){
+    async setData(slaveId , data){
         try{
-            await this.client.set(key,value);
+            for(let x=0 ; x<=this.keys.length-1 ; x++){
+                let keySet = `${slaveId}_${this.keys[x]}`
+                await client.set(keySet , data[x+1])
+            };
+        }catch{
+            console.log("Can't set data")
         }
-        catch(e){
-            throw e 
-        }
-        
 
-    };
-
-    getData(key){
-        return new Promise(async(resolve,reject)=>{
-                const x=await this.client.get(key);
-                if(x!=null || x!=undefined){
-                    resolve(x)
-                }
-                else{
-                    reject("not found")
-                }
-
-           
-    });
-}
-}
-module.exports={RedisService}
+    }
+    async getData(data){
+        return new Promise(async(resolve , reject)=>{
+            let find_Data = await this.client.get(data);
+            if(find_Data){
+                resolve(find_Data)
+            }else{
+                reject("not found")
+            }
+        })
+    }
+};
+module.exports = {RedisService};

@@ -2,6 +2,8 @@ const {SlaveService} = require("../../services/slaveService");
 const {slaves} = require("../../model/slave");
 const {Token} = require("../../lib/token");
 const token = new Token;
+const {PlantSensorData} = require("../../model/sensorData");
+
 
 module.exports = {
     
@@ -72,31 +74,64 @@ module.exports = {
         });
     },
 
-    data : function(req,res){
-        let checkToken = token.verifyToken(req.headers["authorization"])
-        .then((message)=>{
-            SlaveService.getData(req)
-            .then((message)=>{
-                return res.status(200).send({
-                    status : "Ok" ,
-                    message : "get data",
-                    data : message
-                })
-            })
-            .catch((message)=>{
-                return res.status(404).send({
-                    status : "error" ,
-                    message : message ,
-                    data : {}
-                })
-            })
-    }) 
-       .catch((message)=>{
-        return res.status(404).send({
-            status : "error",
-            message :  "token expired or not found" ,
-            data : {}
-        })
-    })
+    data :async function(req,res){
+          await PlantSensorData.aggregate(
+            [
+                {
+                  '$match': {
+                    'slaves': req.body.slaveId
+                  }
+                }, {
+                  '$project': {
+                    'data': {
+                      '$filter': {
+                        'input': '$value', 
+                        'as': 'entity', 
+                        'cond': { $and :[
+                          {'$gte': ['$$entity.time', new Date(req.body.startTime)]} ,
+                          {'$lte': ['$$entity.time', new Date(req.body.endTime)]}
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            ).exec(function(e , d){
+                console.log(e)
+                if(e){
+                    return res.status(404).send({
+                        status : "error" ,
+                        message : e ,
+                        data : {}
+                    })
+                
+                }else{
+                    return res.status(200).send({
+                        status : "Ok" ,
+                        message : "get data",
+                        data : d
+                    })
+                }
+            }) 
+
+
+
+
+        // let p = SlaveService.getData(req.body.slaveId);
+        //     if(p!=undefined || p!=[] || p!=null){
+                // return res.status(200).send({
+                //     status : "Ok" ,
+                //     message : "get data",
+                //     data : p
+                // })
+        //     }
+        //     else{
+                // return res.status(404).send({
+                //     status : "error" ,
+                //     message : message ,
+                //     data : {}
+                // })
+        //     }
     }
 }

@@ -1,8 +1,7 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://broker.emqx.io:1883");
-const topicName = "m003/publish";
+const topicName = "m001/publish";
 const { slaves } = require("../model/slave");
-const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
 const {masterSavedSlaves} = require("../model/masterSlaves");
 const {SlaveService} = require("../services/slaveService");
@@ -45,19 +44,23 @@ client.on("message", async (topic, message, packet) => {
                 let each_data = data[i].replace("s:", "").split(",");
                 let slaveId=('s' + each_data[0]).toString();
                 let findSlaveId = await slaves.findOne({ slaveId: slaveId});
+
                 if (findSlaveId != null) {
                     let keys=["temp","soil","ambient","light"];
                     for(let x=1;x<=keys.length;x++){
                         console.log(`${slaveId}_${keys[x-1]}`)
                         redisObj.setData(`${slaveId}_${keys[x-1]}`,each_data[x])
                     };
-
-                    await SlaveService.addSensorData(each_data , findSlaveId._id)
+                    console.log("OK")
+                    console.log(each_data)
+                    await SlaveService.addSensorData(each_data , slaveId)
                     .then((message)=>{
                         console.log(message)                    
                     }).catch((e)=>{
                         console.log(e)
                     })
+                }else{
+                    console.log("slaveId not found");
                 };
             } 
       };

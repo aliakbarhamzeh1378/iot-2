@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { Validation } = require("../../lib/validation");
 const { send_email } = require("../../lib/sendEmail");
 const { hashs } = require("../../model/hash");
+const ROLES_LIST = require("../../lib/roles_list");
 
 module.exports = {
 
@@ -21,8 +22,8 @@ module.exports = {
       })
     } else {
       let hashed = await AuthService.hashPassword(pass)
-      AuthService.addNewPerson(req.body, hashed).then((user)=>{
-        let userToken = token.generateToken({ email: user.email, id: user._id, permission: user.permission });
+      AuthService.addNewPerson(req.body, hashed , ROLES_LIST.USER).then((user)=>{
+        let userToken = token.generateToken({ email: user.email, id: user._id, role: ROLES_LIST.USER});
         userToken.then((token) => {
           send_email(
             "sendLink.html",
@@ -57,9 +58,10 @@ module.exports = {
     const password = req.body.password;
     let p = AuthService.loginCheck(email, password);
     p.then(async (message) => {
-      let userToken = await token.generateToken({ email: message.email, id: message._id, permission: message.permission }).then((data) => {
+      let userToken = await token.generateToken({ email: message.email, id: message._id, role: message.role }).then((data) => {
+        console.log(data)
         return data;
-      }).catch((error) => { throw error });
+      }).catch((error) => { return error });
       return res.status(200).send({
         status: "Ok",
         message: "welcome to your page",
@@ -118,7 +120,7 @@ module.exports = {
         "sendLink.html",
         (replacement = {
           name: user.fullname,
-          link: `http://178.63.147.27:3000/accounts/reset-password?hash=${randomHash}`,
+          link: `http://localhost:3000/accounts/reset-password?hash=${randomHash}`,
         }),
         email,
         "Reset password"
@@ -140,39 +142,41 @@ module.exports = {
   },
 
 
-
-
   resetPass: async (req, res) => {
     let findHash = await hashs.findOne({ hash: req.query.hash });
-    console.log(findHash)
-    console.log(Date.now() - findHash.time_created)
-    if (Date.now() - findHash.time_created <= 172800000) {
-      let hash = await AuthService.hashPassword(req.body.password);
-      let p = token.verifyToken(req.body.token);
-      p.then(async (message) => {
-        AuthService.find_Update(message.email, { password: hash })
-        return res.status(200).send({
-          status: "Ok",
-          message: "your password was reset successfully!",
-          data: {},
-        })
-      })
-        .catch((message) => {
-          return res.status(406).send({
-            status: "error",
-            message: "the token was not correct or expired.",
+    try{
+      console.log(findHash)
+      console.log(Date.now() - findHash.time_created)
+      if (Date.now() - findHash.time_created <= 172800000) {
+        let hash = await AuthService.hashPassword(req.body.password);
+        let p = token.verifyToken(req.body.token);
+        p.then(async (message) => {
+          AuthService.find_Update(message.email, { password: hash })
+          return res.status(200).send({
+            status: "Ok",
+            message: "your password was reset successfully!",
             data: {},
+          })
+        })
+          .catch((message) => {
+            return res.status(406).send({
+              status: "error",
+              message: "the token was not correct or expired.",
+              data: {},
+            });
+
           });
 
+      }
+      else {
+        return res.status(403).send({
+          status: "error",
+          message: "your reset time has been expired,try again.",
+          data: {},
         });
-
-    }
-    else {
-      return res.status(403).send({
-        status: "error",
-        message: "your reset time has been expired,try again.",
-        data: {},
-      });
+      }
+    }catch{
+      console.log("can't find hash")
     }
 
   },
@@ -185,7 +189,6 @@ module.exports = {
       req.body.password.length < 8
         ? user.password
         : await AuthService.hashPassword(req.body.password);
-
     console.log(hashPass)
     let fullname = req.body.fullname.trim().length <= 0 ? user.fullname : req.body.fullname;
     AuthService.find_Update(req.decoded.email, {
@@ -199,6 +202,23 @@ module.exports = {
       data: {},
     });
 
+  },
+
+  changeRoles :(req,res,next)=>{
+      AuthService.updateRole(req.body.user_email , req.body.newRole)
+      .then((message)=>{
+      return res.status(200).send({
+        status : "Ok" ,
+        message : "Change the role of given user" ,
+        data : {message}
+      })
+      }).catch((message)=>{
+      return res.status(404).send({
+        status : "error" ,
+        message : "can't find user" ,
+        data : {}
+      })
+      })
   },
 
   googleVerify: async (req, res) => {

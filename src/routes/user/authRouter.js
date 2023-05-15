@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router();
 const authController = require("./authController");
 const { MiddleWare } = require("../../lib/middleware");
+const Role = require("../../lib/roles_list")
 
 router.post(
   "/auth",
   [MiddleWare.emptyCheck, MiddleWare.mailCheck],
   authController.loginUser
 );
+
 
 router.get(
   "/verify", 
@@ -36,10 +38,15 @@ router.post(
 
 router.put(
   "/edit-profile",
-  [MiddleWare.checkToken],
+  [MiddleWare.checkToken , MiddleWare.verifyRoles(Role.ADMIN,Role.SUPERADMIN)],
   authController.editProfile
 );
 
+router.get(
+  '/change-role' ,
+  [MiddleWare.checkToken , MiddleWare.verifyRoles(Role.SUPERADMIN)] ,
+  authController.changeRoles
+)
 
 router.post("/google-signup",authController.googleVerify)  ;
 

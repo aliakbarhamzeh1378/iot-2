@@ -26,7 +26,7 @@ const accountSchema = new mongoose.Schema({
     trim: true,
     required : true
   },
-  permission:{
+  role:{
     type:String,
     default:"Admin"
   }

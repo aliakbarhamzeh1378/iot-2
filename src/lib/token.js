@@ -1,4 +1,5 @@
 let jwt = require("jsonwebtoken");
+
 let { accounts } = require("../model/account");
 class Token {
   generateToken(jsonData) {
@@ -23,6 +24,7 @@ class Token {
         if (err) {
           reject(err);
         } else {
+          req.roles = decodedToken.role
           resolve(decodedToken);
         }
       });

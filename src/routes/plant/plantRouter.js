@@ -4,6 +4,8 @@ const plantController = require("./plantController");
 const multer = require("multer");
 const upload = multer({ dest: "../../public/uploads/" });  //where to store the files
 const { MiddleWare } = require("../../lib/middleware");
+const Role = require("../../lib/roles_list")
+
 
 router.get("/lists",
     [MiddleWare.checkToken],
@@ -17,13 +19,12 @@ router.get("/lists/:plantId",
 
 
 router.post("/new", upload.single("image"),
-    [MiddleWare.checkToken],
+    [MiddleWare.checkToken ,MiddleWare.verifyRoles(Role.ADMIN ,Role.SUPERADMIN)],
     plantController.createNewPlant);
 
 router.delete(
     "/remove/:id",
-    [MiddleWare.checkToken],
-
+    [MiddleWare.checkToken , MiddleWare.verifyRoles(Role.SUPERADMIN)],
     plantController.delete
 );
 
