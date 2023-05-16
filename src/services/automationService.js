@@ -65,9 +65,9 @@ class Automation{
             let data = await this.parseLogic(jsonTxt);
             let slaveId = data[0];
             let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${slaveId}.js`));
+
             try {
                 let commnd = data[1].split(" ");
-                // let fileData = JSON.parse(fs.readFileSync(`__dirname/${slaveId}.js`));
                 if (commnd[0].includes("light")) {
                     if (commnd[1].toLowerCase() == "on") {
                         fileData[5] ="N"
@@ -121,10 +121,10 @@ class Automation{
 
 
 
-// let x=async()=>{
-//     await Automation.updateBoardData(jsonTxt);
-//     // console.log(await Automation.parseLogic(jsonTxt))
+let x=async()=>{
+    await Automation.updateBoardData(jsonTxt);
+    // console.log(await Automation.parseLogic(jsonTxt))
 
-// }
-// x()
+}
+x()
 module.exports={Automation}

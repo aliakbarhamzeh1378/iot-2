@@ -35,7 +35,7 @@ let { sub } = require("../mqtt/sub");
                 }
 
             })
-            // client.end()
+            client.end()
         }).catch((e) => {
             console.log(e)
         })
