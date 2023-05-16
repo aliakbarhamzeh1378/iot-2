@@ -9,8 +9,9 @@ let { pub } = require("../mqtt/pub");
 let { sub } = require("../mqtt/sub");
 
 
-// cron.schedule("* * * * *", () => {
     console.log("hi")
+    cron.schedule("* * * * *", () => {
+
     client.on("connect", () => {
         sub().then((message) => {
             console.log(message)
@@ -47,4 +48,4 @@ let { sub } = require("../mqtt/sub");
             console.log("Network error , make sure you have an active internet connection")
         }
     });
-// })
+})

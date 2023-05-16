@@ -18,7 +18,7 @@ class Automation{
             console.log("continue")
         }
 
-        };
+        }
 
         static async parseLogic(jsonTxt) {
             let insideIf = "";
@@ -26,7 +26,7 @@ class Automation{
             let slaveId;
             let redisCondition = [];
             for (let field of jsonTxt) {
-                slaveId = Object.keys(field).join("");
+                slaveId = Object.keys(field).join("").toLowerCase();
                 for (let eachValue of Object.values(field).pop()) {
                     let editedvalues = Object.values(eachValue);
                     editedvalues.forEach((item) => {
@@ -45,38 +45,28 @@ class Automation{
                         }
                     });
                     // console.log(`${slaveId}_${editedvalues[0]}`)
-                    return redisObj.getData(`${slaveId}_${editedvalues[0]}`).then((redisResult)=>{
-                        console.log(redisResult)
-                        let equalation = `const ${editedvalues[0]}=${redisResult}`
-                        if (redisCondition.includes(equalation) == false) {
-                            redisCondition.push(equalation)
-                        }
-                        insideIf += editedvalues.join(" ");
-                        let jsCondition = redisCondition.join("\n") + `\nif(${insideIf}){
-                            "${result}"
-                       }`;
-                           return [slaveId, eval(jsCondition)];
-                    }).catch((e)=>{
-                        console.log(e);
-                    })
-                  
-                }
-    
-            }
+                    let redisResult = await redisObj.getData(`${slaveId}_${editedvalues[0]}`);
+                    let equalation = `const ${editedvalues[0]}=${redisResult}`
+                    if (redisCondition.includes(equalation) == false) {
+                        redisCondition.push(equalation)
+                    }
+                    insideIf += editedvalues.join(" ")
+                    }
 
-     
-    
-    
-        };
+                    }
+                    let jsCondition = redisCondition.join("\n") + `\nif(${insideIf}){
+                    "${result}"
+                    }`;
+                    return [slaveId, eval(jsCondition)];
+        }
 
 
         static async  updateBoardData(jsonTxt) {
             let data = await this.parseLogic(jsonTxt);
-            let slaveId = data[0].toLowerCase();
-            let commnd = data[1].split(" ");
-
+            let slaveId = data[0];
+            let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${slaveId}.js`));
             try {
-                let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${slaveId}.js`));
+                let commnd = data[1].split(" ");
                 // let fileData = JSON.parse(fs.readFileSync(`__dirname/${slaveId}.js`));
                 if (commnd[0].includes("light")) {
                     if (commnd[1].toLowerCase() == "on") {
@@ -120,11 +110,21 @@ class Automation{
         
             }
             catch (e) {
-                console.log(e)
+                const boardData=fileData.join(",").replace("s","");
+                return boardData
+                // console.log(e)
             }
         
         
         };
     }
 
+
+
+// let x=async()=>{
+//     await Automation.updateBoardData(jsonTxt);
+//     // console.log(await Automation.parseLogic(jsonTxt))
+
+// }
+// x()
 module.exports={Automation}

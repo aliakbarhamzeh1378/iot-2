@@ -20,8 +20,7 @@ async function pub(jsonTxt) {
         });
         }
         catch(e){
-            console.log(e);         //this related to save and get data from redis
-            // console.log("this slave is not connected")
+            console.log(e);      
         }
   
 }

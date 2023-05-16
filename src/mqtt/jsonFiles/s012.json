@@ -1,9 +1,9 @@
 [
     {
-        "S004":[
+        "S012":[
             {
                 "content":"temp",
-                "operator":"<",
+                "operator":"==",
                 "value":0,
                 "status":"and"
             }
@@ -11,7 +11,7 @@
     }
     ,
     {
-        "S004":[
+        "S012":[
             {
                 "content":"light",
                 "operator":">",
