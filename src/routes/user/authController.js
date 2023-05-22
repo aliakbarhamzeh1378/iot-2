@@ -11,8 +11,8 @@ const ROLES_LIST = require("../../lib/roles_list");
 module.exports = {
 
   registerUser: async function (req, res) {
-    let pass = req.body.password
-    let email = req.body.email
+    let pass = req.body.password.trim();
+    let email = req.body.email.trim();
     let existing = await Validation.existToDB(email);
     if (existing == true) {
       res.status(406).send({
@@ -54,8 +54,8 @@ module.exports = {
   },
 
   loginUser: async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.email.trim();
+    const password = req.body.password.trim();
     let p = AuthService.loginCheck(email, password);
     p.then(async (message) => {
       let userToken = await token.generateToken({ email: message.email, id: message._id, role: message.role }).then((data) => {
@@ -71,6 +71,14 @@ module.exports = {
       });
 
     }).catch((message) => {
+      jwt.verify(user_token, process.env.SECRET_KEY,{
+        ignoreExpiration:true
+      },async function(err,decoded){
+        if(decoded){
+          console.log(decoded.email);
+          await accounts.findOneAndDelete({email:decoded.email,status:"deactive"});
+        }
+      });
       if (message == 403) {
         return res.status(403).send({
           status: "error",
@@ -108,7 +116,7 @@ module.exports = {
 
 
   forgetPassword: async (req, res, next) => {
-    const email = req.body.email;
+    const email = req.body.email.trim();
     let user = await Validation.existToDB(email);
     if (user == true) {
       let randomHash = await AuthService.hashPassword("\\w+")
