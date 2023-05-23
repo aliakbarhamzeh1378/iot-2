@@ -27,11 +27,16 @@ class SlaveService {
         let body = req.body;
         let filter = {slaveId : body.slaveId};
         return new Promise((resolve , reject)=>{
-            let findAndUpdate = slaves.findOneAndUpdate(filter , {
+            let findSlaveForUpdate = slaves.findOne(filter , (error , docs)=>{
+                if(error){
+                    reject("Can't find slave")
+                }else return docs
+            })
+            slaves.findOneAndUpdate(filter , {
                 slaveId : slaves.slaveId , 
-                slaveName : body.slaveName=="" ? slaves.slaveName : body.slaveName,
-                masterId : body.masterId=="" ? slaves.masterId : body.masterId, 
-                plantId : body.plantId=="" ? slaves.plantId : body.plantId, 
+                slaveName : body.slaveName=="" ? findSlaveForUpdate.slaveName : body.slaveName,
+                masterId : body.masterId=="" ? findSlaveForUpdate.masterId : body.masterId, 
+                plantId : body.plantId=="" ? findSlaveForUpdate.plantId : body.plantId, 
 
             },function(error , docs){
                 if(docs){
@@ -48,7 +53,7 @@ class SlaveService {
 
     static deleteSlave(req){
         return new Promise((resolve , reject)=>{
-            let findAndDelete = slaves.findOneAndDelete({
+            slaves.findOneAndDelete({
                 slaveId : req.body.slaveId
             }, function(err , docs){
                 if(docs){
@@ -61,20 +66,47 @@ class SlaveService {
         });
     }
 
-    static getData(req){
-        return new Promise((resolve , reject)=>{
-            let findSlave = slaves.findOne({
-                slaveId : req.body.slaveId
-            }, function(error , docs){
-                if(docs){
-                    resolve(findSlave)
-                }else{
-                    reject("can't find slave")
+    static async getData(slaveId , startTime , endTime){
+        // return new Promise((resolve , reject)=>{
+            console.log(slaveId)
+            await PlantSensorData.aggregate(
+            [
+                {
+                  '$match': {
+                    'slaves': '003'
+                  }
+                }, {
+                  '$project': {
+                    'data': {
+                      '$filter': {
+                        'input': '$value', 
+                        'as': 'entity', 
+                        'cond': {
+                          '$gte': [
+                            '$$entity.time', new Date(startTime)
+                          ],
+                          '$lte' : [
+                            '$$entity.time', new Date(endTime)
+                          ]
+                        }
+                      }
+                    }
+                  }
                 }
-            }
-            )
-        })
-    }
+              ]
+            ).exec(function(e , d){
+                console.log(d)
+            }) 
+            // , function(error , docs){
+            //     console.log(docs)
+            //     if(docs){
+            //         resolve(docs)
+            //     }else{
+            //         reject("can't find slave")
+            //     }
+            // }}
+            // )
+    };
 
     
     static addSensorData(each_data , slaveId){
@@ -103,6 +135,7 @@ class SlaveService {
                 if (error) {
                   reject(error)
                 } else {
+                    console.log("in promise")
                   resolve(result) 
                 }
             }

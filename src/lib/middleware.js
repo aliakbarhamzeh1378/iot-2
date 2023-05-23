@@ -1,6 +1,6 @@
-const { accounts } = require("../model/account");
-const bcrypt = require("bcrypt");
 let jwt = require("jsonwebtoken");
+let {Token} = require("../lib/token");
+let token = new Token();
 
 class MiddleWare {
   static mailCheck(req, res, next) {
@@ -66,7 +66,6 @@ class MiddleWare {
     if (token) {
       var privateKey = process.env.SECRET_KEY
       jwt.verify(token, privateKey, {
-        // ignoreExpiration: true
       }, (err, decoded) => {
         if (err) {
           return res.status(403).send({
@@ -87,41 +86,22 @@ class MiddleWare {
 
   }
 
-
-
-  static checkFullPermission(req, res, next) {
-    let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
-    console.log(req.path)
-
-    var decoded = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(decoded)
-    if (decoded.permisson != null || decoded.permisson != undefined) {
-      if (decoded.permisson == "Admin") {
+  static verifyRoles=(...allowedRoles)=>{
+    return (req,res,next)=>{
+      const roleArray = [...allowedRoles];
+        const roles = req.decoded.role;
+        const result = [roles].map(each_role => roleArray.includes(each_role)).find(val => val ==true);
+        if(!result){res.status(403).send({
+          status : "access denid" ,
+          message : "You dont have permission to this url"
+        })
+      }else{
         next()
       }
     }
-    return res.status(403).send({
-      status: "access denid",
-      message: "You dont have permission to this url",
-    });
-
   }
-  static checkReadPermission(req, res, next) {
-    let token = req.headers["x-access-token"] || req.headers["authorization"] || req.headers["x-auth-key"];
-    console.log(req.path)
-    var decoded = jwt.verify(token, process.env.SECRET_KEY);
-    console.log(decoded)
-    if (decoded.permisson != null || decoded.permisson != undefined) {
-      if (decoded.permisson == "User" || decoded.permisson == "Admin") {
-        next()
-      }
-    }
-    return res.status(403).send({
-      status: "access denid",
-      message: "You dont have permission to this url",
-    });
 
-  }
+
 }
 
 module.exports = { MiddleWare };
