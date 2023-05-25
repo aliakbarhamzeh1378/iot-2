@@ -1,0 +1,31 @@
+[
+    {
+        "S004":[
+            {
+                "content":"temp",
+                "operator":"<",
+                "value":0,
+                "status":"and"
+            }
+        ]
+    }
+    ,
+    {
+        "S004":[
+            {
+                "content":"light",
+                "operator":">",
+                "value":10,
+                "status":"and"
+            },
+            {
+                "content":"light",
+                "operator":"<",
+                "value":30,
+                "status":"then",
+                "message":"fan on"
+
+            }
+        ]
+    }
+]
