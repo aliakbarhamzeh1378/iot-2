@@ -4187,6 +4187,13 @@ mocha@^10.2.0:
     yargs-parser "20.2.4"
     yargs-unparser "2.0.0"
 
+mongod@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/mongod/-/mongod-2.0.0.tgz"
+  integrity sha512-J1it0yFsLH+y4EIBByEDPKUu+2AQlEMoRc4ugtKRlppQM6dh4oFEIJlpuCE1Cixt33Ni1gZQ+eaizWTqBc5MTA==
+  dependencies:
+    promise-queue "^2.2.3"
+
 mongodb-connection-string-url@^2.5.4:
   version "2.6.0"
   resolved "https://registry.npmjs.org/mongodb-connection-string-url/-/mongodb-connection-string-url-2.6.0.tgz"
@@ -4782,6 +4789,11 @@ process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
+
+promise-queue@^2.2.3:
+  version "2.2.5"
+  resolved "https://registry.npmjs.org/promise-queue/-/promise-queue-2.2.5.tgz"
+  integrity sha512-p/iXrPSVfnqPft24ZdNNLECw/UrtLTpT3jpAAMzl/o5/rDsGCPo3/CQS2611flL6LkoEJ3oQZw7C8Q80ZISXRQ==
 
 promise@~2.0:
   version "2.0.0"

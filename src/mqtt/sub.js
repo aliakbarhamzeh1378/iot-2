@@ -9,7 +9,7 @@ const {RedisService}=require("../services/redisService");
 const redisObj=new RedisService()
 
 try{
-    mongoose.connect("mongodb://127.0.0.1:27017/greenhouse");
+    mongoose.connect("mongodb://admin:c8olxij6adhpyuq@remote-asiatech.runflare.com:31132/");
 }catch{
     console.log("can't connect to mongoDB");
 };

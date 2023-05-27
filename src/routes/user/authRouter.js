@@ -3,7 +3,6 @@ const router = express.Router();
 const authController = require("./authController");
 const { MiddleWare } = require("../../lib/middleware");
 const Role = require("../../lib/roles_list")
-
 router.post(
   "/auth",
   [MiddleWare.emptyCheck, MiddleWare.mailCheck],
