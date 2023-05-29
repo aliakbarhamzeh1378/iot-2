@@ -10,14 +10,11 @@ let { sub } = require("./sub");
 
 
     console.log("hi")
-    cron.schedule("* * * * *", () => {
+    // cron.schedule("* * * * *", () => {
 
     client.on("connect", () => {
-        sub().then((message) => {
+       sub().then((message) => {
             console.log(message)
-            client.end()
-
-            client.on("connect", () => {
             fs.readdir(jsonFilesPath, (err, files) => {
                 if (err) {
                     console.log(err)
@@ -36,14 +33,17 @@ let { sub } = require("./sub");
                         })
                     })
                 }
-
+    
             })
-            client.end()
-        })
         }).catch((e) => {
             console.log(e)
         })
-    });
+
+
+        client.end()
+
+    // });
+
 
 
     client.on("error", function (err) {

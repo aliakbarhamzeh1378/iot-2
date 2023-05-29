@@ -1,6 +1,6 @@
 const mqtt = require("mqtt");
 const client = mqtt.connect("mqtt://broker.emqx.io:1883");
-const topicName = "m003/publish";
+const topicName = "m./#/publish";
 const { slaves } = require("../model/slave");
 // const { PlantSensorData } = require("../model/sensorData");
 const mongoose = require("mongoose");
@@ -37,7 +37,7 @@ function sub(){
 
         client.on("message", async (topic, message, packet) => {
             if (topic === topicName) {
-                console.log(typeof packet.payload)
+                // console.log(packet.payload)
                 let data = packet.payload.toString().replace("{", "").replace("}", "").trim().split("\n");
                 for (let i = 0 ; i < data.length; i++){
                     if(data[i][0]==='"'){
@@ -67,6 +67,7 @@ function sub(){
 
                                     await redisObj.setData(eachData,slaveId);
                                     resolve("ok")
+                                    client.unsubscribe(topicName)
 
                                 }
                             }); 

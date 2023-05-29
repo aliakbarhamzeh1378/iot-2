@@ -31,6 +31,7 @@ app.use("/slaves" ,slaveRouter)
 app.use("/logic",automatinoRouter);
 
 const start=()=>{
+    mongoose.set("strictQuery", true);
     mongoose.connect(process.env.DB_URL);
     app.listen(process.env.HTTP_PORT)
 }
