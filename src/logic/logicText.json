@@ -3,7 +3,7 @@
         "S004":[
             {
                 "content":"temp",
-                "operator":"<",
+                "operator":">=",
                 "value":0,
                 "status":"and"
             }
@@ -13,9 +13,9 @@
     {
         "S004":[
             {
-                "content":"light",
-                "operator":">",
-                "value":10,
+                "content":"soil",
+                "operator":">=",
+                "value":0,
                 "status":"and"
             },
             {
@@ -23,7 +23,7 @@
                 "operator":"<",
                 "value":30,
                 "status":"then",
-                "message":"fan on"
+                "message":"fan on,heater on"
 
             }
         ]

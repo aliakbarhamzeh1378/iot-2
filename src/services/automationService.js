@@ -32,7 +32,7 @@ class Automation{
                     editedvalues.forEach((item) => {
                         if (item == "and") {
                             let index = editedvalues.indexOf("and");
-                            editedvalues[index] = "&&"
+                            editedvalues[index] = "&& "
                         }
                         else if (item == "or") {
                             let index = editedvalues.indexOf("or");
@@ -41,7 +41,9 @@ class Automation{
                         else if (item == "then") {
                             let index = editedvalues.indexOf("then");
                             result = editedvalues[index + 1]
-                            editedvalues.splice(index, index + 1)
+                            editedvalues.splice(index, index + 1,"")
+                            
+
                         }
                     });
                     // console.log(`${slaveId}_${editedvalues[0]}`)
@@ -50,7 +52,8 @@ class Automation{
                     if (redisCondition.includes(equalation) == false) {
                         redisCondition.push(equalation)
                     }
-                    insideIf += editedvalues.join(" ")
+                    insideIf += `(${editedvalues.slice(0,-1).join(" ")})${editedvalues[editedvalues.length-1]}`
+                    
                     }
 
                     }
@@ -63,56 +66,63 @@ class Automation{
 
         static async  updateBoardData(jsonTxt) {
             let data = await this.parseLogic(jsonTxt);
+            // console.log(data)
             let slaveId = data[0];
             let fileData = JSON.parse(fs.readFileSync(`/home/rozhan/greenhouse/iot-2/src/mqtt/jsFiles/${slaveId}.js`));
 
             try {
-                let commnd = data[1].split(" ");
-                if (commnd[0].includes("light")) {
-                    if (commnd[1].toLowerCase() == "on") {
-                        fileData[5] ="N"
+                for(let condition of data[1].split(",")){
+                    let commnd = condition.split(" ");
+                    if (commnd[0].includes("light")) {
+                        if (commnd[1].toLowerCase() == "on") {
+                            fileData[5] ="N"
+                        }
+                        else if (commnd[1].toLowerCase() == "off") {
+                            fileData[5] = "F"
+                        }
                     }
-                    else if (commnd[1].toLowerCase() == "off") {
-                        fileData[5] = "F"
+                    else if (commnd[0].includes("fan")) {
+                        if (commnd[1].toLowerCase() == "on") {
+                            fileData[6] ="N"
+            
+                        }
+                        else if (commnd[1].toLowerCase() == "off") {
+                            fileData[6] ="F"
+                        }
                     }
-                }
-                else if (commnd[0].includes("fan")) {
-                    if (commnd[1].toLowerCase() == "on") {
-                        fileData[6] ="N"
-        
+            
+                    else if (commnd[0].includes("pomp")) {
+            
+                        if (commnd[1].toLowerCase() == "on") {
+                            fileData[7] ="N"
+                        }
+                        else if (commnd[1].toLowerCase() == "off") {
+                            fileData[7] ="F"
+                        }
                     }
-                    else if (commnd[1].toLowerCase() == "off") {
-                        fileData[6] ="F"
+            
+                    else if (commnd[0].includes("heater")) {
+            
+                        if (commnd[1].toLowerCase() == "on") {
+                            fileData[8] = "N"
+                        }
+                        else if (commnd[1].toLowerCase() == "off") {
+                            fileData[8] ="F"
+                        }
                     }
-                }
-        
-                else if (commnd[0].includes("pomp")) {
-        
-                    if (commnd[1].toLowerCase() == "on") {
-                        fileData[7] ="N"
-                    }
-                    else if (commnd[1].toLowerCase() == "off") {
-                        fileData[7] ="F"
-                    }
-                }
-        
-                else if (commnd[0].includes("heater")) {
-        
-                    if (commnd[1].toLowerCase() == "on") {
-                        fileData[8] = "N"
-                    }
-                    else if (commnd[1].toLowerCase() == "off") {
-                        fileData[8] ="F"
-                    }
+                    console.log(fileData)
+                   
                 }
                 const boardData=fileData.join(",").replace("s","");
+                console.log(boardData)
                 return boardData
-        
+            
             }
             catch (e) {
                 const boardData=fileData.join(",").replace("s","");
-                return boardData
+                console.log(boardData)
                 // console.log(e)
+                return boardData
             }
         
         
